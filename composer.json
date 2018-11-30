@@ -1,0 +1,20 @@
+{
+    "name": "killian/my-wish-list",
+    "description": "Projet MyWishList",
+    "type": "project",
+    "require": {
+        "illuminate/database": "5.7.*",
+        "slim/slim": "^3.11"
+    },
+    "authors": [
+        {
+            "name": "Killian BALLAND",
+            "email": "killian.balland@outlook.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MyWishList\\": "src/"
+        }
+    }
+}
