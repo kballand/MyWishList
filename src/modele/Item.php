@@ -12,4 +12,8 @@ class Item extends Model {
     public function __toString() {
         return json_encode($this, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
+
+    public function liste() {
+        return $this->belongsTo('\MyWishList\modele\Liste', 'liste_id');
+    }
 }
