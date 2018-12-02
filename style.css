@@ -42,6 +42,6 @@ nav #menus .menu .titreMenu {
     line-height: 45px;
 }
 
-nav #menus .menu .titreMenu:hover, .active {
+.open:not(.closing), .opening {
     background: #0b244c;
 }

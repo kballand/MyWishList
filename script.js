@@ -1,10 +1,21 @@
 $().ready(function () {
     $('nav .menu .sousMenu').hide();
-    $('nav .menu .titreMenu').mouseenter(function () {
-        $(this).addClass('active').next('.sousMenu').fadeIn(300);
+    $('nav .menu').mouseenter(function () {
+        let $this = $(this);
+        $this.removeClass('closing');
+       $this.addClass('opening');
+       $this.children('.sousMenu').stop(true, true).fadeIn(300, function() {
+           $this.removeClass('opening');
+           $this.addClass('open');
+       });
     });
     $('nav .menu').mouseleave(function () {
-        $(this).children('.sousMenu').fadeOut(300);
-        $(this).children('a').removeClass('active');
+        let $this = $(this);
+        $this.removeClass('opening');
+        $this.addClass('closing');
+        $this.children('.sousMenu').stop(true, true).fadeOut(300, function() {
+            $this.removeClass('closing');
+            $this.removeClass('open');
+        });
     });
 });
