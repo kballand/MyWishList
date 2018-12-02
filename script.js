@@ -1,6 +1,7 @@
 $().ready(function () {
     $('nav .menu .sousMenu').hide();
-    $('nav .menu').mouseenter(function () {
+    let menus = $('nav .menu');
+    menus.mouseenter(function () {
         let $this = $(this);
         $this.removeClass('closing');
        $this.addClass('opening');
@@ -9,7 +10,7 @@ $().ready(function () {
            $this.addClass('open');
        });
     });
-    $('nav .menu').mouseleave(function () {
+    menus.mouseleave(function () {
         let $this = $(this);
         $this.removeClass('opening');
         $this.addClass('closing');
