@@ -4,12 +4,16 @@
     "type": "project",
     "require": {
         "illuminate/database": "5.7.*",
-        "slim/slim": "2.*"
+        "slim/slim": "3.*"
     },
     "authors": [
         {
             "name": "Killian BALLAND",
             "email": "killian.balland@outlook.fr"
+        },
+        {
+            "name": "Louis MATUCHET",
+            "email": "louis.matuchet54@gmail.com"
         }
     ],
     "autoload": {

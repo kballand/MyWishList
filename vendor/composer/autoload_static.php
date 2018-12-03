@@ -9,6 +9,7 @@ class ComposerStaticInita30e38b504033fed6b2a4aae6d5a9947
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
+        '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -17,10 +18,12 @@ class ComposerStaticInita30e38b504033fed6b2a4aae6d5a9947
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Contracts\\' => 18,
             'Symfony\\Component\\Translation\\' => 30,
+            'Slim\\' => 5,
         ),
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
+            'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
         ),
         'M' => 
@@ -29,10 +32,15 @@ class ComposerStaticInita30e38b504033fed6b2a4aae6d5a9947
         ),
         'I' => 
         array (
+            'Interop\\Container\\' => 18,
             'Illuminate\\Support\\' => 19,
             'Illuminate\\Database\\' => 20,
             'Illuminate\\Contracts\\' => 21,
             'Illuminate\\Container\\' => 21,
+        ),
+        'F' => 
+        array (
+            'FastRoute\\' => 10,
         ),
         'D' => 
         array (
@@ -53,9 +61,17 @@ class ComposerStaticInita30e38b504033fed6b2a4aae6d5a9947
         array (
             0 => __DIR__ . '/..' . '/symfony/translation',
         ),
+        'Slim\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/slim/slim/Slim',
+        ),
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Container\\' => 
         array (
@@ -64,6 +80,10 @@ class ComposerStaticInita30e38b504033fed6b2a4aae6d5a9947
         'MyWishList\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Interop\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
         ),
         'Illuminate\\Support\\' => 
         array (
@@ -81,6 +101,10 @@ class ComposerStaticInita30e38b504033fed6b2a4aae6d5a9947
         array (
             0 => __DIR__ . '/..' . '/illuminate/container',
         ),
+        'FastRoute\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nikic/fast-route/src',
+        ),
         'Doctrine\\Common\\Inflector\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Common/Inflector',
@@ -92,11 +116,11 @@ class ComposerStaticInita30e38b504033fed6b2a4aae6d5a9947
     );
 
     public static $prefixesPsr0 = array (
-        'S' => 
+        'P' => 
         array (
-            'Slim' => 
+            'Pimple' => 
             array (
-                0 => __DIR__ . '/..' . '/slim/slim',
+                0 => __DIR__ . '/..' . '/pimple/pimple/src',
             ),
         ),
     );
