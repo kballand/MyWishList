@@ -1,11 +1,10 @@
 <?php
-
-namespace MyWishList\modele;
+namespace MyWishList\models;
 
 use \Illuminate\Database\Eloquent\Model;
 
 class Liste extends Model {
-    protected $table = "Liste";
+    protected $table = "list";
     protected $primaryKey = "no";
     public $timestamps = false;
 

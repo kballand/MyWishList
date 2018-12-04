@@ -1,4 +1,24 @@
-<!DOCTYPE html>
+<?php
+/**
+ * Created by PhpStorm.
+ * User: balland64u
+ * Date: 04/12/2018
+ * Time: 12:19
+ */
+
+namespace MyWishList\views;
+
+
+class BasicView implements IView {
+    private $bodyContent;
+
+    public function __construct($bodyContent) {
+        $this->bodyContent = $bodyContent;
+    }
+
+    public function render() {
+        return
+<<< END
 <html>
 	<head>
 		<meta charset="UTF-8" />
@@ -39,13 +59,12 @@
 				</li>
 			</ul>
 		</nav>
-		<section>
-			<article>
-
-			</article>
-		</section>
+		$this->bodyContent;
 		<footer>
 
 		</footer>
 	</body>
 </html>
+END;
+    }
+}

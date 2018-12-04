@@ -1,11 +1,10 @@
 <?php
-
-namespace MyWishList\modele;
+namespace MyWishList\models;
 
 use \Illuminate\Database\Eloquent\Model;
 
 class Item extends Model {
-    protected $table = "Item";
+    protected $table = "item";
     protected $primaryKey = "id";
     public $timestamps = false;
 
@@ -14,6 +13,6 @@ class Item extends Model {
     }
 
     public function liste() {
-        return $this->belongsTo('\MyWishList\modele\Liste', 'liste_id');
+        return $this->belongsTo('\MyWishList\modele\List', 'liste_id');
     }
 }
