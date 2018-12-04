@@ -4,7 +4,8 @@
     "type": "project",
     "require": {
         "illuminate/database": "5.7.*",
-        "slim/slim": "3.*"
+        "slim/slim": "3.*",
+        "ext-json": "*"
     },
     "authors": [
         {

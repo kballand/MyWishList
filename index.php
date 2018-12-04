@@ -5,7 +5,7 @@ include_once "vendor/autoload.php";
 use Illuminate\Database\Capsule\Manager;
 use MyWishList\controllers\DisplayController;
 use MyWishList\models\Liste;
-use MyWishList\models\Item;
+use MyWishList\models\ItemModel;
 use \Slim\Http\Response;
 use Slim\App;
 
@@ -35,7 +35,7 @@ $app->get('/listes', function ($request, $response) {
 });
 
 $app->get('/item/{id}', function ($request, $response, $args) {
-    $item = Item::where('id', '=', $args['id'])->first();
+    $item = ItemModel::where('id', '=', $args['id'])->first();
     if(isset($item)) {
         $response->write($item . '<br />');
     }
@@ -48,7 +48,7 @@ $app->getContainer()['notFoundHandler'] = function () {
     };
 };
 
-$app->get('', function($request, $response) {
+$app->get('/', function($request, $response) {
     $controller = DisplayController::getInstance();
     $response->write($controller->displayIndex());
 });

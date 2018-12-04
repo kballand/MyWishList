@@ -3,16 +3,16 @@ namespace MyWishList\models;
 
 use \Illuminate\Database\Eloquent\Model;
 
-class Item extends Model {
-    protected $table = "item";
-    protected $primaryKey = "id";
+class ListModel extends Model {
+    protected $table = "list";
+    protected $primaryKey = "no";
     public $timestamps = false;
 
     public function __toString() {
         return json_encode($this, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 
-    public function liste() {
-        return $this->belongsTo('\MyWishList\modele\List', 'liste_id');
+    public function items() {
+        return $this->hasMany('\MyWishList\modele\Item', 'liste_id');
     }
 }

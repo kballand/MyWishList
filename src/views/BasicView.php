@@ -19,6 +19,7 @@ class BasicView implements IView {
     public function render() {
         return
 <<< END
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8" />
@@ -59,7 +60,7 @@ class BasicView implements IView {
 				</li>
 			</ul>
 		</nav>
-		$this->bodyContent;
+		$this->bodyContent
 		<footer>
 
 		</footer>
