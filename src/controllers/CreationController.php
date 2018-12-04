@@ -8,9 +8,9 @@ class CreationController {
 
     public static function getInstance() {
         if(!isset(self::$instance)) {
-            $instance = new CreationController();
+            self::$instance = new CreationController();
         }
-        return $instance;
+        return self::$instance;
     }
 
     public function createList() {

@@ -24,9 +24,9 @@ class BasicView implements IView {
 	<head>
 		<meta charset="UTF-8" />
 		<title>My Wish List</title>
-		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="/style.css" />
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-		<script src="script.js"></script>
+		<script src="/script.js"></script>
 	</head>
 	<body>
 		<header>
@@ -35,32 +35,32 @@ class BasicView implements IView {
 		<nav>
 			<ul id="menus">
 				<li class="menu">
-					<a class="titreMenu" href="">Accueil</a>
-					<div class="sousMenu">
-						<a href="" class="titreSousMenu">Vers l'accueil</a>
+					<a class="menuTitle" href="/">Accueil</a>
+				</li>
+				<li class="menu">
+					<a class="menuTitle" href="/listes">Listes</a>
+					<div class="subMenu">
+						<a href="" class="subMenuTitle">Afficher mes listes</a>
+						<a href="" class="subMenuTitle">Afficher mes listes</a>
 					</div>
 				</li>
 				<li class="menu">
-					<a class="titreMenu" href="">Mes listes</a>
-					<div class="sousMenu">
-						<a href="" class="titreSousMenu">Vers l'accueil</a>
-					</div>
-				</li>
-				<li class="menu">
-					<a class="titreMenu" href="">Contact</a>
-					<div class="sousMenu">
-						<a href="" class="titreSousMenu">Vers l'accueil</a>
-						<a href="" class="titreSousMenu">Vers l'accueil</a>
-						<a href="" class="titreSousMenu">Vers l'accueil</a>
-						<a href="" class="titreSousMenu">Vers l'accueil</a>
-						<a href="" class="titreSousMenu">Vers l'accueil</a>
-						<a href="" class="titreSousMenu">Vers l'accueil</a>
+					<a class="menuTitle" href="">Contact</a>
+					<div class="subMenu">
+						<a href="" class="subMenuTitle">Vers l'accueil</a>
+						<a href="" class="subMenuTitle">Vers l'accueil</a>
+						<a href="" class="subMenuTitle">Vers l'accueil</a>
+						<a href="" class="subMenuTitle">Vers l'accueil</a>
+						<a href="" class="subMenuTitle">Vers l'accueil</a>
+						<a href="" class="subMenuTitle">Vers l'accueil</a>
 					</div>
 
 				</li>
 			</ul>
 		</nav>
-		$this->bodyContent
+		<div class="content">
+		    $this->bodyContent
+		</div>
 		<footer>
 
 		</footer>

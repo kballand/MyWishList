@@ -1,20 +1,17 @@
 <?php
-namespace MyWishList\controllers;
+namespace MyWishList\utils;
 
+use Slim\App;
 
-class ShareController {
+class SlimSingleton {
     private static $instance;
 
     private function __construct() {}
 
     public static function getInstance() {
         if(!isset(self::$instance)) {
-            self::$instance = new ShareController();
+            self::$instance = new App();
         }
         return self::$instance;
-    }
-
-    public function shareList($no) {
-
     }
 }

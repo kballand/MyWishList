@@ -4,33 +4,27 @@ include_once "vendor/autoload.php";
 
 use Illuminate\Database\Capsule\Manager;
 use MyWishList\controllers\DisplayController;
-use MyWishList\models\Liste;
+use MyWishList\models\ListModel;
 use MyWishList\models\ItemModel;
 use \Slim\Http\Response;
-use Slim\App;
+use MyWishList\utils\SlimSingleton;
 
 $db = new Manager();
 $db->addConnection(parse_ini_file("src/conf/conf.ini"));
 $db->setAsGlobal();
 $db->bootEloquent();
 
-$app = new App();
+$app = SlimSingleton::getInstance();
 
 $app->get('/liste/{no}', function ($request, $response, $args) {
-    $liste = Liste::where('no', '=', $args['no'])->first();
-    if(isset($liste)) {
-        $response->write($liste . '<br />');
-    }
+    $controller = DisplayController::getInstance();
+    $content = $controller->displayList($args['no']);
+    $response->write($content);
 })->setName('liste');
 
 $app->get('/listes', function ($request, $response) {
-    global $app;
-    $listes = Liste::get();
-    $content = "";
-    foreach($listes as $liste) {
-        $href = $app->getContainer()->get('router')->pathFor('liste', ['no' => $liste->no]);
-        $content .= "<a href='$href'>Liste $liste->no</a><br />";
-    }
+    $controller = DisplayController::getInstance();
+    $content = $controller->displayLists();
     $response->write($content);
 });
 

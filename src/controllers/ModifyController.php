@@ -9,9 +9,9 @@ class ModifyController {
 
     public static function getInstance() {
         if(!isset(self::$instance)) {
-            $instance = new ModifyController();
+            self::$instance = new ModifyController();
         }
-        return $instance;
+        return self::$instance;
     }
 
     public function modifyList($no) {
