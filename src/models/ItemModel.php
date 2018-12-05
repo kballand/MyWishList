@@ -13,6 +13,6 @@ class ItemModel extends Model {
     }
 
     public function liste() {
-        return $this->belongsTo('\MyWishList\modele\List', 'liste_id');
+        return $this->belongsTo('\MyWishList\models\ListModel', 'liste_id');
     }
 }

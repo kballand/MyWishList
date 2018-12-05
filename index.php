@@ -16,24 +16,24 @@ $db->bootEloquent();
 
 $app = SlimSingleton::getInstance();
 
-$app->get('/liste/{no}', function ($request, $response, $args) {
+$app->get('/list/{no}', function ($request, $response, $args) {
     $controller = DisplayController::getInstance();
     $content = $controller->displayList($args['no']);
     $response->write($content);
-})->setName('liste');
+})->setName('list');
 
-$app->get('/listes', function ($request, $response) {
+$app->get('/lists', function ($request, $response) {
     $controller = DisplayController::getInstance();
     $content = $controller->displayLists();
     $response->write($content);
-});
+})->setName('lists');
 
 $app->get('/item/{id}', function ($request, $response, $args) {
     $item = ItemModel::where('id', '=', $args['id'])->first();
     if(isset($item)) {
         $response->write($item . '<br />');
     }
-});
+})->setName('item');
 
 $app->getContainer()['notFoundHandler'] = function () {
     return function() {
@@ -45,6 +45,6 @@ $app->getContainer()['notFoundHandler'] = function () {
 $app->get('/', function($request, $response) {
     $controller = DisplayController::getInstance();
     $response->write($controller->displayIndex());
-});
+})->setName('index');
 
 $app->run();

@@ -9,6 +9,8 @@
 namespace MyWishList\views;
 
 
+use MyWishList\utils\SlimSingleton;
+
 class BasicView implements IView {
     private $bodyContent;
 
@@ -17,6 +19,7 @@ class BasicView implements IView {
     }
 
     public function render() {
+        $router = SlimSingleton::getInstance()->getContainer()->get('router');
         return
 <<< END
 <!DOCTYPE html>
@@ -35,10 +38,10 @@ class BasicView implements IView {
 		<nav>
 			<ul id="menus">
 				<li class="menu">
-					<a class="menuTitle" href="/">Accueil</a>
+					<a class="menuTitle" href="{$router->pathFor('index')}">Accueil</a>
 				</li>
 				<li class="menu">
-					<a class="menuTitle" href="/listes">Listes</a>
+					<a class="menuTitle" href="{$router->pathFor('lists')}">Listes</a>
 					<div class="subMenu">
 						<a href="" class="subMenuTitle">Afficher mes listes</a>
 						<a href="" class="subMenuTitle">Afficher mes listes</a>

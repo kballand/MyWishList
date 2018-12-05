@@ -13,6 +13,6 @@ class ListModel extends Model {
     }
 
     public function items() {
-        return $this->hasMany('\MyWishList\modele\Item', 'liste_id');
+        return $this->hasMany('\MyWishList\models\ItemModel', 'liste_id');
     }
 }
