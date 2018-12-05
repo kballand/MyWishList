@@ -46,4 +46,9 @@ $app->get('/', function($request, $response) {
     $response->write($controller->displayIndex());
 })->setName('index');
 
+$app->get('/register', function($request, $response) {
+    $controller = DisplayController::getInstance();
+    $response->write($controller->displayRegistration());
+})->setName('register');
+
 $app->run();

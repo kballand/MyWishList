@@ -20,25 +20,49 @@ nav {
     list-style-type: none;
     display: inline-flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: space-between;
+    width: 400px;
 }
 
 #signBar {
-    margin-top: 8px;
-    margin-right: 2%;
+    margin-top: 5px;
+    float: right;
+    width: 500px;
+}
+
+#signForm {
+    width: 100%;
+}
+
+#loginSubmit, #registerButton {
+    background-color : #1d8eb8;
+    color: white;
+    font-size: 15px;
+    font-family: sans-serif;
+}
+
+#loginSubmit:hover, #registerButton:hover {
+    background: #0d5ea8;
+    cursor: pointer;
 }
 
 #loginUsername, #loginPassword {
-    border: none;
+    background-color: #eeeeee;
+    width: 100px;
+    font-size: 17px;
 }
 
-#loginForm input {
-    padding: 6px;
+#loginForm input, #registerButton {
+    padding: 7px;
+    border:none;
+    border-radius: 3px 3px;
+    margin-left: 1%;
+    margin-right: 1%;
 }
 
 .menu {
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 1%;
+    margin-right: 1%;
 }
 
 .menu:last-child {
@@ -90,7 +114,7 @@ nav {
 }
 
 .sticky + .content {
-    padding-top: 60px;
+    padding-top: 45px;
 }
 
 #listsSection {
@@ -167,7 +191,7 @@ nav {
     color: white;
     border: solid 3px rgb(0, 50, 80);
     border-radius: 10px 10px;
-    margin: 10px;
+    margin: 1%;
 }
 
 .listItem:focus {
@@ -180,4 +204,75 @@ nav {
 
 #signBar {
     float: right;
+}
+
+#registration {
+    text-align: center;
+}
+
+#registerForm input, #registerForm label {
+    display: block;
+}
+
+#registerForm input {
+    padding: 5px;
+    width: 200px;
+    border: 1px solid #aaaaaa;
+    border-radius: 5px 5px;
+    font-size: 20px;
+    margin: 20px auto 20px auto;
+}
+
+#registerForm label {
+    font-weight : bold;
+    font-size: 22px;
+}
+
+#registration h2 {
+    font-size: 25px;
+    margin-bottom: 50px;
+}
+
+.registerStep {
+    height: 15px;
+    width: 15px;
+    background: #999999;
+    opacity: 0.5;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.stepActive {
+    opacity: 1;
+}
+
+.stepFinish {
+    background-color: #4CAF50;
+}
+
+#registerPreviousStep {
+    margin-right: 12%;
+    background-color: #bbbbbb;
+    border: solid 1px grey;
+}
+
+#registerNextStep {
+    margin-left: 12%;
+    background-color: #4CAF50;
+    border: solid 1px green;
+}
+
+#registerButtons button {
+    padding: 15px;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 15px;
+    margin-top: 1%;
+    margin-bottom: 2%;
+}
+
+#registerButtons button:hover {
+    opacity: 0.9;
+    box-shadow: black 2px 2px 2px;
 }

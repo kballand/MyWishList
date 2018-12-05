@@ -14,6 +14,9 @@ class BasicView implements IView {
 
     public function render() {
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $index = $router->pathFor('index');
+        $lists = $router->pathFor('lists');
+        $register = $router->pathFor('register');
         return
 <<< END
 <!DOCTYPE html>
@@ -32,10 +35,10 @@ class BasicView implements IView {
 		<nav>
 			<ul id="menus">
 				<li class="menu">
-					<a class="menuTitle" href="{$router->pathFor('index')}">Accueil</a>
+					<a class="menuTitle" href="$index">Accueil</a>
 				</li>
 				<li class="menu">
-					<a class="menuTitle" href="{$router->pathFor('lists')}">Listes</a>
+					<a class="menuTitle" href="$lists">Listes</a>
 					<div class="subMenu">
 						<a href="" class="subMenuTitle">Afficher mes listes</a>
 					</div>
@@ -49,10 +52,10 @@ class BasicView implements IView {
 			</ul>
 			<span id="signBar">
 				<form id="loginForm">
-				    <input type="text" name="username" id="loginUsername" placeholder="Nom d'utilisateur" />
-				    <input type="password" name="password" id="loginPassword" placeholder="Mot de passe" />
+				    <input type="text" name="username" id="loginUsername" placeholder="Username">
+				    <input type="password" name="password" id="loginPassword" placeholder="Password">
 				    <input type="submit" id="loginSubmit" value="Se connecter">
-				    <input type="button" id="registerButton" value="S'enregistrer">
+				    <input type="button" id="registerButton" value="S'enregistrer" onclick="window.location.href='$register'">
                 </form>
             </span>
 

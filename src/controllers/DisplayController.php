@@ -6,6 +6,7 @@ use MyWishList\models\ListModel;
 use MyWishList\views\BasicView;
 use MyWishList\views\ItemsDisplayView;
 use MyWishList\views\ListsDisplayView;
+use MyWishList\views\RegisterView;
 
 class DisplayController {
     private static $instance;
@@ -51,5 +52,11 @@ class DisplayController {
     public function displayIndex() {
         $index = new BasicView('');
         return $index->render();
+    }
+
+    public function displayRegistration() {
+        $view = new RegisterView();
+        $view = new BasicView($view->render());
+        return $view->render();
     }
 }

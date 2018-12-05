@@ -27,5 +27,50 @@ $(document).ready(function () {
         } else {
             navBar.removeClass('sticky');
         }
-    }
+    };
+    let currentPart = 0;
+    let prev = $('#registerPreviousStep');
+    prev.hide();
+    let next = $('#registerNextStep');
+    next.css('margin-left', '0');
+    let steps = $('.registerStep');
+    steps.first().addClass('stepActive');
+    let parts = $('.registerPart');
+    parts.hide();
+    parts.first().show();
+    next.click(function () {
+        if(currentPart < parts.length - 1) {
+            if(currentPart === 0) {
+                prev.show();
+                next.css('margin-left', '12%');
+            }
+            steps.eq(currentPart).removeClass('stepActive');
+            steps.eq(currentPart).addClass('stepFinish');
+            parts.eq(currentPart).hide();
+            ++currentPart;
+            if(currentPart === parts.length - 1) {
+                next.text('Submit');
+            }
+            parts.eq(currentPart).show();
+            steps.eq(currentPart).addClass('stepActive');
+        } else {
+            $('#registerForm').submit();
+        }
+    });
+    prev.click(function () {
+        if(currentPart !== 0) {
+            if(currentPart === parts.length - 1) {
+                next.text('Next');
+            }
+            steps.eq(currentPart).removeClass('stepActive');
+            parts.eq(currentPart).hide();
+            --currentPart;
+            if(currentPart === 0) {
+                next.css('margin-left', '0');
+                prev.hide();
+            }
+            parts.eq(currentPart).show();
+            steps.eq(currentPart).addClass('stepActive');
+        }
+    });
 });
