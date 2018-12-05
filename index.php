@@ -29,10 +29,9 @@ $app->get('/lists', function ($request, $response) {
 })->setName('lists');
 
 $app->get('/item/{id}', function ($request, $response, $args) {
-    $item = ItemModel::where('id', '=', $args['id'])->first();
-    if(isset($item)) {
-        $response->write($item . '<br />');
-    }
+    $controller = DisplayController::getInstance();
+    $content = $controller->displayItem($args['id']);
+    $response->write($content);
 })->setName('item');
 
 $app->getContainer()['notFoundHandler'] = function () {

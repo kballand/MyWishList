@@ -1,8 +1,10 @@
 <?php
 namespace MyWishList\controllers;
 
+use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
 use MyWishList\views\BasicView;
+use MyWishList\views\ItemsDisplayView;
 use MyWishList\views\ListsDisplayView;
 
 class DisplayController {
@@ -32,7 +34,10 @@ class DisplayController {
     }
 
     public function displayItem($id) {
-
+        $item = ItemModel::where('id', '=', $id)->first();
+        $view = new ItemsDisplayView($item);
+        $view = new BasicView($view->render());
+        return $view->render();
     }
 
     public function displayBookings($no) {

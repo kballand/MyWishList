@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: balland64u
- * Date: 04/12/2018
- * Time: 12:19
- */
 
 namespace MyWishList\views;
 
@@ -44,22 +38,24 @@ class BasicView implements IView {
 					<a class="menuTitle" href="{$router->pathFor('lists')}">Listes</a>
 					<div class="subMenu">
 						<a href="" class="subMenuTitle">Afficher mes listes</a>
-						<a href="" class="subMenuTitle">Afficher mes listes</a>
 					</div>
 				</li>
 				<li class="menu">
 					<a class="menuTitle" href="">Contact</a>
 					<div class="subMenu">
 						<a href="" class="subMenuTitle">Vers l'accueil</a>
-						<a href="" class="subMenuTitle">Vers l'accueil</a>
-						<a href="" class="subMenuTitle">Vers l'accueil</a>
-						<a href="" class="subMenuTitle">Vers l'accueil</a>
-						<a href="" class="subMenuTitle">Vers l'accueil</a>
-						<a href="" class="subMenuTitle">Vers l'accueil</a>
 					</div>
-
 				</li>
 			</ul>
+			<span id="signBar">
+				<form id="loginForm">
+				    <input type="text" name="username" id="loginUsername" placeholder="Nom d'utilisateur" />
+				    <input type="password" name="password" id="loginPassword" placeholder="Mot de passe" />
+				    <input type="submit" id="loginSubmit" value="Se connecter">
+				    <input type="button" id="registerButton" value="S'enregistrer">
+                </form>
+            </span>
+
 		</nav>
 		<div class="content">
 		    $this->bodyContent
