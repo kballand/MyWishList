@@ -6,6 +6,7 @@ use MyWishList\models\ListModel;
 use MyWishList\views\BasicView;
 use MyWishList\views\ItemsDisplayView;
 use MyWishList\views\ListsDisplayView;
+use MyWishList\views\NotFoundView;
 use MyWishList\views\RegisterView;
 
 class DisplayController {
@@ -57,6 +58,11 @@ class DisplayController {
     public function displayRegistration() {
         $view = new RegisterView();
         $view = new BasicView($view->render());
+        return $view->render();
+    }
+
+    public function displayNotFound($requestedUrl) {
+        $view = new NotFoundView($requestedUrl);
         return $view->render();
     }
 }

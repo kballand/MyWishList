@@ -32,13 +32,18 @@ END;
             foreach ($this->items as $item) {
                 $itemsContent .=
                     <<< END
-<a class="listItem" href="{$router->pathFor('item', ['id' => $item->id])}">
+<div class="listItem">
+    <div class="itemActions">
+        <a class="itemAction itemInspect" href="{$router->pathFor('item', ['id' => $item->id])}">&#9863</a>
+        <a class="itemAction itemModify">&#9998</a>
+        <a class="itemAction itemDelete">&#10006</a>
+    </div>
     <h2 class="itemName">$item->nom</h2>
     <img class="itemImg" src="/img/$item->img" />
     <p class="itemId"><strong>ID</strong> : $item->id</p>
     <p class="itemDescription"><strong>Description</strong> : $item->descr</p>
     <p class="itemPrice"><strong>Tarif</strong> : $item->tarif €</p>
-</a>
+</div>
 END;
             }
             return
