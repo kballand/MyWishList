@@ -73,4 +73,5 @@ $(document).ready(function () {
             steps.eq(currentPart).addClass('stepActive');
         }
     });
+
 });
