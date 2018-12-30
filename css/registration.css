@@ -1,0 +1,43 @@
+.registerStep {
+    height: 15px;
+    width: 15px;
+    background: #999999;
+    opacity: 0.5;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.stepActive {
+    opacity: 1;
+}
+
+.stepFinish {
+    background-color: #4CAF50;
+}
+
+#registerPreviousStep {
+    margin-right: 12%;
+    background-color: #bbbbbb;
+    border: solid 1px grey;
+}
+
+#registerNextStep {
+    margin-left: 12%;
+    background-color: #4CAF50;
+    border: solid 1px green;
+}
+
+#registerButtons button {
+    padding: 15px;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 15px;
+    margin-top: 1%;
+    margin-bottom: 2%;
+}
+
+#registerButtons button:hover {
+    opacity: 0.9;
+    box-shadow: black 2px 2px 2px;
+}

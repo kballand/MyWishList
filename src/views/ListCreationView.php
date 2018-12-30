@@ -18,23 +18,25 @@ class ListCreationView implements IView {
         $day = $date['mday'];
         return
 <<< END
-<form id="listCreationForm" method="post">
-    <label for="listTitle">Titre</label>
-    <input type="text" name="title" id="listTitle">
-    <label for="listDescription">Description</label>
-    <textarea name="description" id="listDescription" rows="10" cols="60" placeholder="Entrez ici la description de votre liste... (255 caractères maximum)" maxlength="255" style="resize: none"></textarea>
-    <label for="listExpirationDate">Date d'expiration</label>
-    <input type="date" name="expirationDate" id="listExpirationDate" min="$year-$month-$day">
-    <span>
-        <label for="listImage">Ajouter une image</label>
-        <input type="file" accept="image/*" name="image" id="listImage">
-    </span>
-</form>
+<section class="basicForm">
+    <form id="listCreationForm" method="post">
+        <label for="listTitle">Titre</label>
+        <input type="text" name="title" id="listTitle" placeholder="Titre de la liste" required>
+        <label for="listDescription">Description</label>
+        <textarea name="description" id="listDescription" rows="10" cols="60" placeholder="Entrez ici la description de votre liste... (500 caractères maximum)" maxlength="500" style="resize: none"></textarea>
+        <label for="listExpirationDate">Date d'expiration</label>
+        <input type="date" name="expirationDate" id="listExpirationDate" min="$year-$month-$day" required>
+        <span>
+            <label for="listImage">Ajouter une image</label>
+            <input type="file" accept="image/*" name="image" id="listImage">
+        </span>
+    </form>
+</section>
 END;
     }
 
     public function getRequiredCSS() {
-        return [];
+        return ['/css/form.css'];
     }
 
     public function getRequiredScripts() {

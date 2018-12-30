@@ -1,0 +1,30 @@
+.basicForm {
+    margin-top: 1%;
+    text-align: center;
+}
+
+.basicForm input, .basicForm textarea {
+    padding: 5px;
+    border: 1px solid #aaaaaa;
+    border-radius: 5px 5px;
+    font-size: 20px;
+    margin: 20px auto 20px auto;
+    display: block;
+}
+
+.basicForm input {
+    width: 200px;
+}
+
+.basicForm textarea {
+    width: 400px;
+}
+
+.basicForm input[type='file'] {
+    display: none;
+}
+
+.basicForm label {
+    font-weight: bold;
+    font-size: 1.1em;
+}

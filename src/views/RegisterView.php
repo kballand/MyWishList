@@ -7,9 +7,8 @@ class RegisterView implements IView {
     public function render() {
         return
             <<< END
-<div id="registration">
-    <h2>Registration</h2>
-    <form id="registerForm" method="post">
+<section class="basicForm">
+    <form id="registerForm">
         <div class="registerPart">
             <label for="password">Enter your first name</label>
             <input type="text" name="firstName" id="registerFirstName" placeholder="First Name" required>
@@ -57,12 +56,12 @@ class RegisterView implements IView {
             <span class="registerStep"></span>
         </div>
     </form>
-</div>
+</section>
 END;
     }
 
     public function getRequiredCSS() {
-        return [];
+        return ['/css/form.css', '/css/registration.css'];
     }
 
     public function getRequiredScripts() {
