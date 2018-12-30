@@ -51,6 +51,11 @@ $app->get('/', function($request, $response) {
 $app->get('/register', function($request, $response) {
     $controller = DisplayController::getInstance();
     $response->write($controller->displayRegistration());
-})->setName('register');
+})->setName('registration');
+
+$app->get('/create/list', function($request, $response) {
+    $controller = DisplayController::getInstance();
+    $response->write($controller->displayListCreation());
+})->setName('creation');
 
 $app->run();

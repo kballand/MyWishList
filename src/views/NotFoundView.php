@@ -13,13 +13,13 @@ class NotFoundView implements IView {
 
     public function render() {
         return
-<<< END
+            <<< END
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8" />
 		<title>Error 404 (Not Found)</title>
-		<link rel="stylesheet" href="/style.css" />
+		<link rel="stylesheet" href="/css/style.css" />
 	</head>
 	<body>
 		<div id="notFound">
@@ -29,5 +29,13 @@ class NotFoundView implements IView {
 	</body>
 </html>
 END;
+    }
+
+    public function getRequiredCSS() {
+        return [];
+    }
+
+    public function getRequiredScripts() {
+        return [];
     }
 }

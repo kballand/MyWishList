@@ -1,148 +1,31 @@
-body {
-    margin: 0;
-    padding: 0;
-    background: rgb(240, 240, 240);
-    font-family: Arial, sans-serif;
-}
-
-header h1 {
-    text-align : center;
-}
-
-nav {
-    padding: 0;
-    background: rgb(27, 56, 102);
-}
-
-#menus {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 400px;
-}
-
-#signBar {
-    margin-top: 5px;
-    float: right;
-    width: 500px;
-}
-
-#signForm {
-    width: 100%;
-}
-
-#loginSubmit, #registerButton {
-    background-color : #1d8eb8;
-    color: white;
-    font-size: 15px;
-    font-family: sans-serif;
-}
-
-#loginSubmit:hover, #registerButton:hover {
-    background: #0d5ea8;
-    cursor: pointer;
-}
-
-#loginUsername, #loginPassword {
-    background-color: #eeeeee;
-    width: 100px;
-    font-size: 17px;
-}
-
-#loginForm input, #registerButton {
-    padding: 7px;
-    border:none;
-    border-radius: 3px 3px;
-    margin-left: 1%;
-    margin-right: 1%;
-}
-
-.menu {
-    margin-left: 1%;
-    margin-right: 1%;
-}
-
-.menu:last-child {
-    margin-right: 0;
-}
-
-.subMenu {
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(11, 36, 76);
-    position: absolute;
-}
-
-.subMenuTitle {
-    display: block;
-    font-size: 130%;
-    padding-left: 20px;
-    padding-right: 20px;
-    line-height: 35px;
-}
 
 
-.menuTitle, .subMenuTitle {
-    text-decoration: none;
-    color: white;
-}
-
-.menuTitle {
-    display: block;
-    font-size: 130%;
-    padding-left: 20px;
-    padding-right: 20px;
-    line-height: 45px;
-}
-
-.menuTitle:focus, .subMenuTitle:focus {
-    outline: none;
-}
-
-.open:not(.closing), .opening {
-    background: #0b244c;
-}
-
-.sticky {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1;
-}
-
-.sticky + .content {
-    padding-top: 45px;
-}
+/* Section contenant l'ensemble des listes */
 
 #listsSection {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: space-around;
     margin: 1%;
 }
 
+/* Une liste parmi l'ensemble des listes */
+
 .listArticle {
     background: rgb(0, 77, 101);
-    color: white;
     width: 400px;
     padding: 1%;
     margin: 1%;
     text-align: center;
     border-radius: 15px;
-    text-decoration: none;
 }
+
+/* Lors du survol d'une liste ou d'un item d'une liste */
 
 .listArticle:hover, .listItem:hover {
     box-shadow: 5px 5px 3px rgb(0, 50, 80);
     z-index: 0;
-}
-
-.listArticle:focus {
-    outline: none;
 }
 
 #listContent, #itemContent {
@@ -186,28 +69,19 @@ nav {
 }
 
 .listItem {
-    text-decoration: none;
-    color: white;
     border: solid 3px rgb(0, 50, 80);
     border-radius: 10px 10px;
     margin: 1%;
     padding: 1%;
+    position: relative;
 }
 
 .itemName {
-    margin: 10px;
-}
-
-.listItem:focus {
-    outline: none;
+    margin: 35px 10px 10px 10px;
 }
 
 .listTitle {
     margin-bottom: 5%;
-}
-
-#signBar {
-    float: right;
 }
 
 #registration {
@@ -299,7 +173,9 @@ nav {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin-right: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .itemAction {
@@ -318,6 +194,7 @@ nav {
 }
 
 .errorContainer {
+	display:none;
     position: relative;
 }
 
@@ -330,5 +207,30 @@ nav {
     position: absolute;
     bottom: 50px;
     left: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#listCreationForm {
+    display: inline-flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+#listImage {
+    display: none;
 }
 

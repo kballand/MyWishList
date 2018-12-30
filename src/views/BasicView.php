@@ -2,72 +2,47 @@
 
 namespace MyWishList\views;
 
-
-use MyWishList\utils\SlimSingleton;
+use MyWishList\utils\CommonUtils;
 
 class BasicView implements IView {
-    private $bodyContent;
+    private $bodyView;
+    private $title;
 
-    public function __construct($bodyContent) {
-        $this->bodyContent = $bodyContent;
+    public function __construct(IView $bodyView, $title = 'MyWishList') {
+        $this->bodyView = $bodyView;
+        if(isset($title) && is_string($title)) {
+            $this->title = $title;
+        } else {
+            $this->title = 'MyWishList';
+        }
     }
 
     public function render() {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
-        $index = $router->pathFor('index');
-        $lists = $router->pathFor('lists');
-        $register = $router->pathFor('register');
+        $css = CommonUtils::importCSS($this->getRequiredCSS());
+        $scripts = CommonUtils::importScripts($this->getRequiredScripts());
         return
 <<< END
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 	<head>
 		<meta charset="UTF-8" />
-		<title>My Wish List</title>
-		<link rel="stylesheet" href="/style.css" />
+		<title>$this->title</title>
+		$css
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-		<script src="/script.js"></script>
+		$scripts
 	</head>
 	<body>
-		<header>
-			<h1>Mon header</h1>
-		</header>
-		<nav>
-			<ul id="menus">
-				<li class="menu">
-					<a class="menuTitle" href="$index">Accueil</a>
-				</li>
-				<li class="menu">
-					<a class="menuTitle" href="$lists">Listes</a>
-					<div class="subMenu">
-						<a href="" class="subMenuTitle">Afficher mes listes</a>
-					</div>
-				</li>
-				<li class="menu">
-					<a class="menuTitle" href="">Contact</a>
-					<div class="subMenu">
-						<a href="" class="subMenuTitle">Vers l'accueil</a>
-					</div>
-				</li>
-			</ul>
-			<span id="signBar">
-				<form id="loginForm">
-				    <input type="text" name="username" id="loginUsername" placeholder="Username">
-				    <input type="password" name="password" id="loginPassword" placeholder="Password">
-				    <input type="submit" id="loginSubmit" value="Se connecter">
-				    <input type="button" id="registerButton" value="S'enregistrer" onclick="window.location.href='$register'">
-                </form>
-            </span>
-
-		</nav>
-		<div class="content">
-		    $this->bodyContent
-		</div>
-		<footer>
-
-		</footer>
+	    {$this->bodyView->render()}
 	</body>
 </html>
 END;
+    }
+
+    public function getRequiredCSS() {
+        return array_unique(array_merge($this->bodyView->getRequiredCSS(), ['/css/common.css']));
+    }
+
+    public function getRequiredScripts() {
+        return $this->bodyView->getRequiredScripts();
     }
 }

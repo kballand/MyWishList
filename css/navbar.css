@@ -1,0 +1,126 @@
+/* Contenu de la barre de navigation */
+
+
+/* Couleur de la barre de navigation */
+
+nav {
+    background: rgb(27, 56, 102);
+}
+
+/* Menus déroulants */
+
+#menus {
+    list-style-type: none;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 400px;
+}
+
+/* Barre de connection */
+
+#signBar {
+    margin-top: 7px;
+    position: absolute;
+    right: 0;
+    width: 500px;
+}
+
+/* Boutons de connection et d'enregistrement */
+
+#loginSubmit, #registerButton {
+    color: white;
+    background-color : #1d8eb8;
+}
+
+#loginSubmit:hover, #registerButton:hover {
+    opacity: 0.9;
+}
+
+
+/* Chanmps de connection */
+
+#loginUsername, #loginPassword {
+    background-color: #eeeeee;
+    width: 100px;
+}
+
+/* Tous les champs et boutons de connection */
+
+#signBar input {
+    font-size: 15px;
+    padding: 7px;
+    border:none;
+    border-radius: 3px 3px;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+
+
+/* Les menus déroulannts */
+
+/* Margin pour les menus */
+
+.menu {
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+/* Pas de margin right pour le dernier menu deroulant */
+
+.menu:last-child {
+    margin-right: 0;
+}
+
+/* Les sous-menus */
+
+/* Sous menus les uns en dessous des autres */
+
+.subMenu {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(11, 36, 76);
+    position: absolute;
+}
+
+/* Les titres et sous titres des menus */
+
+.menuTitle, .subMenuTitle {
+    font-size: 130%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Les titres des menus */
+
+.menuTitle {
+    line-height: 45px;
+}
+
+/* Les titres des sous menus */
+
+.subMenuTitle {
+    line-height: 35px;
+}
+
+/* Lors que le menu est ouvert on change sa couleur */
+
+.open:not(.closing), .opening {
+    background: #0b244c;
+}
+
+/* Lorsque notre barre de navigation doit restée collée à l'écran */
+
+.sticky {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+
+/* Rajout d'un padding pour le contenu juste après la barre pour éviter l'overflow */
+
+.sticky + .content {
+    padding-top: 45px;
+}

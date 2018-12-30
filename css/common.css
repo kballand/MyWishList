@@ -1,0 +1,40 @@
+/* Suppression des paddings par défaut et mise en place des fonts */
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Couleur de base du body */
+
+body {
+    background: rgb(240, 240, 240);
+}
+
+
+/* En-tête */
+
+header h1 {
+    text-align : center;
+}
+
+/* Suppression des contours lors des clics sur les liens */
+
+a:focus {
+    outline: none;
+}
+
+/* Suppression de la couleur par défaut et de la decoration des liens */
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Ajout du curseur pointeur par défaut pour les boutons */
+
+button:hover, input[type='button'], input[type='submit'] {
+    cursor: pointer;
+}
+

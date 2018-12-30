@@ -49,4 +49,13 @@ END;
 END;
         }
     }
+
+    public function getRequiredCSS() {
+        return [];
+    }
+
+    public function getRequiredScripts()
+    {
+        return [];
+    }
 }
