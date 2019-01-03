@@ -12,11 +12,11 @@ class NavBarView implements IView {
     }
 
     public function getRequiredCSS() {
-        return array_unique(array_merge($this->contentView->getRequiredCSS(), ['/css/navbar.css', '/css/style.css']));
+        return array_unique(array_merge(['/css/navbar.css', '/css/style.css'], $this->contentView->getRequiredCSS()));
     }
 
     public function getRequiredScripts() {
-        return array_unique(array_merge($this->contentView->getRequiredScripts(), ['/js/script.js']));
+        return array_unique(array_merge(['/js/script.js'], $this->contentView->getRequiredScripts()));
     }
 
     public function render() {

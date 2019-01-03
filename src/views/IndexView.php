@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Killian
- * Date: 29/12/2018
- * Time: 22:38
- */
 
 namespace MyWishList\views;
 

@@ -39,7 +39,7 @@ END;
     }
 
     public function getRequiredCSS() {
-        return array_unique(array_merge($this->bodyView->getRequiredCSS(), ['/css/common.css']));
+        return array_unique(array_merge(['/css/common.css'], $this->bodyView->getRequiredCSS()));
     }
 
     public function getRequiredScripts() {

@@ -18,14 +18,16 @@ class ListsDisplayView implements IView {
         if($this->lists instanceof ListModel) {
             $itemsView = new ItemsDisplayView($this->lists->items);
             $itemsContent = $itemsView->render();
+            $modifyPath = $router->pathFor('modification', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
             return
 <<< END
 <div id="listContent">
-    <h2 class="listTitle">{$this->lists->titre}</h2>
+    <h2 class="listTitle">{$this->lists->title}</h2>
     <p class="listId"><strong>ID</strong> : {$this->lists->no}</p>
     <p class="listDescription"><strong>Description</strong>  : {$this->lists->description}</p>
     <p class="listExpiration"><strong>Date d'expiration</strong> : {$this->lists->expiration}</p>
     $itemsContent
+    <a id="modifyButton" href="$modifyPath">Modifier la liste</a>
 </div>
 END;
         } else {
@@ -34,7 +36,7 @@ END;
                 $sectionContent .=
 <<<END
     <a class="listArticle" href="{$router->pathFor('list', ['no' => $list->no])}">
-        <h2 class="listTitle">$list->titre</h2>
+        <h2 class="listTitle">$list->title</h2>
         <p class="listId"><strong>ID</strong> : $list->no</p>
         <p class="listDescription"><strong>Description</strong>  : $list->description</p>
         <p class="listExpiration"><strong>Date d'expiration</strong> : $list->expiration</p>

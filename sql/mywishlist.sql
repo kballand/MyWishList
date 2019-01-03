@@ -6,16 +6,16 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 DROP TABLE IF EXISTS `item`;
 CREATE TABLE `item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `liste_id` int(11) NOT NULL,
-  `nom` text NOT NULL,
-  `descr` text,
+  `list_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `description` text,
   `img` text,
   `url` text,
-  `tarif` decimal(5,2) DEFAULT NULL,
+  `price` decimal(5,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `item` (`id`, `liste_id`, `nom`, `descr`, `img`, `url`, `tarif`) VALUES
+INSERT INTO `item` (`id`, `list_id`, `name`, `description`, `img`, `url`, `price`) VALUES
 (1,	2,	'Champagne',	'Bouteille de champagne + flutes + jeux à gratter',	'champagne.jpg',	'',	20.00),
 (2,	2,	'Musique',	'Partitions de piano à 4 mains',	'musique.jpg',	'',	25.00),
 (3,	2,	'Exposition',	'Visite guidée de l’exposition ‘REGARDER’ à la galerie Poirel',	'poirelregarder.jpg',	'',	14.00),
@@ -40,14 +40,15 @@ DROP TABLE IF EXISTS `list`;
 CREATE TABLE `list` (
   `no` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
-  `titre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci,
   `expiration` date DEFAULT NULL,
-  `token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `access_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `modify_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `list` (`no`, `user_id`, `titre`, `description`, `expiration`, `token`) VALUES
+INSERT INTO `list` (`no`, `user_id`, `title`, `description`, `expiration`, `access_token`) VALUES
 (1,	1,	'Pour fêter le bac !',	'Pour un week-end à Nancy qui nous fera oublier les épreuves. ',	'2018-06-27',	'nosecure1'),
 (2,	2,	'Liste de mariage d\'Alice et Bob',	'Nous souhaitons passer un week-end royal à Nancy pour notre lune de miel :)',	'2018-06-30',	'nosecure2'),
 (3,	3,	'C\'est l\'anniversaire de Charlie',	'Pour lui préparer une fête dont il se souviendra :)',	'2017-12-12',	'nosecure3');
