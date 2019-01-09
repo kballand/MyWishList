@@ -14,6 +14,7 @@ class ListsDisplayView implements IView {
     }
 
     public function render() {
+        $adress = $_SERVER["REQUEST_URI"];
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
         if($this->lists instanceof ListModel) {
             $itemsView = new ItemsDisplayView($this->lists->items);
@@ -51,7 +52,7 @@ END;
     }
 
     public function getRequiredCSS() {
-        return [];
+        return ['/css/popup.css'];
     }
 
     public function getRequiredScripts()
