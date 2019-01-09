@@ -97,7 +97,7 @@ $(document).ready(function () {
 
 //copier dans le presse papier
 
-    function myFunction() {
+    function copier() {
         let copyText = document.getElementById("textcopy");
         copyText.select();
         document.execCommand("copy");

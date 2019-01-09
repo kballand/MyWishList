@@ -14,7 +14,6 @@ class ListsDisplayView implements IView {
     }
 
     public function render() {
-        $adress = $_SERVER["REQUEST_URI"];
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
         if($this->lists instanceof ListModel) {
             $itemsView = new ItemsDisplayView($this->lists->items);
@@ -22,6 +21,7 @@ class ListsDisplayView implements IView {
             $modifyPath = $router->pathFor('modifyList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
             $deletePath = $router->pathFor('deleteList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
             $addItemPath = $router->pathFor('addItem', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
+            $adresse = $_SERVER['HTTP_HOST'].$_SERVER["REQUEST_URI"]."?token=".$this->lists->access_token;
             return
 <<< END
 <div id="listContent">
@@ -38,7 +38,7 @@ class ListsDisplayView implements IView {
         <div id="myPopup" class="popup">
             <div class="sharing-content">
                 <div>
-                <input type="$adress" class="textcopy" readonly>
+                    <input type="text" value="$adresse" class="textcopy" readonly>
                 <button onclick="copier()">copier</button>
                 </div>
              </div>
