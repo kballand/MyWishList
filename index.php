@@ -82,6 +82,7 @@ $app->get('/list/delete/{no}', function(Request $request, Response $response, $a
 
 $app->get('/list/addItem/{no}', function(Request $request, Response $response, $args) {
     $controller = ModifyController::getInstance();
+    $response->write($controller->addItem($response, $no));
 })->setName('addItem');
 
 $app->run();
