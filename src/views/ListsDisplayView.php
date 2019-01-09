@@ -21,6 +21,7 @@ class ListsDisplayView implements IView {
             $itemsContent = $itemsView->render();
             $modifyPath = $router->pathFor('modifyList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
             $deletePath = $router->pathFor('deleteList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
+            $addItemPath = $router->pathFor('addItem', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
             return
 <<< END
 <div id="listContent">
@@ -32,6 +33,7 @@ class ListsDisplayView implements IView {
     <span class="listButtons">
         <a id="deleteButton"  href="$deletePath">Supprimer la liste</a>
         <a id="modifyButton" href="$modifyPath">Modifier la liste</a>
+<<<<<<< HEAD
         <a id="modifyButton" href="$modifyPath">Ajouter une item</a>
         <button id="myBtn">Partager</button>
         <div id="myPopup" class="popup">
@@ -42,6 +44,9 @@ class ListsDisplayView implements IView {
                 </div>
              </div>
         </div>
+=======
+        <a id="addItemButton" href="$addItemPath">Ajouter une item</a>
+>>>>>>> f096b67dc2ccb3b8d736ea5ec81ee93ebfa076a0
     </span>
 
 </div>
