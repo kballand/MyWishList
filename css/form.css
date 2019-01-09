@@ -3,7 +3,7 @@
     text-align: center;
 }
 
-.basicForm input, .basicForm textarea {
+.basicForm input:not([type='button']), .basicForm textarea {
     padding: 5px;
     border: 1px solid #aaaaaa;
     border-radius: 5px 5px;
@@ -12,12 +12,24 @@
     display: block;
 }
 
-.basicForm input {
+.uploadField {
+    margin: 20px auto 20px auto;
+}
+
+.uploadField label, .uploadField input[type='button'] {
+    padding: 5px;
+    border: 1px solid #aaaaaa;
+    border-radius: 5px 5px;
+}
+
+
+.basicForm input:not([type='button'][type='submit']) {
     width: 200px;
 }
 
 .basicForm textarea {
     width: 400px;
+    resize: none;
 }
 
 .basicForm input[type='file'] {
@@ -27,4 +39,101 @@
 .basicForm label {
     font-weight: bold;
     font-size: 1.1em;
+}
+
+.basicForm .dateField input[type='date'] {
+    width: 130px;
+    padding-right : 0;
+}
+
+.basicForm input[type='time'] {
+    width: 75px;
+    padding-right: 0;
+}
+
+.dateField input {
+    display: inline-block;
+}
+
+.uploadField input, .uploadField label {
+    font-weight: normal;
+    font-size: 1em;
+    display: inline-block;
+}
+
+.uploadField label:hover, input[type='button']:hover {
+    cursor: pointer;
+    color: white;
+    background-color : #666666;
+}
+
+.uploadField .imagePreview {
+    width: 300px;
+    height: 300px;
+    display: none;
+    margin: 0px auto 20px auto;
+    border-radius: 20%;
+}
+
+.uploadField .previewDelete {
+    display: none;
+}
+
+.errorDisplayedField {
+    position: relative;
+}
+
+.displayedError:not(.displayed), .errorMessage:not(.displayed) {
+    display: none;
+}
+
+.displayedError {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-bottom: 15px;
+}
+
+.displayedMessage, .errorMessage {
+    background-color: #ff3300;
+    border-radius: 5px;
+    color: white;
+    font-weight: normal;
+    font-size: 0.9em;
+}
+
+.errorMessage {
+    position: relative;
+    margin-bottom : 20px;
+    display: inline-block;
+    padding: 12px;
+    font-weight: bold;
+}
+
+.displayedMessage {
+    position: relative;
+    left: -50%;
+    padding: 8px;
+}
+
+.displayedMessage:before {
+    border-color: rgba(0,0,0,0.4) transparent transparent;
+    border-style: solid;
+    border-width: 15px 15px 0;
+    content: "";
+    left: 50%;
+    margin-left: -21px;
+    position: absolute;
+    top: 100%;
+}
+
+.displayedMessage:after {
+    border-color: #ff3300 transparent transparent;
+    border-style: solid;
+    border-width: 15px 15px 0;
+    content: "";
+    left: 50%;
+    margin-left: -20px;
+    position: absolute;
+    top: 100%;
 }

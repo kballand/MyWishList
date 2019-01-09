@@ -20,11 +20,11 @@ class ItemsDisplayView implements IView {
             return
 <<< END
 <div id="itemContent">
-    <h2 class="itemName">{$this->items->nom}</h2>
+    <h2 class="itemName">{$this->items->name}</h2>
     <img class="itemImg" src="/img/{$this->items->img}" />
     <p class="itemId"><strong>ID</strong> : {$this->items->id}</p>
-    <p class="itemDescription"><strong>Description</strong> : {$this->items->descr}</p>
-    <p class="itemPrice"><strong>Tarif</strong> : {$this->items->tarif} €</p>
+    <p class="itemDescription"><strong>Description</strong> : {$this->items->description}</p>
+    <p class="itemPrice"><strong>Tarif</strong> : {$this->items->price} €</p>
 </div>
 END;
         } else {
@@ -35,11 +35,11 @@ END;
 <div class="listItem">
     <a href="{$router->pathFor('item', ['id' => $item->id])}">
         <div class="itemContent">
-            <h2 class="itemName">$item->nom</h2>
+            <h2 class="itemName">$item->name</h2>
             <img class="itemImg" src="/img/$item->img" />
             <p class="itemId"><strong>ID</strong> : $item->id</p>
-            <p class="itemDescription"><strong>Description</strong> : $item->descr</p>
-            <p class="itemPrice"><strong>Tarif</strong> : $item->tarif €</p>
+            <p class="itemDescription"><strong>Description</strong> : $item->description</p>
+            <p class="itemPrice"><strong>Tarif</strong> : $item->price €</p>
         </div>
     </a>
     <div class="itemActions">

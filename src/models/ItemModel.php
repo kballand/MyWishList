@@ -9,6 +9,6 @@ class ItemModel extends Model {
     public $timestamps = false;
 
     public function list() {
-        return $this->belongsTo('\MyWishList\models\ListModel', 'liste_id');
+        return $this->belongsTo('\MyWishList\models\ListModel', 'list_id');
     }
 }

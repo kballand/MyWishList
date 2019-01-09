@@ -1,0 +1,20 @@
+#redirectionSection {
+    text-align: center;
+}
+
+#redirectionTitle {
+    margin: 2%;
+}
+
+#redirectionDescription {
+    font-weight: bold;
+}
+
+#redirectionSolver {
+    margin-top: 10px;
+}
+
+#redirectionSolver #redirectionLink {
+    font-weight: bold;
+    color: darkblue;
+}

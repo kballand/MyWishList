@@ -123,19 +123,3 @@
     border-radius: 3px;
     background-color: #0d5ea8;
 }
-
-.errorContainer {
-	display:none;
-    position: relative;
-}
-
-.errorContainer > .error {
-    background-color: orangered;
-    border-radius: 5px;
-    color: white;
-    margin-bottom: 20px;
-    padding: 10px 20px;
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-}
