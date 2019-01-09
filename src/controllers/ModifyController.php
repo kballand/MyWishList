@@ -50,7 +50,7 @@ class ModifyController {
                 $view = new RedirectionView($router->pathFor('index'), 'Echec de la modification de la liste !', 'Absence du token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
             }
         } else {
-            $view = new RedirectionView($router->pathFor('index'), 'Echec de modification de la liste !', 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+            $view = new RedirectionView($router->pathFor('index'), 'Echec de la modification de la liste !', 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
         }
         $view = new NavBarView($view);
         $view = new BasicView($view);
@@ -77,6 +77,31 @@ class ModifyController {
             $view = new RedirectionView($router->pathFor('list', ['no' => $list->no]) . "?token=$list->modify_token", 'Création de la liste réussie avec succès !', 'Votre liste de souhaits à bien été crée, vous allez être redirigé vers celle-ci dans 5 secondes.');
         } else {
             $view = new RedirectionView($router->pathFor('index'), 'Echec de la création de la liste !', 'Une erreur est subvenue lors de la tentative de création de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function deleteList(Request $request, $no) {
+        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $no = filter_var($no, FILTER_SANITIZE_NUMBER_INT);
+        $list = ListModel::where('no', '=', $no)->first();
+        if(isset($list)) {
+            $token = $request->getParam('token');
+            if(isset($token)) {
+                $modify_token = $list->modify_token;
+                if($token === $modify_token) {
+                    $list->delete();
+                    $view = new RedirectionView($router->pathFor('index'), 'Suppression de la liste réussie avec succès !', 'Votre liste de souhaits à bien été supprimée, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                } else {
+                    $view = new RedirectionView($router->pathFor('index'), 'Echec de la suppression de la liste !', 'Mauvais token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                }
+            } else {
+                $view = new RedirectionView($router->pathFor('index'), 'Echec de la suppression de la liste !', 'Absence du token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+            }
+        } else {
+            $view = new RedirectionView($router->pathFor('index'), 'Echec de la suppression de la liste !', 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
         }
         $view = new NavBarView($view);
         $view = new BasicView($view);

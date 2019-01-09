@@ -58,7 +58,7 @@ $app->get('/register', function(Request $request, Response $response) {
 $app->get('/list/create', function(Request $request, Response $response) {
     $controller = DisplayController::getInstance();
     $response->write($controller->displayListCreation());
-})->setName('creation');
+})->setName('createList');
 
 $app->post('/list/create', function(Request $request, Response $response) {
     $controller = ModifyController::getInstance();
@@ -68,11 +68,20 @@ $app->post('/list/create', function(Request $request, Response $response) {
 $app->get('/list/modify/{no}', function(Request $request, Response $response, $args) {
    $controller = DisplayController::getInstance();
    $response->write($controller->displayListModification($request, $args['no']));
-})->setName('modification');
+})->setName('modifyList');
 
 $app->post('/list/modify/{no}', function(Request $request, Response $response, $args) {
    $controller = ModifyController::getInstance();
    $response->write($controller->modifyList($request, $args['no']));
+});
+
+$app->get('/list/delete/{no}', function(Request $request, Response $response, $args) {
+    $controller = ModifyController::getInstance();
+    $response->write($controller->deleteList($request, $args['no']));
+})->setName('deleteList');
+
+$app->get('/list/addItem/{no}', function(Request $request, Response $response, $args) {
+    $controller = ModifyController::getInstance();
 });
 
 $app->run();

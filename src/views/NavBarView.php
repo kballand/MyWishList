@@ -24,7 +24,7 @@ class NavBarView implements IView {
         $index = $router->pathFor('index');
         $lists = $router->pathFor('lists');
         $register = $router->pathFor('registration');
-        $creation = $router->pathFor('creation');
+        $creation = $router->pathFor('createList');
         return
 <<< END
 <header>
