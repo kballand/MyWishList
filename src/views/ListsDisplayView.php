@@ -36,9 +36,11 @@ class ListsDisplayView implements IView {
         <button id="myBtn">Partager</button>
         <div id="myPopup" class="popup">
             <div class="sharing-content">
-                <span class="close">&times;</span>
-                <input type=$adress class="textcopy" readonly>
+                <div>
+                <input type="$adress" class="textcopy" readonly>
                 <button onclick="copier()">copier</button>
+                </div>
+             </div>
         </div>
     </span>
 

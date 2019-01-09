@@ -74,34 +74,33 @@ $(document).ready(function () {
         }
     });
 
-});
+    //popup pour partager
 
-//popup pour partager
+    let popup = document.getElementById('myPopup');
 
-var popup = document.getElementById('myPopup');
+    let btn = document.getElementById("myBtn");
 
-var btn = document.getElementById("myBtn");
+    let span = document.getElementsByClassName("close")[0];
 
-var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function() {
+        popup.style.display = "block";
+    };
 
-btn.onclick = function() {
-    popup.style.display = "block";
-}
-
-span.onclick = function() {
-    popup.style.display = "none";
-}
-window.onclick = function(event) {
-    if (event.target == popup) {
+    span.onclick = function() {
         popup.style.display = "none";
-    }
-}
+    };
+    window.onclick = function(event) {
+        if (event.target === popup) {
+            popup.style.display = "none";
+        }
+    };
 
 //copier dans le presse papier
 
-function myFunction() {
-    var copyText = document.getElementById("textcopy");
-    copyText.select();
-    document.execCommand("copy");
-    alert("L'url a été copiée dans le presse-papier");
-}
+    function myFunction() {
+        let copyText = document.getElementById("textcopy");
+        copyText.select();
+        document.execCommand("copy");
+        alert("L'url a été copiée dans le presse-papier");
+    };
+});
