@@ -90,7 +90,7 @@ $(document).ready(function () {
         popup.style.display = "none";
     };
     window.onclick = function(event) {
-        if (event.target === popup) {
+        if (event.target == popup) {
             popup.style.display = "none";
         }
     };
