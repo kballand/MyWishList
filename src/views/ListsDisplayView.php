@@ -21,7 +21,6 @@ class ListsDisplayView implements IView {
             $itemsContent = $itemsView->render();
             $modifyPath = $router->pathFor('modifyList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
             $deletePath = $router->pathFor('deleteList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
-            $createItemPath = $router->pathFor('createItem', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
             return
 <<< END
 <div id="listContent">
