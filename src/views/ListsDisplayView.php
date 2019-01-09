@@ -34,6 +34,13 @@ class ListsDisplayView implements IView {
         <a id="deleteButton"  href="$deletePath">Supprimer la liste</a>
         <a id="modifyButton" href="$modifyPath">Modifier la liste</a>
         <a id="modifyButton" href="$modifyPath">Ajouter une item</a>
+        <button id="myBtn">Partager</button>
+        <div id="myPopup" class="popup">
+            <div class="sharing-content">
+                <span class="close">&times;</span>
+                <input type=$adress class="textcopy" readonly>
+                <button onclick="copier()">copier</button>
+        </div>
     </span>
 
 </div>
