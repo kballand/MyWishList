@@ -33,7 +33,7 @@ class ListsDisplayView implements IView {
     <span class="listButtons">
         <a id="deleteButton"  href="$deletePath">Supprimer la liste</a>
         <a id="modifyButton" href="$modifyPath">Modifier la liste</a>
-
+        <a id="addItemButton" href="$addItemPath">Ajouter un item</a>
         <button id="myBtn">Partager</button>
         <div id="myPopup" class="popup">
             <div class="sharing-content">

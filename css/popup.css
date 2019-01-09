@@ -1,8 +1,6 @@
 
 .popup {
     display: none;
-    /*flex-direction: row;
-    justify-content: flex-end;*/
     position: absolute;
     z-index: 1;
     left: 0;
@@ -14,15 +12,17 @@
 }
 
 .sharing-content {
-    margin: 5px 5px 0 5px;
     font-size: 25px;
     padding-right: 5px;
     padding-left : 5px;
     text-decoration: none;
     color: white;
+    width: 75%;
     position: fixed;
-    top: 50%;
     left: 50%;
+    top: 50%;
+    margin-left: -37.5%;
+    margin-bottom: -50%;
 }
 
 .sharing-content:hover {
