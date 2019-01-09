@@ -97,10 +97,10 @@ $(document).ready(function () {
 
 //copier dans le presse papier
 
-    function copier() {
-        let copyText = document.getElementById("textcopy");
-        copyText.select();
-        document.execCommand("copy");
-        alert("L'url a été copiée dans le presse-papier");
-    };
+
 });
+function copier() {
+    let copyText = document.getElementById("textcopy");
+    copyText.select();
+    document.execCommand("copy");
+};
