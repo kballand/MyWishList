@@ -17,6 +17,7 @@ $(document).ready(function () {
    });
    let deleteButton = $('.previewDelete');
    deleteButton.click(function () {
+       $(this).nextAll('.imageUploader').val('');
        $(this).prevAll('.imagePreview').attr('src', '').css('display', 'none');
        $(this).nextAll('.previewChanger').text('Ajouter une image');
        $(this).css('display', 'none');

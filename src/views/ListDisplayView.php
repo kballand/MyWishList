@@ -21,7 +21,7 @@ class ListDisplayView implements IView {
             $modifyPath = $router->pathFor('modifyList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
             $deletePath = $router->pathFor('deleteList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
             $addItemPath = $router->pathFor('addItem', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
-            $accessPath = $_SERVER['HTTP_HOST'].$_SERVER["REQUEST_URI"]."?token=".$this->lists->access_token;
+            $accessPath = $_SERVER['HTTP_HOST'].$router->pathFor('list', ['no' => $this->lists->no])."?token=".$this->lists->access_token;
             return
                 <<< END
 <div id="listContent">

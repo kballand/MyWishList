@@ -5,7 +5,7 @@ $(document).ready(function() {
     let listener = function() {
         let error = $(this).next('.displayedError.fieldEmptyError');
         let text = $(this).val();
-        if(text.length === 0) {
+        if(text.trim().length === 0) {
             $(this).attr('aria-invalid', 'true');
             if(!error.hasClass('displayed')) {
                 error.addClass('displayed');
@@ -52,7 +52,7 @@ $(document).ready(function() {
             return false;
         }
     });
-    selector = '.errorDisplayedField .ulteriorDate'
+    selector = '.errorDisplayedField .ulteriorDate';
     fields = $(selector);
     listener = function () {
         let error = $(this).nextAll('.displayedError.incorrectDateError');
@@ -84,6 +84,29 @@ $(document).ready(function() {
         }
     };
     checker.push(selector);
+    fields.change(listener);
+    fields.blur(listener);
+    selector = '.errorDisplayedField .limitedPrice';
+    fields = $(selector);
+    listener = function() {
+        let error = $(this).nextAll('.displayedError.incorrectPriceError');
+        let price = $(this).val();
+        let min = Number($(this).attr('min'));
+        let max = Number($(this).attr('max'));
+        if(!price || Number(price) < min || Number(price) > max) {
+            $(this).attr('aria-invalid', 'true');
+            if (!error.hasClass('displayed')) {
+                error.addClass('displayed');
+            }
+        } else {
+            $(this).attr('aria-invalid', 'false');
+            if(error.hasClass('displayed')) {
+                error.removeClass('displayed');
+            }
+        }
+    };
+    checker.push(selector);
+    fields.keyup(listener);
     fields.change(listener);
     fields.blur(listener);
     function checkIn() {

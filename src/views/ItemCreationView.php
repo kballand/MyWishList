@@ -8,7 +8,7 @@ class ItemCreationView implements IView {
         return
             <<< END
 <section class="basicForm">
-    <form id="itemCreationForm" method="post">
+    <form id="itemCreationForm" method="post" novalidate>
         <label for="itemName">Nom</label>
         <div class="errorDisplayedField">
             <input type="text" name="name" id="itemName" placeholder="Nom de l'item" class="notEmptyField" aria-invalid="true">
@@ -19,7 +19,12 @@ class ItemCreationView implements IView {
         <label for="itemDescription">Description</label>
         <textarea name="itemDescription" id="itemDescription" rows="10" cols="60" placeholder="Entrez ici la description de votre item... (500 caractères maximum)" maxlength="500"></textarea>
         <label for="itemPrice">Prix</label>
-        <input type="number" min="0.01" max="10000.00" step="0.01" id="itemPrice">
+        <div class="errorDisplayedField">
+            <input type="number" min="0.01" max="10000.00" step="0.01" id="itemPrice" class="limitedPrice" aria-invalid="true">
+            <span class="displayedError incorrectPriceError" id="incorrectItemPriceError">
+                <p class="displayedMessage" id="incorrectItemPriceMessage">Le prix de l'item doit être un nombre compris entre 0,01€ et 10000€ !</p>
+            </span>
+        </div>
         <label for="itemImage">Image de l'item</label>
         <div class="uploadField" id="itemImage">
             <img src="" alt="" id="itemImagePreview" class="imagePreview"/>

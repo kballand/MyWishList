@@ -12,7 +12,7 @@ class ListCreationView implements IView {
         return
 <<< END
 <section class="basicForm">
-    <form id="listCreationForm" method="post">
+    <form id="listCreationForm" method="post" novalidate>
         <label for="listTitle">Titre</label>
         <div class="errorDisplayedField">
             <input type="text" name="title" id="listTitle" placeholder="Titre de la liste" class="notEmptyField" aria-invalid="true">
