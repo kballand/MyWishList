@@ -9,7 +9,7 @@ use MyWishList\views\IndexView;
 use MyWishList\views\ItemsDisplayView;
 use MyWishList\views\ListCreationView;
 use MyWishList\views\ListModificationView;
-use MyWishList\views\ListsDisplayView;
+use MyWishList\views\ListDisplayView;
 use MyWishList\views\NavBarView;
 use MyWishList\views\NotFoundView;
 use MyWishList\views\RedirectionView;
@@ -30,7 +30,7 @@ class DisplayController {
 
     public function displayLists() {
         $lists = ListModel::get();
-        $view = new ListsDisplayView($lists);
+        $view = new ListDisplayView($lists);
         $view = new BasicView(new NavBarView($view));
         return $view->render();
     }
@@ -38,7 +38,7 @@ class DisplayController {
     public function displayList($no) {
         $no = filter_var($no, FILTER_SANITIZE_NUMBER_INT);
         $list = ListModel::where('no', '=', $no)->first();
-        $view = new ListsDisplayView($list);
+        $view = new ListDisplayView($list);
         $view = new BasicView(new NavBarView($view));
         return $view->render();
     }

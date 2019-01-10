@@ -6,7 +6,7 @@ namespace MyWishList\views;
 use MyWishList\models\ListModel;
 use MyWishList\utils\SlimSingleton;
 
-class ListsDisplayView implements IView {
+class ListDisplayView implements IView {
     private $lists;
 
     public function __construct($lists) {
