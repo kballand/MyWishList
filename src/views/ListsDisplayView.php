@@ -21,9 +21,9 @@ class ListsDisplayView implements IView {
             $modifyPath = $router->pathFor('modifyList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
             $deletePath = $router->pathFor('deleteList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
             $addItemPath = $router->pathFor('addItem', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
-            $adresse = $_SERVER['HTTP_HOST'].$_SERVER["REQUEST_URI"]."?token=".$this->lists->access_token;
+            $accessPath = $_SERVER['HTTP_HOST'].$_SERVER["REQUEST_URI"]."?token=".$this->lists->access_token;
             return
-<<< END
+                <<< END
 <div id="listContent">
     <h2 class="listTitle">{$this->lists->title}</h2>
     <p class="listId"><strong>ID</strong> : {$this->lists->no}</p>
@@ -34,12 +34,12 @@ class ListsDisplayView implements IView {
         <a id="deleteButton"  href="$deletePath">Supprimer la liste</a>
         <a id="modifyButton" href="$modifyPath">Modifier la liste</a>
         <a id="addItemButton" href="$addItemPath">Ajouter un item</a>
-        <button id="myBtn">Partager</button>
-        <div id="myPopup" class="popup">
-            <div class="sharing-content">
+        <button id="shareButton" class="popupOpener">Obtenir mon lien de partage</button>
+        <div class="popup">
+            <div class="popupContent">
                 <div>
-                    <input type="text" value="$adresse" id="textcopy" readonly>
-                    <button onclick="copier()">copier</button>
+                    <input type="text" value="$accessPath" id="accessURL" class="copiedText" readonly>
+                    <button class="textCopier">Copier sur le presse-papier</button>
                 </div>
              </div>
         </div>
@@ -73,8 +73,7 @@ END;
         return ['/css/popup.css'];
     }
 
-    public function getRequiredScripts()
-    {
-        return [];
+    public function getRequiredScripts() {
+        return ['/js/popup.js'];
     }
 }

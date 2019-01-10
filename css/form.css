@@ -12,18 +12,7 @@
     display: block;
 }
 
-.uploadField {
-    margin: 20px auto 20px auto;
-}
-
-.uploadField label, .uploadField input[type='button'] {
-    padding: 5px;
-    border: 1px solid #aaaaaa;
-    border-radius: 5px 5px;
-}
-
-
-.basicForm input:not([type='button'][type='submit']) {
+.basicForm input[type='text'] {
     width: 200px;
 }
 
@@ -42,8 +31,12 @@
 }
 
 .basicForm .dateField input[type='date'] {
-    width: 130px;
+    width: 170px;
     padding-right : 0;
+}
+
+.basicForm input[type='number'] {
+    width: 100px;
 }
 
 .basicForm input[type='time'] {
@@ -53,6 +46,17 @@
 
 .dateField input {
     display: inline-block;
+}
+
+.uploadField {
+    margin: 20px auto 20px auto;
+}
+
+.uploadField label, .uploadField input[type='button'] {
+    padding: 5px;
+    border: 1px solid #aaaaaa;
+    border-radius: 5px 5px;
+    background: transparent;
 }
 
 .uploadField input, .uploadField label {
@@ -71,7 +75,7 @@
     width: 300px;
     height: 300px;
     display: none;
-    margin: 0px auto 20px auto;
+    margin: 0 auto 20px auto;
     border-radius: 20%;
 }
 
@@ -136,4 +140,15 @@
     margin-left: -20px;
     position: absolute;
     top: 100%;
+}
+
+.createButton {
+    background-color: #1d8eb8;
+    color: white;
+    padding: 10px;
+    margin-top : 30px;
+}
+
+.createButton:hover {
+    opacity: 0.9;
 }

@@ -73,34 +73,4 @@ $(document).ready(function () {
             steps.eq(currentPart).addClass('stepActive');
         }
     });
-
-    //popup pour partager
-
-    let popup = document.getElementById('myPopup');
-
-    let btn = document.getElementById("myBtn");
-
-    let span = document.getElementsByClassName("close")[0];
-
-    btn.onclick = function() {
-        popup.style.display = "block";
-    };
-
-    span.onclick = function() {
-        popup.style.display = "none";
-    };
-    window.onclick = function(event) {
-        if (event.target == popup) {
-            popup.style.display = "none";
-        }
-    };
-
-//copier dans le presse papier
-
-
 });
-function copier() {
-    let copyText = document.getElementById("textcopy");
-    copyText.select();
-    document.execCommand("copy");
-};

@@ -23,7 +23,7 @@ class ListCreationView implements IView {
         <label for="listDescription">Description</label>
         <textarea name="description" id="listDescription" rows="10" cols="60" placeholder="Entrez ici la description de votre liste... (500 caractères maximum)" maxlength="500"></textarea>
         <label for="listExpiration">Date d'expiration</label>
-        <div class="errorDisplayedField">
+        <div class="dateField errorDisplayedField">
             <input type="date" name="expirationDate" id="listExpirationDate" min="{$date->format('Y-m-d')}" class="notEmptyField ulteriorDate" aria-invalid="true">
             <span class="displayedError fieldEmptyError" id="listDateEmptyError">
                 <p class="displayedMessage" id="dateEmptyMessage">La date d'expiration de la liste doit être complétée !</p>
@@ -39,14 +39,14 @@ class ListCreationView implements IView {
             <label for="listImageUploader" class="previewChanger">Ajouter une image</label>
             <input type="file" accept="image/*" name="imageName" id="listImageUploader" class="imageUploader">
         </div>
-        <input type="submit" value="Créer la liste" id="createListButton">
+        <input type="submit" value="Créer la liste" id="createListButton" class="createButton">
     </form>
 </section>
 END;
     }
 
     public function getRequiredCSS() {
-        return ['/css/form.css', '/css/list.css'];
+        return ['/css/form.css'];
     }
 
     public function getRequiredScripts() {
