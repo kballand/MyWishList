@@ -86,7 +86,6 @@ $(document).ready(function() {
     checker.push(selector);
     fields.change(listener);
     fields.blur(listener);
-
     function checkIn() {
         for(let key in checker) {
             $(checker[key]).trigger("change");

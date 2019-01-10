@@ -3,6 +3,7 @@
 include_once "vendor/autoload.php";
 
 use Illuminate\Database\Capsule\Manager;
+use MyWishList\controllers\CreationController;
 use MyWishList\controllers\DisplayController;
 use MyWishList\controllers\ModifyController;
 use \Slim\Http\Response;
@@ -61,7 +62,7 @@ $app->get('/list/create', function(Request $request, Response $response) {
 })->setName('createList');
 
 $app->post('/list/create', function(Request $request, Response $response) {
-    $controller = ModifyController::getInstance();
+    $controller = CreationController::getInstance();
     $response->write($controller->createList($request));
 });
 
@@ -81,8 +82,8 @@ $app->get('/list/delete/{no}', function(Request $request, Response $response, $a
 })->setName('deleteList');
 
 $app->get('/list/addItem/{no}', function(Request $request, Response $response, $args) {
-    $controller = ModifyController::getInstance();
-    $response->write($controller->addItem($response, $no));
+    $controller = DisplayController::getInstance();
+    $response->write($controller->displayItemCreation($request, $args['no']));
 })->setName('addItem');
 
 $app->run();

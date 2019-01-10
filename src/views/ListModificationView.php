@@ -51,7 +51,7 @@ END;
     }
 
     public function getRequiredCSS() {
-        return ['/css/form.css', '/css/list.css'];
+        return ['/css/form.css'];
     }
 
     public function getRequiredScripts() {

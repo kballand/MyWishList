@@ -6,6 +6,7 @@ use MyWishList\models\ListModel;
 use MyWishList\utils\SlimSingleton;
 use MyWishList\views\BasicView;
 use MyWishList\views\IndexView;
+use MyWishList\views\ItemCreationView;
 use MyWishList\views\ItemsDisplayView;
 use MyWishList\views\ListCreationView;
 use MyWishList\views\ListModificationView;
@@ -100,6 +101,29 @@ class DisplayController {
             }
         } else {
             $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'accès à la modification de la liste !', 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+        }
+        $view = new BasicView(new NavBarView($view));
+        return $view->render();
+    }
+
+    public function displayItemCreation(Request $request, $no) {
+        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $no = filter_var($no, FILTER_SANITIZE_NUMBER_INT);
+        $list = ListModel::where('no', '=', $no)->first();
+        if(isset($list)) {
+            $token = $request->getParam('token');
+            if(isset($token)) {
+                $modify_token = $list->modify_token;
+                if($token === $modify_token) {
+                    $view = new ItemCreationView();
+                } else {
+                    $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'ajout d\'un item à la liste !', 'Mauvais token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                }
+            } else {
+                $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'ajout d\'un item à la liste !', 'Absence du token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+            }
+        } else {
+            $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'ajout d\'un item à la liste !', 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
         }
         $view = new BasicView(new NavBarView($view));
         return $view->render();
