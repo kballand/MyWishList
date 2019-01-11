@@ -41,7 +41,7 @@ class ListCreationView implements IView
             <label for="listImageUploader" class="previewChanger">Ajouter une image</label>
             <input type="file" accept="image/*" name="imageName" id="listImageUploader" class="imageUploader">
         </div>
-        <input type="submit" value="Créer la liste" id="createListButton" class="createButton">
+        <input type="submit" value="Créer la liste" id="createListButton" class="validateButton">
     </form>
 </section>
 END;

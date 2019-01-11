@@ -5,7 +5,6 @@ namespace MyWishList\controllers;
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
 use MyWishList\utils\CommonUtils;
-use MyWishList\utils\SlimSingleton;
 use MyWishList\views\BasicView;
 use MyWishList\views\IndexView;
 use MyWishList\views\ItemCreationView;
@@ -56,18 +55,10 @@ class DisplayController
 
     public function displayItem(Request $request, $no, $id)
     {
-        $canModify = CommonUtils::canModifyList($request, $no, 'Echec de l\'accès à l\'item !');
-        if ($canModify instanceof ListModel) {
-            $list = $canModify;
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
-            $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
-            $exists = CommonUtils::itemExists($id, 'Echec de l\'accès à l\'item !', $listPath);
-            if ($exists instanceof ItemModel) {
-                $item = $exists;
-                $view = new ItemsDisplayView($item);
-            } else {
-                $view = $exists;
-            }
+        $canModify = CommonUtils::canModifyItem($request, $no, $id, 'Echec de l\'accès à l\'item !');
+        if ($canModify instanceof ItemModel) {
+            $item = $canModify;
+            $view = new ItemsDisplayView($item);
         } else {
             $view = $canModify;
         }
@@ -136,18 +127,10 @@ class DisplayController
 
     public function displayItemModification(Request $request, $no, $id)
     {
-        $canModify = CommonUtils::canModifyList($request, $no, 'Echec de l\'accès à la modification de l\'item !');
-        if ($canModify instanceof ListModel) {
-            $list = $canModify;
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
-            $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
-            $exists = CommonUtils::itemExists($id, 'Echec de l\'accès à l\'item !', $listPath);
-            if ($exists instanceof ItemModel) {
-                $item = $exists;
-                $view = new ItemModificationView($item);
-            } else {
-                $view = $exists;
-            }
+        $canModify = CommonUtils::canModifyItem($request, $no, $id, 'Echec de l\'accès à la modification de l\'item !');
+        if ($canModify instanceof ItemModel) {
+            $item = $canModify;
+            $view = new ItemModificationView($item);
         } else {
             $view = $canModify;
         }
