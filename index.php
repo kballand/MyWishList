@@ -21,21 +21,21 @@ $app = SlimSingleton::getInstance();
 
 $app->get('/list/display/{no}', function (Request $request, Response $response, $args) {
     $controller = DisplayController::getInstance();
-    $content = $controller->displayList($args['no']);
+    $content = $controller->displayList($request, $args['no']);
     $response->write($content);
-})->setName('list');
+})->setName('displayList');
 
 $app->get('/lists', function (Request $request, Response $response) {
     $controller = DisplayController::getInstance();
     $content = $controller->displayLists();
     $response->write($content);
-})->setName('lists');
+})->setName('displayLists');
 
-$app->get('/item/display/{id}', function (Request $request, Response $response, $args) {
+$app->get('/list/items/{no}/display/{id}', function (Request $request, Response $response, $args) {
     $controller = DisplayController::getInstance();
-    $content = $controller->displayItem($args['id']);
+    $content = $controller->displayItem($request, $args['no'], $args['id']);
     $response->write($content);
-})->setName('item');
+})->setName('displayItem');
 
 $app->getContainer()['notFoundHandler'] = function () {
     return function($request, $response) {
@@ -87,5 +87,25 @@ $app->get('/list/addItem/{no}', function(Request $request, Response $response, $
     $controller = DisplayController::getInstance();
     $response->write($controller->displayItemCreation($request, $args['no']));
 })->setName('addItem');
+
+$app->post('/list/addItem/{no}', function(Request $request, Response $response, $args) {
+   $controller = CreationController::getInstance();
+   $response->write($controller->createItem($request, $args['no']));
+});
+
+$app->get('/list/items/{no}/modify/{id}', function(Request $request, Response $response, $args) {
+    $controller = DisplayController::getInstance();
+    $response->write($controller->displayItemModification($request, $args['no'], $args['id']));
+})->setName('modifyItem');
+
+$app->post('/list/items/{no}/modify/{id}', function(Request $request, Response $response, $args) {
+    $controller = ModifyController::getInstance();
+    $response->write($controller->modifyItem($request, $args['no'], $args['id']));
+});
+
+$app->get('/list/items/{no}/delete/{id}', function(Request $request, Response $response, $args) {
+    $controller = ModifyController::getInstance();
+    $response->write($controller->deleteItem($request, $args['no'], $args['id']));
+})->setName('deleteItem');
 
 $app->run();

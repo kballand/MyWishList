@@ -142,13 +142,13 @@
     top: 100%;
 }
 
-.createButton {
+.validateButton {
     background-color: #1d8eb8;
     color: white;
     padding: 10px;
     margin-top : 30px;
 }
 
-.createButton:hover {
+.validateButton:hover {
     opacity: 0.9;
 }

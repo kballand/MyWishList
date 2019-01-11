@@ -5,12 +5,14 @@ namespace MyWishList\views;
 
 use DateTime;
 
-class ListCreationView implements IView {
+class ListCreationView implements IView
+{
 
-    public function render() {
+    public function render()
+    {
         $date = new DateTime('now');
         return
-<<< END
+            <<< END
 <section class="basicForm">
     <form id="listCreationForm" method="post" novalidate>
         <label for="listTitle">Titre</label>
@@ -45,11 +47,13 @@ class ListCreationView implements IView {
 END;
     }
 
-    public function getRequiredCSS() {
+    public function getRequiredCSS()
+    {
         return ['/css/form.css'];
     }
 
-    public function getRequiredScripts() {
+    public function getRequiredScripts()
+    {
         return ['/js/upload.js', '/js/form.js'];
     }
 }

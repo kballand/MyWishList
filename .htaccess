@@ -10,9 +10,6 @@ RewriteEngine On
 RewriteRule ^sql(/.*|)$ - [NC,F]
 RewriteRule ^src(/.*|)$ - [NC,F]
 RewriteRule ^vendor(/.*|)$ - [NC,F]
-RewriteRule ^css(/.*|)$ - [NC,F]
-RewriteRule ^js(/.*|)$ - [NC,F]
-RewriteRule ^img(/.*|)$ - [NC,F]
 
 #
 # réécriture pour slim

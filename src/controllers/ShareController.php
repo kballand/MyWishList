@@ -1,20 +1,26 @@
 <?php
+
 namespace MyWishList\controllers;
 
 
-class ShareController {
+class ShareController
+{
     private static $instance;
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
-    public static function getInstance() {
-        if(!isset(self::$instance)) {
+    public static function getInstance()
+    {
+        if (!isset(self::$instance)) {
             self::$instance = new ShareController();
         }
         return self::$instance;
     }
 
-    public function shareList($no) {
+    public function shareList($no)
+    {
 
     }
 }

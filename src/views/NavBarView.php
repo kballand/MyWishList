@@ -4,29 +4,34 @@ namespace MyWishList\views;
 
 use MyWishList\utils\SlimSingleton;
 
-class NavBarView implements IView {
+class NavBarView implements IView
+{
     private $contentView;
 
-    public function __construct(IView $contentView) {
+    public function __construct(IView $contentView)
+    {
         $this->contentView = $contentView;
     }
 
-    public function getRequiredCSS() {
+    public function getRequiredCSS()
+    {
         return array_unique(array_merge(['/css/navbar.css', '/css/style.css'], $this->contentView->getRequiredCSS()));
     }
 
-    public function getRequiredScripts() {
+    public function getRequiredScripts()
+    {
         return array_unique(array_merge(['/js/script.js'], $this->contentView->getRequiredScripts()));
     }
 
-    public function render() {
+    public function render()
+    {
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
         $index = $router->pathFor('index');
-        $lists = $router->pathFor('lists');
+        $lists = $router->pathFor('displayLists');
         $register = $router->pathFor('registration');
         $creation = $router->pathFor('createList');
         return
-<<< END
+            <<< END
 <header>
     <h1>Mon header</h1>
 </header>

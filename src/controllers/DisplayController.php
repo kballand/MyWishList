@@ -1,131 +1,158 @@
 <?php
+
 namespace MyWishList\controllers;
 
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
+use MyWishList\utils\CommonUtils;
 use MyWishList\utils\SlimSingleton;
 use MyWishList\views\BasicView;
 use MyWishList\views\IndexView;
 use MyWishList\views\ItemCreationView;
+use MyWishList\views\ItemModificationView;
 use MyWishList\views\ItemsDisplayView;
 use MyWishList\views\ListCreationView;
-use MyWishList\views\ListModificationView;
 use MyWishList\views\ListDisplayView;
+use MyWishList\views\ListModificationView;
 use MyWishList\views\NavBarView;
 use MyWishList\views\NotFoundView;
-use MyWishList\views\RedirectionView;
 use MyWishList\views\RegisterView;
 use Slim\Http\Request;
 
-class DisplayController {
+class DisplayController
+{
     private static $instance;
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
-    public static function getInstance() {
-        if(!isset(self::$instance)) {
+    public static function getInstance()
+    {
+        if (!isset(self::$instance)) {
             self::$instance = new DisplayController();
         }
         return self::$instance;
     }
 
-    public function displayLists() {
+    public function displayLists()
+    {
         $lists = ListModel::get();
         $view = new ListDisplayView($lists);
-        $view = new BasicView(new NavBarView($view));
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayList($no) {
+    public function displayList(Request $request, $no)
+    {
         $no = filter_var($no, FILTER_SANITIZE_NUMBER_INT);
         $list = ListModel::where('no', '=', $no)->first();
         $view = new ListDisplayView($list);
-        $view = new BasicView(new NavBarView($view));
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayItem($id) {
-        $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-        $item = ItemModel::where('id', '=', $id)->first();
-        $view = new ItemsDisplayView($item);
-        $view = new BasicView(new NavBarView($view));
+    public function displayItem(Request $request, $no, $id)
+    {
+        $canModify = CommonUtils::canModifyList($request, $no, 'Echec de l\'accès à l\'item !');
+        if ($canModify instanceof ListModel) {
+            $list = $canModify;
+            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
+            $exists = CommonUtils::itemExists($id, 'Echec de l\'accès à l\'item !', $listPath);
+            if ($exists instanceof ItemModel) {
+                $item = $exists;
+                $view = new ItemsDisplayView($item);
+            } else {
+                $view = $exists;
+            }
+        } else {
+            $view = $canModify;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayBookings($no) {
-
-    }
-
-    public function displayListBooking($no) {
-
-    }
-
-    public function displayIndex() {
-        $view = new BasicView(new NavBarView(new IndexView()));
+    public function displayIndex()
+    {
+        $view = new IndexView();
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayRegistration() {
+    public function displayRegistration()
+    {
         $view = new RegisterView();
-        $view = new BasicView(new NavBarView($view));
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayNotFound($requestedUrl) {
+    public function displayNotFound($requestedUrl)
+    {
         $requestedUrl = filter_var($requestedUrl, FILTER_SANITIZE_URL);
         $view = new NotFoundView($requestedUrl);
         return $view->render();
     }
 
-    public function displayListCreation() {
+    public function displayListCreation()
+    {
         $view = new ListCreationView();
-        $view = new BasicView(new NavBarView($view));
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayListModification(Request $request, $no) {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
-        $no = filter_var($no, FILTER_SANITIZE_NUMBER_INT);
-        $list = ListModel::where('no', '=', $no)->first();
-        if(isset($list)) {
-            $token = $request->getParam('token');
-            if(isset($token)) {
-                $modify_token = $list->modify_token;
-                if($token === $modify_token) {
-                    $view = new ListModificationView($list);
-                } else {
-                    $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'accès à la modification de la liste !', 'Mauvais token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
-                }
-            } else {
-                $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'accès à la modification de la liste !', 'Absence du token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
-            }
+    public function displayListModification(Request $request, $no)
+    {
+        $canModify = CommonUtils::canModifyList($request, $no, 'Echec de l\'accès à la modification de la liste !');
+        if ($canModify instanceof ListModel) {
+            $list = $canModify;
+            $view = new ListModificationView($list);
         } else {
-            $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'accès à la modification de la liste !', 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+            $view = $canModify;
         }
-        $view = new BasicView(new NavBarView($view));
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayItemCreation(Request $request, $no) {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
-        $no = filter_var($no, FILTER_SANITIZE_NUMBER_INT);
-        $list = ListModel::where('no', '=', $no)->first();
-        if(isset($list)) {
-            $token = $request->getParam('token');
-            if(isset($token)) {
-                $modify_token = $list->modify_token;
-                if($token === $modify_token) {
-                    $view = new ItemCreationView();
-                } else {
-                    $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'ajout d\'un item à la liste !', 'Mauvais token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
-                }
+    public function displayItemCreation(Request $request, $no)
+    {
+        $canModify = CommonUtils::canModifyList($request, $no, 'Echec de l\'ajout d\'un item à la liste !');
+        if ($canModify instanceof ListModel) {
+            $view = new ItemCreationView();
+        } else {
+            $view = $canModify;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function displayItemModification(Request $request, $no, $id)
+    {
+        $canModify = CommonUtils::canModifyList($request, $no, 'Echec de l\'accès à la modification de l\'item !');
+        if ($canModify instanceof ListModel) {
+            $list = $canModify;
+            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
+            $exists = CommonUtils::itemExists($id, 'Echec de l\'accès à l\'item !', $listPath);
+            if ($exists instanceof ItemModel) {
+                $item = $exists;
+                $view = new ItemModificationView($item);
             } else {
-                $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'ajout d\'un item à la liste !', 'Absence du token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                $view = $exists;
             }
         } else {
-            $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'ajout d\'un item à la liste !', 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+            $view = $canModify;
         }
-        $view = new BasicView(new NavBarView($view));
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 }

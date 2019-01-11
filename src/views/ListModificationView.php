@@ -5,17 +5,20 @@ namespace MyWishList\views;
 
 use DateTime;
 
-class ListModificationView implements IView {
+class ListModificationView implements IView
+{
     private $list;
 
-    public function __construct($list) {
+    public function __construct($list)
+    {
         $this->list = $list;
     }
 
-    public function render() {
+    public function render()
+    {
         $date = new DateTime('now');
         return
-<<< END
+            <<< END
 <section class="basicForm">
     <form id="listCreationForm" method="post">
         <label for="listTitle">Titre</label>
@@ -44,17 +47,19 @@ class ListModificationView implements IView {
             <label for="listImageUploader" class="previewChanger">Ajouter une image</label>
             <input type="file" accept="image/*" name="imageName" id="listImageUploader" class="imageUploader">
         </div>
-        <input type="submit" value="Modifier la liste" id="createListButton">
+        <input type="submit" value="Modifier la liste" id="modifyListButton" class="validateButton">
     </form>
 </section>
 END;
     }
 
-    public function getRequiredCSS() {
+    public function getRequiredCSS()
+    {
         return ['/css/form.css'];
     }
 
-    public function getRequiredScripts() {
+    public function getRequiredScripts()
+    {
         return ['/js/upload.js', '/js/form.js'];
     }
 }

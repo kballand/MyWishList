@@ -45,6 +45,7 @@ CREATE TABLE `list` (
   `expiration` date DEFAULT NULL,
   `access_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `modify_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reservationState` boolean DEFAULT FALSE,
   PRIMARY KEY (`no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

@@ -1,7 +1,9 @@
 <?php
+
 namespace MyWishList\views;
 
-interface IView {
+interface IView
+{
 
     public function getRequiredCSS();
 
