@@ -28,7 +28,9 @@ class CreationController {
             $title = filter_var($queries['title'], FILTER_SANITIZE_STRING);
             if(strlen(trim($title)) > 0) {
                 $expirationDate = filter_var($queries['expirationDate'], FILTER_SANITIZE_STRING);
-                if(strtotime($expirationDate)) {
+                $timeDate = strtotime($expirationDate . ' +1 day');
+                $timeNow = strtotime('now');
+                if($timeDate && $timeDate > $timeNow) {
                     $description = filter_var($queries['description'], FILTER_SANITIZE_STRING);
                     $list = new ListModel();
                     $list->title = $title;
@@ -39,6 +41,7 @@ class CreationController {
                         $list->access_token = bin2hex(random_bytes(8));
                     } while($list->access_token === $list->modify_token);
                     $list->save();
+                    setcookie('mywishlist-' . $list->no, password_hash($list->modify_token, CRYPT_BLOWFISH, ['cost' => 12]), $timeDate);
                     $listPath = $router->pathFor('list', ['no' => $list->no]) . "?token=$list->modify_token";
                     $view = new RedirectionView($listPath, 'Création de la liste réussie avec succès !', 'Votre liste de souhaits à bien été crée, vous allez être redirigé vers celle-ci dans 5 secondes.');
                 } else {

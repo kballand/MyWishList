@@ -37,12 +37,15 @@ class ModifyController {
                         $title = filter_var($queries['title'], FILTER_SANITIZE_STRING);
                         if(strlen(trim($title)) > 0) {
                             $expirationDate = filter_var($queries['expirationDate'], FILTER_SANITIZE_STRING);
-                            if(strtotime($expirationDate)) {
+                            $timeDate = strtotime($expirationDate . ' +1 day');
+                            $timeNow = strtotime('now');
+                            if($timeDate && $timeDate > $timeNow) {
                                 $description = filter_var($queries['description'], FILTER_SANITIZE_STRING);
                                 $list->title = $title;
                                 $list->description = $description;
                                 $list->expiration = $expirationDate;
                                 $list->save();
+                                setcookie('mywishlist-' . $list->no, password_hash($list->modify_token, CRYPT_BLOWFISH, ['cost' => 12]), $timeDate);
                                 $view = new RedirectionView($listPath, 'Modification de la liste réussie avec succès !', 'Votre liste de souhaits à bien été modifiée, vous allez être redirigé vers celle-ci dans 5 secondes.');
                             } else {
                                 $view = new RedirectionView($listPath, 'Echec de la modification de la liste !', 'Le date de la liste est invallide, vous allez être ridirigé vers celle-ci dans 5 secondes.');
