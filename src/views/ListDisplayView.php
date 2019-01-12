@@ -4,19 +4,18 @@ namespace MyWishList\views;
 
 
 use MyWishList\models\ListModel;
+use MyWishList\utils\CommonUtils;
 use MyWishList\utils\SlimSingleton;
 
 class ListDisplayView implements IView
 {
     private $lists;
     private $forModification;
-    private $ownList;
 
-    public function __construct($lists, $forModification, $ownList = false)
+    public function __construct($lists, $forModification)
     {
         $this->lists = $lists;
         $this->forModification = $forModification;
-        $this->ownList = $ownList;
     }
 
     public function render()
@@ -25,7 +24,7 @@ class ListDisplayView implements IView
         if ($this->lists instanceof ListModel) {
             $itemsContent = "";
             if (isset($this->lists->items) && count($this->lists->items) > 0) {
-                $itemsView = new ItemDisplayView($this->lists->items, $this->forModification, $this->ownList);
+                $itemsView = new ItemDisplayView($this->lists->items, $this->forModification);
                 $itemsContent = $itemsView->render();
             }
             $description = "";
@@ -33,7 +32,7 @@ class ListDisplayView implements IView
                 $description = '<p class="listDescription"><strong>Description</strong>  : ' . $this->lists->description . '</p>';
             }
             $actionButtons = "";
-            if ($this->forModification) {
+            if ($this->forModification && !CommonUtils::hasExpired($this->lists)) {
                 $modifyPath = $router->pathFor('modifyList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
                 $deletePath = $router->pathFor('deleteList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
                 $addItemPath = $router->pathFor('addItem', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";

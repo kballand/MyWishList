@@ -112,9 +112,10 @@ class CreationController
         return $view->render();
     }
 
-    public function reserveItem(Request $request, $no, $id) {
+    public function reserveItem(Request $request, $no, $id)
+    {
         $canReserve = CommonUtils::canReserveItem($request, $no, $id, 'Echec de la réservation de l\'item !');
-        if($canReserve instanceof ItemModel) {
+        if ($canReserve instanceof ItemModel) {
             $item = $canReserve;
             $router = SlimSingleton::getInstance()->getContainer()->get('router');
             $itemPath = $router->pathFor('displayItem', ['no' => $item->list->no, 'id' => $item->id]) . "?token={$item->list->access_token}";
@@ -129,6 +130,7 @@ class CreationController
                     $reservation->save();
                     $item->reservation_id = $reservation->no;
                     $item->save();
+                    $_SESSION['participantName'] = $name;
                     $view = new RedirectionView($itemPath, 'Réservation de l\'item réussie avec succès !', 'L\'item a bien été réservé, vous allez être redirigé vers celui-ci dans 5 secondes.');
                 } else {
                     $view = new RedirectionView($itemPath, 'Echec de la réservation de l\'item !', 'Le nom de participation ne peut pas être vide, vous allez être ridirigé vers l\'item dans 5 secondes.');

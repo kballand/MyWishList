@@ -65,8 +65,13 @@ END;
             if (isset($token)) {
                 if ($forModificationOnly) {
                     if ($token === $list->modify_token) {
-                        $modificationGranted = true;
-                        return $list;
+                        if (!self::hasExpired($list)) {
+                            $modificationGranted = true;
+                            return $list;
+                        } else {
+                            $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
+                            $view = new RedirectionView($listPath, $errorTitle, 'Votre liste a expiré, vous allez être ridirigé vers celle-ci dans 5 secondes.');
+                        }
                     } else {
                         $view = new RedirectionView($indexPath, $errorTitle, 'Mauvais token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
                     }
@@ -115,7 +120,7 @@ END;
                         return $item;
                     }
                 } else {
-                    if ($forModificationOnly) {
+                    if (self::ownList($list)) {
                         $view = new RedirectionView($listPath, $errorTitle, 'Cet item ne fait pas partie de votre liste, vous allez être ridirigé vers celle-ci dans 5 secondes.');
                     } else {
                         $view = new RedirectionView($listPath, $errorTitle, 'Cet item ne fait pas partie de cette liste, vous allez être ridirigé vers celle-ci dans 5 secondes.');
@@ -138,7 +143,7 @@ END;
 
     public static function ownList($list)
     {
-        if (strtotime($list->expiration) > strtotime('now')) {
+        if (!self::hasExpired($list)) {
             if (isset($_COOKIE['mywishlist-' . $list->no])) {
                 $hash = $_COOKIE['mywishlist-' . $list->no];
                 if (password_verify($list->modify_token, $hash)) {
@@ -164,10 +169,14 @@ END;
                 }
                 $view = new RedirectionView($itemPath, $errorTitle, 'Vous ne pouvez pas réserver un item de votre propre liste, vous allez être redirigé vers celui-ci dans 5 secondes.');
             } else {
+                $itemPath .= $item->list->access_token;
                 if (!isset($item->reservation)) {
-                    return $item;
+                    if (!self::hasExpired($item->list)) {
+                        return $item;
+                    } else {
+                        $view = new RedirectionView($itemPath, $errorTitle, 'La liste de cet item a expiré, vous allez être redirigé vers celui-ci dans 5 secondes.');
+                    }
                 } else {
-                    $itemPath .= $item->list->access_token;
                     $view = new RedirectionView($itemPath, $errorTitle, 'Cet item est déjà réservé, vous allez être redirigé vers celui-ci dans 5 secondes.');
                 }
             }
@@ -175,5 +184,10 @@ END;
             $view = $canAccess;
         }
         return $view;
+    }
+
+    public static function hasExpired($list)
+    {
+        return strtotime($list->expiration) <= strtotime('now');
     }
 }

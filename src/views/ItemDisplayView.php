@@ -4,6 +4,7 @@ namespace MyWishList\views;
 
 
 use MyWishList\models\ItemModel;
+use MyWishList\utils\CommonUtils;
 use MyWishList\utils\SlimSingleton;
 
 class ItemDisplayView implements IView
@@ -11,13 +12,11 @@ class ItemDisplayView implements IView
 
     private $items;
     private $forModification;
-    private $ownList;
 
-    public function __construct($items, $forModification, $ownList = false)
+    public function __construct($items, $forModification)
     {
         $this->items = $items;
         $this->forModification = $forModification;
-        $this->ownList = $ownList;
     }
 
     public function render()
@@ -40,32 +39,40 @@ class ItemDisplayView implements IView
             $reservationInformations = "";
             if (isset($this->items->reservation)) {
                 $reservationState = "Réservé";
-                if(!$this->forModification && !$this->ownList) {
+                if (!$this->forModification && !CommonUtils::ownList($this->items->list)) {
                     $reservationInformations =
                         <<< END
 <p class="itemReservationParticipant"><strong>Nom du participant</strong> : {$this->items->reservation->participant}</p>
 END;
+                } else if (CommonUtils::hasExpired($this->items->list)) {
+                    $reservationInformations =
+                        <<< END
+<p class="itemReservationParticipant"><strong>Nom du participant</strong> : {$this->items->reservation->participant}</p>
+<p class="itemReservationMessage"><strong>Message</strong> :<br/>{$this->items->reservation->message}</p>
+END;
                 }
             }
             $actionButtons = "";
-            if ($this->forModification) {
-                $modifyPath = $router->pathFor('modifyItem', ['no' => $this->items->list->no, 'id' => $this->items->id]) . "?token={$this->items->list->modify_token}";
-                $deletePath = $router->pathFor('deleteItem', ['no' => $this->items->list->no, 'id' => $this->items->id]) . "?token={$this->items->list->modify_token}";
-                $actionButtons =
-                    <<< END
+            if(!CommonUtils::hasExpired($this->items->list)) {
+                if ($this->forModification) {
+                    $modifyPath = $router->pathFor('modifyItem', ['no' => $this->items->list->no, 'id' => $this->items->id]) . "?token={$this->items->list->modify_token}";
+                    $deletePath = $router->pathFor('deleteItem', ['no' => $this->items->list->no, 'id' => $this->items->id]) . "?token={$this->items->list->modify_token}";
+                    $actionButtons =
+                        <<< END
 <span class="actionButtons">
     <a id="deleteButton"  href="$deletePath">Supprimer l'item</a>
     <a id="modifyButton" href="$modifyPath">Modifier l'item</a>
 </span>
 END;
-            } else if (!isset($this->items->reservation) && !$this->ownList) {
-                $reservePath = $router->pathFor('reserveItem', ['no' => $this->items->list->no, 'id' => $this->items->id]) . "?token={$this->items->list->access_token}";
-                $actionButtons =
-                    <<< END
+                } else if (!isset($this->items->reservation) && !CommonUtils::ownList($this->items->list)) {
+                    $reservePath = $router->pathFor('reserveItem', ['no' => $this->items->list->no, 'id' => $this->items->id]) . "?token={$this->items->list->access_token}";
+                    $actionButtons =
+                        <<< END
 <span class="actionButtons">
     <a id="reserveButton"  href="$reservePath">Réserver</a>
 </span>
 END;
+                }
             }
             return
                 <<< END
@@ -98,7 +105,7 @@ END;
                     $img = '<img class="itemImg" src="/img/' . $item->img . '" />';
                 }
                 $reservationState = "Non réservé";
-                if ($item->reservationState) {
+                if (isset($item->reservation)) {
                     $reservationState = "Réservé";
                 }
                 $itemPath = $router->pathFor('displayItem', ['no' => $item->list->no, 'id' => $item->id]) . '?token=';

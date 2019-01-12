@@ -80,8 +80,8 @@ class ModifyController
                 if (strlen(trim($name)) > 0) {
                     $price = filter_var($queries['price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     if ($price && $price >= 0.01 && $price <= 999.99) {
-                        if (filter_var($queries['website'], FILTER_VALIDATE_URL) !== false) {
-                            $url = filter_var($queries['website'], FILTER_SANITIZE_URL);
+                        $url = filter_var($queries['website'], FILTER_SANITIZE_URL);
+                        if (empty($url) || filter_var($url, FILTER_VALIDATE_URL) !== false) {
                             $description = filter_var($queries['description'], FILTER_SANITIZE_STRING);
                             $item->name = $name;
                             $item->description = $description;

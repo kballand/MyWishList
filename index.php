@@ -10,6 +10,8 @@ use \Slim\Http\Response;
 use \Slim\Http\Request;
 use MyWishList\utils\SlimSingleton;
 
+session_start();
+
 date_default_timezone_set('Europe/Paris');
 
 $db = new Manager();

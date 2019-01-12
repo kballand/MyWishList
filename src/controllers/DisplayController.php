@@ -70,7 +70,7 @@ class DisplayController
             if ($modificationGranted) {
                 $view = new ItemDisplayView($item, true);
             } else {
-                $view = new ItemDisplayView($item, false, CommonUtils::ownList($item->list));
+                $view = new ItemDisplayView($item, false);
             }
         } else {
             $view = $canAccess;
