@@ -14,4 +14,8 @@ class ItemModel extends Model
     {
         return $this->belongsTo('\MyWishList\models\ListModel', 'list_id');
     }
+
+    public function reservation() {
+        return $this->belongsTo('\MyWishList\models\ReservationModel', 'reservation_id');
+    }
 }

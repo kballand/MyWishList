@@ -12,7 +12,16 @@ CREATE TABLE `item` (
   `img` text,
   `url` text,
   `price` decimal(5,2) DEFAULT NULL,
+  `reservation_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `reservation`;
+CREATE TABLE `reservation` (
+  `no` int(11) NOT NULL AUTO_INCREMENT,
+  `participant` text NOT NULL,
+  `message` text,
+  PRIMARY KEY (`no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `item` (`id`, `list_id`, `name`, `description`, `img`, `url`, `price`) VALUES

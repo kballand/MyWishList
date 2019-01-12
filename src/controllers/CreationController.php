@@ -4,6 +4,7 @@ namespace MyWishList\controllers;
 
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
+use MyWishList\models\ReservationModel;
 use MyWishList\utils\CommonUtils;
 use MyWishList\utils\SlimSingleton;
 use MyWishList\views\BasicView;
@@ -36,7 +37,7 @@ class CreationController
             $title = filter_var($queries['title'], FILTER_SANITIZE_STRING);
             if (strlen(trim($title)) > 0) {
                 $expirationDate = filter_var($queries['expirationDate'], FILTER_SANITIZE_STRING);
-                $timeDate = strtotime($expirationDate . ' +1 day');
+                $timeDate = strtotime($expirationDate);
                 $timeNow = strtotime('now');
                 if ($timeDate && $timeDate > $timeNow) {
                     $description = filter_var($queries['description'], FILTER_SANITIZE_STRING);
@@ -49,7 +50,7 @@ class CreationController
                         $list->access_token = bin2hex(random_bytes(8));
                     } while ($list->access_token === $list->modify_token);
                     $list->save();
-                    setcookie('mywishlist-' . $list->no, password_hash($list->modify_token, CRYPT_BLOWFISH, ['cost' => 12]), $timeDate);
+                    setcookie('mywishlist-' . $list->no, password_hash($list->modify_token, CRYPT_BLOWFISH, ['cost' => 12]), $timeDate, '/');
                     $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
                     $view = new RedirectionView($listPath, 'Création de la liste réussie avec succès !', 'Votre liste de souhaits à bien été crée, vous allez être redirigé vers celle-ci dans 5 secondes.');
                 } else {
@@ -68,7 +69,7 @@ class CreationController
 
     public function createItem(Request $request, $no)
     {
-        $canModify = CommonUtils::canModifyList($request, $no, 'Echec de la création de l\'item !');
+        $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la création de l\'item !', true);
         if ($canModify instanceof ListModel) {
             $list = $canModify;
             $router = SlimSingleton::getInstance()->getContainer()->get('router');
@@ -79,8 +80,8 @@ class CreationController
                 if (strlen(trim($name)) > 0) {
                     $price = filter_var($queries['price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                     if ($price && $price >= 0.01 && $price <= 999.99) {
-                        if (filter_var($queries['website'], FILTER_VALIDATE_URL) !== false) {
-                            $url = filter_var($queries['website'], FILTER_SANITIZE_URL);
+                        $url = filter_var($queries['website'], FILTER_SANITIZE_URL);
+                        if (empty($url) || filter_var($url, FILTER_VALIDATE_URL) !== false) {
                             $description = filter_var($queries['description'], FILTER_SANITIZE_STRING);
                             $item = new ItemModel();
                             $item->list_id = $list->no;
@@ -111,8 +112,35 @@ class CreationController
         return $view->render();
     }
 
-    public function createPot()
-    {
-
+    public function reserveItem(Request $request, $no, $id) {
+        $canReserve = CommonUtils::canReserveItem($request, $no, $id, 'Echec de la réservation de l\'item !');
+        if($canReserve instanceof ItemModel) {
+            $item = $canReserve;
+            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $itemPath = $router->pathFor('displayItem', ['no' => $item->list->no, 'id' => $item->id]) . "?token={$item->list->access_token}";
+            $queries = $request->getParsedBody();
+            if (isset($queries['name']) && isset($queries['message'])) {
+                $name = filter_var($queries['name'], FILTER_SANITIZE_STRING);
+                if (strlen(trim($name)) > 0) {
+                    $message = filter_var($queries['message'], FILTER_SANITIZE_STRING);
+                    $reservation = new ReservationModel();
+                    $reservation->participant = $name;
+                    $reservation->message = $message;
+                    $reservation->save();
+                    $item->reservation_id = $reservation->no;
+                    $item->save();
+                    $view = new RedirectionView($itemPath, 'Réservation de l\'item réussie avec succès !', 'L\'item a bien été réservé, vous allez être redirigé vers celui-ci dans 5 secondes.');
+                } else {
+                    $view = new RedirectionView($itemPath, 'Echec de la réservation de l\'item !', 'Le nom de participation ne peut pas être vide, vous allez être ridirigé vers l\'item dans 5 secondes.');
+                }
+            } else {
+                $view = new RedirectionView($itemPath, 'Echec de la réservation de l\'item !', 'Une erreur est subvenue lors de la tentative de réservation de la l\'item, vous allez être ridirigé vers celui-ci dans 5 secondes.');
+            }
+        } else {
+            $view = $canReserve;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
     }
 }

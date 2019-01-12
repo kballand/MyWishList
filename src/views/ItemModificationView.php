@@ -19,7 +19,7 @@ class ItemModificationView implements IView
         return
             <<< END
 <section class="basicForm">
-    <form id="itemCreationForm" method="post" novalidate>
+    <form id="itemCreationForm" method="post" enctype="multipart/form-data" novalidate>
         <label for="itemName">Nom</label>
         <div class="errorDisplayedField">
             <input type="text" name="name" id="itemName" placeholder="Nom de l'item" class="notEmptyField" aria-invalid="true" value="{$this->item->name}">

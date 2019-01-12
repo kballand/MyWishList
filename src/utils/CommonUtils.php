@@ -54,7 +54,7 @@ END;
         return $cssImport;
     }
 
-    public static function canModifyList(Request $request, $no, $errorTitle)
+    public static function canAccessList(Request $request, $no, $errorTitle, $forModificationOnly, &$modificationGranted = false)
     {
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
         $indexPath = $router->pathFor('index');
@@ -63,14 +63,30 @@ END;
         if (isset($list)) {
             $token = $request->getParam('token');
             if (isset($token)) {
-                $modify_token = $list->modify_token;
-                if ($token === $modify_token) {
-                    return $list;
+                if ($forModificationOnly) {
+                    if ($token === $list->modify_token) {
+                        $modificationGranted = true;
+                        return $list;
+                    } else {
+                        $view = new RedirectionView($indexPath, $errorTitle, 'Mauvais token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                    }
                 } else {
-                    $view = new RedirectionView($indexPath, $errorTitle, 'Mauvais token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                    if ($token === $list->modify_token) {
+                        $modificationGranted = true;
+                        return $list;
+                    } else if ($token === $list->access_token) {
+                        $modificationGranted = false;
+                        return $list;
+                    } else {
+                        $view = new RedirectionView($indexPath, $errorTitle, 'Mauvais token d\'accès à la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                    }
                 }
             } else {
-                $view = new RedirectionView($indexPath, $errorTitle, 'Absence du token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                if ($forModificationOnly) {
+                    $view = new RedirectionView($indexPath, $errorTitle, 'Absence du token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                } else {
+                    $view = new RedirectionView($indexPath, $errorTitle, 'Absence du token d\'accès à la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                }
             }
         } else {
             $view = new RedirectionView($indexPath, $errorTitle, 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
@@ -78,50 +94,85 @@ END;
         return $view;
     }
 
-    public static function canAccessList(Request $request, $no, $errorTitle)
+    public static function canAccessItem(Request $request, $no, $id, $errorTitle, $forModificationOnly, &$modificationGranted = false)
     {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
-        $indexPath = $router->pathFor('index');
-        $no = filter_var($no, FILTER_SANITIZE_NUMBER_INT);
-        $list = ListModel::where('no', '=', $no)->first();
-        if (isset($list)) {
-            $token = $request->getParam('token');
-            if (isset($token)) {
-                $access_token = $list->access_token;
-                if ($token === $access_token) {
-                    return $list;
-                } else {
-                    $view = new RedirectionView($indexPath, $errorTitle, 'Mauvais token d\'accès à la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
-                }
-            } else {
-                $view = new RedirectionView($indexPath, $errorTitle, 'Absence du token d\'accès à la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
-            }
-        } else {
-            $view = new RedirectionView($indexPath, $errorTitle, 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
-        }
-        return $view;
-    }
-
-    public static function canModifyItem(Request $request, $no, $id, $errorTitle)
-    {
-        $canModify = self::canModifyList($request, $no, $errorTitle);
-        if ($canModify instanceof ListModel) {
-            $list = $canModify;
+        $canAccess = self::canAccessList($request, $no, $errorTitle, $forModificationOnly, $modificationGranted);
+        if ($canAccess instanceof ListModel) {
+            $list = $canAccess;
             $router = SlimSingleton::getInstance()->getContainer()->get('router');
-            $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
+            if ($forModificationOnly || $modificationGranted) {
+                $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
+            } else {
+                $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->access_token";
+            }
             $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
             $item = ItemModel::where('id', '=', $id)->first();
             if (isset($item)) {
                 if ($item->list->no === $list->no) {
-                    return $item;
+                    if ($forModificationOnly && isset($item->reservation)) {
+                        $view = new RedirectionView($listPath, $errorTitle, 'Cet item est réservé, vous allez être ridirigé vers votre liste dans 5 secondes.');
+                    } else {
+                        return $item;
+                    }
                 } else {
-                    $view = new RedirectionView($listPath, $errorTitle, 'Cet item ne fait pas partie de votre liste, vous allez être ridirigé vers celle-ci dans 5 secondes.');
+                    if ($forModificationOnly) {
+                        $view = new RedirectionView($listPath, $errorTitle, 'Cet item ne fait pas partie de votre liste, vous allez être ridirigé vers celle-ci dans 5 secondes.');
+                    } else {
+                        $view = new RedirectionView($listPath, $errorTitle, 'Cet item ne fait pas partie de cette liste, vous allez être ridirigé vers celle-ci dans 5 secondes.');
+                    }
                 }
             } else {
                 $view = new RedirectionView($listPath, $errorTitle, 'Cet item n\'existe pas, vous allez être ridirigé vers votre liste dans 5 secondes.');
             }
         } else {
-            $view = $canModify;
+            $view = $canAccess;
+        }
+        return $view;
+    }
+
+    public static function startsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        return substr($haystack, 0, $length) === $needle;
+    }
+
+    public static function ownList($list)
+    {
+        if (strtotime($list->expiration) > strtotime('now')) {
+            if (isset($_COOKIE['mywishlist-' . $list->no])) {
+                $hash = $_COOKIE['mywishlist-' . $list->no];
+                if (password_verify($list->modify_token, $hash)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static function canReserveItem(Request $request, $no, $id, $errorTitle)
+    {
+        $canAccess = CommonUtils::canAccessItem($request, $no, $id, $errorTitle, false, $modificationGranted);
+        if ($canAccess instanceof ItemModel) {
+            $item = $canAccess;
+            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $itemPath = $router->pathFor('displayItem', ['no' => $item->list->no, 'id' => $item->id]) . '?token=';
+            if ($modificationGranted || self::ownList($item->list)) {
+                if ($modificationGranted) {
+                    $itemPath .= $item->list->modify_token;
+                } else {
+                    $itemPath .= $item->list->access_token;
+                }
+                $view = new RedirectionView($itemPath, $errorTitle, 'Vous ne pouvez pas réserver un item de votre propre liste, vous allez être redirigé vers celui-ci dans 5 secondes.');
+            } else {
+                if (!isset($item->reservation)) {
+                    return $item;
+                } else {
+                    $itemPath .= $item->list->access_token;
+                    $view = new RedirectionView($itemPath, $errorTitle, 'Cet item est déjà réservé, vous allez être redirigé vers celui-ci dans 5 secondes.');
+                }
+            }
+        } else {
+            $view = $canAccess;
         }
         return $view;
     }

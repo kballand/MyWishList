@@ -30,7 +30,7 @@ class ModifyController
 
     public function modifyList(Request $request, $no)
     {
-        $canModify = CommonUtils::canModifyList($request, $no, 'Echec de la modification de la liste !');
+        $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la modification de la liste !', true);
         if ($canModify instanceof ListModel) {
             $list = $canModify;
             $queries = $request->getParsedBody();
@@ -40,7 +40,7 @@ class ModifyController
                 $title = filter_var($queries['title'], FILTER_SANITIZE_STRING);
                 if (strlen(trim($title)) > 0) {
                     $expirationDate = filter_var($queries['expirationDate'], FILTER_SANITIZE_STRING);
-                    $timeDate = strtotime($expirationDate . ' +1 day');
+                    $timeDate = strtotime($expirationDate);
                     $timeNow = strtotime('now');
                     if ($timeDate && $timeDate > $timeNow) {
                         $description = filter_var($queries['description'], FILTER_SANITIZE_STRING);
@@ -48,7 +48,7 @@ class ModifyController
                         $list->description = $description;
                         $list->expiration = $expirationDate;
                         $list->save();
-                        setcookie('mywishlist-' . $list->no, password_hash($list->modify_token, CRYPT_BLOWFISH, ['cost' => 12]), $timeDate);
+                        setcookie('mywishlist-' . $list->no, password_hash($list->modify_token, CRYPT_BLOWFISH, ['cost' => 12]), $timeDate, '/');
                         $view = new RedirectionView($listPath, 'Modification de la liste réussie avec succès !', 'Votre liste de souhaits à bien été modifiée, vous allez être redirigé vers celle-ci dans 5 secondes.');
                     } else {
                         $view = new RedirectionView($listPath, 'Echec de la modification de la liste !', 'Le date de la liste est invallide, vous allez être ridirigé vers celle-ci dans 5 secondes.');
@@ -69,7 +69,7 @@ class ModifyController
 
     public function modifyItem(Request $request, $no, $id)
     {
-        $canModify = CommonUtils::canModifyItem($request, $no, $id, 'Echec de la modification de l\'item !');
+        $canModify = CommonUtils::canAccessItem($request, $no, $id, 'Echec de la modification de l\'item !', true);
         if ($canModify instanceof ItemModel) {
             $item = $canModify;
             $queries = $request->getParsedBody();
@@ -112,9 +112,11 @@ class ModifyController
 
     public function deleteList(Request $request, $no)
     {
-        $canModify = CommonUtils::canModifyList($request, $no, 'Echec de la suppression de la liste !');
+        $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la suppression de la liste !', true);
         if ($canModify instanceof ListModel) {
             $list = $canModify;
+            unset($_COOKIE['mywishlist' . $list->no]);
+            setcookie('mywishlist-' . $list->no, null, -1, '/');
             $list->delete();
             $router = SlimSingleton::getInstance()->getContainer()->get('router');
             $indexPath = $router->pathFor('index');
@@ -129,7 +131,7 @@ class ModifyController
 
     public function deleteItem(Request $request, $no, $id)
     {
-        $canModify = CommonUtils::canModifyItem($request, $no, $id, 'Echec de la suppression de l\'item !');
+        $canModify = CommonUtils::canAccessItem($request, $no, $id, 'Echec de la suppression de l\'item !', true);
         if ($canModify instanceof ItemModel) {
             $item = $canModify;
             $router = SlimSingleton::getInstance()->getContainer()->get('router');

@@ -4,19 +4,20 @@ namespace MyWishList\views;
 
 
 use DateTime;
+use MyWishList\models\ListModel;
 
 class ListModificationView implements IView
 {
     private $list;
 
-    public function __construct($list)
+    public function __construct(ListModel $list)
     {
         $this->list = $list;
     }
 
     public function render()
     {
-        $date = new DateTime('now');
+        $date = new DateTime('tomorrow');
         return
             <<< END
 <section class="basicForm">
@@ -39,13 +40,6 @@ class ListModificationView implements IView
             <span class="displayedError incorrectDateError" id="incorrectListDateError">
                 <p class="displayedMessage" id="incorrectDateMessage">La date d'expiration de la liste doit être ultérieure à la date actuelle !</p>
             </span>
-        </div>
-        <label for="listImage">Image de la liste</label>
-        <div class="uploadField" id="listImage">
-            <img src="" alt="" id="listImagePreview" class="imagePreview"/>
-            <input type="button" value="Supprimer l'image" class="previewDelete">
-            <label for="listImageUploader" class="previewChanger">Ajouter une image</label>
-            <input type="file" accept="image/*" name="imageName" id="listImageUploader" class="imageUploader">
         </div>
         <input type="submit" value="Modifier la liste" id="modifyListButton" class="validateButton">
     </form>

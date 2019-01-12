@@ -47,12 +47,6 @@ class NavBarView implements IView
 				<a href="$creation" class="subMenuTitle">Créer une liste</a>
 			</div>
 		</li>
-		<li class="menu">
-			<a class="menuTitle" href="">Contact</a>
-			<div class="subMenu">
-				<a href="" class="subMenuTitle">Vers l'accueil</a>
-			</div>
-		</li>
 	</ul>
 	<span id="signBar">
 		<form id="loginForm">

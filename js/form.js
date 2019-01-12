@@ -65,7 +65,7 @@ $(document).ready(function() {
             let currentYear = currentDate.getFullYear();
             let currentMonth = currentDate.getMonth() + 1;
             let currentDay = currentDate.getDate();
-            if(currentYear > setYear || (currentYear === setYear && currentMonth > setMonth) || (currentYear === setYear && currentMonth === setMonth && currentDay > setDay)) {
+            if(currentYear > setYear || (currentYear === setYear && currentMonth > setMonth) || (currentYear === setYear && currentMonth === setMonth && (currentDay + 1) > setDay)) {
                 $(this).attr('aria-invalid', 'true');
                 if (!error.hasClass('displayed')) {
                     error.addClass('displayed');

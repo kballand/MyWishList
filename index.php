@@ -83,12 +83,12 @@ $app->get('/list/delete/{no}', function(Request $request, Response $response, $a
     $response->write($controller->deleteList($request, $args['no']));
 })->setName('deleteList');
 
-$app->get('/list/addItem/{no}', function(Request $request, Response $response, $args) {
+$app->get('/list/items/{no}/add', function(Request $request, Response $response, $args) {
     $controller = DisplayController::getInstance();
     $response->write($controller->displayItemCreation($request, $args['no']));
 })->setName('addItem');
 
-$app->post('/list/addItem/{no}', function(Request $request, Response $response, $args) {
+$app->post('/list/items/{no}/add', function(Request $request, Response $response, $args) {
    $controller = CreationController::getInstance();
    $response->write($controller->createItem($request, $args['no']));
 });
@@ -107,5 +107,15 @@ $app->get('/list/items/{no}/delete/{id}', function(Request $request, Response $r
     $controller = ModifyController::getInstance();
     $response->write($controller->deleteItem($request, $args['no'], $args['id']));
 })->setName('deleteItem');
+
+$app->get('/list/items/{no}/reserve/{id}', function(Request $request, Response $response, $args) {
+    $controller = DisplayController::getInstance();
+    $response->write($controller->displayItemReservation($request, $args['no'], $args['id']));
+})->setName('reserveItem');
+
+$app->post('/list/items/{no}/reserve/{id}', function(Request $request, Response $response, $args) {
+   $controller = CreationController::getInstance();
+   $response->write($controller->reserveItem($request, $args['no'], $args['id']));
+});
 
 $app->run();

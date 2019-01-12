@@ -1,8 +1,8 @@
 
 
-/* Section contenant l'ensemble des listes */
+/* Section contenant l'ensemble des listes ou l'ensemble des items */
 
-#listsSection {
+#listsSection, #itemsSection {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -10,20 +10,29 @@
     margin: 1%;
 }
 
-/* Une liste parmi l'ensemble des listes */
+/* Une liste parmi l'ensemble des listes ou un item */
 
-.listArticle {
+.listArticle, .itemContent {
     background: rgb(0, 77, 101);
-    width: 400px;
     padding: 1%;
     margin: 1%;
     text-align: center;
+}
+
+.listArticle {
+    width: 400px;
     border-radius: 15px;
+}
+
+.itemContent {
+    width: 200px;
+    border-radius: 10px;
+    border: solid 3px rgb(0, 50, 80);
 }
 
 /* Lors du survol d'une liste ou d'un item d'une liste */
 
-.listArticle:hover, .listItem:hover {
+.listArticle:hover, .itemContent:hover {
     box-shadow: 5px 5px 3px rgb(0, 50, 80);
     z-index: 0;
 }
@@ -34,57 +43,56 @@
     background: rgb(0, 77, 101);
     color:white;
     border-radius: 20px 20px;
-    width: 40%;
+    width: 70%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 2%;
-    box-shadow: 5px 5px 3px rgb(0, 50, 80);
 }
 
 #itemsPart {
-    margin-top: 7%;
+    margin-top: 25px;
 }
 
 #listItems {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
-#listItems .listItem {
-    width: 200px;
-    text-align: center;
+.itemImg {
+    border-radius: 20%;
 }
 
 #listItems .itemImg {
     width: 120px;
     height: 120px;
-    border-radius: 20%;
 }
 
 #itemContent .itemImg {
-    width: 300px;
-    height: 300px;
-    border-radius: 20%;
+    width: 30%;
+    min-width: 150px;
 }
 
-.listItem {
-    border: solid 3px rgb(0, 50, 80);
-    border-radius: 10px 10px;
-    margin: 1%;
-    padding: 1%;
+.itemsSection {
     position: relative;
 }
 
-.itemName {
-    margin: 35px 10px 10px 10px;
+.itemContent .itemName, .itemContent .itemImg {
+    margin-bottom: 10px;
 }
 
-.listTitle {
-    margin-bottom: 5%;
+.itemContent p {
+    margin: 4px 0 4px 0;
 }
 
+#listContent .listTitle, #itemContent .itemName, #itemContent .itemImg {
+    margin-bottom: 20px;
+}
 
+#listContent p, #itemContent p {
+    margin: 8px 0 8px 0;
+}
 
 #notFound {
     text-align: center;
