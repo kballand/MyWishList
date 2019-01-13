@@ -27,6 +27,12 @@ $app->get('/list/display/{no}', function (Request $request, Response $response, 
     $response->write($content);
 })->setName('displayList');
 
+$app->post('/list/display/{no}', function (Request $request, Response $response, $args) {
+    $controller = CreationController::getInstance();
+    $content = $controller->commentList($request, $args['no']);
+    $response->write($content);
+});
+
 $app->get('/lists', function (Request $request, Response $response) {
     $controller = DisplayController::getInstance();
     $content = $controller->displayLists();

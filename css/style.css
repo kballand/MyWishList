@@ -39,7 +39,8 @@
 
 #listContent, #itemContent {
     text-align: center;
-    padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     background: rgb(0, 77, 101);
     color:white;
     border-radius: 20px 20px;
@@ -146,4 +147,26 @@
     position: absolute;
     bottom: 50px;
     left: 50%;
+}
+
+.actionButtons {
+    margin-top: 25px;
+}
+
+.actionButtons button, .actionButtons a {
+    border-radius: 5px;
+    padding: 7px;
+    border: 1px solid #aaaaaa;
+    color: white;
+    background-color: rgb(27, 56, 102);
+    font-size: 18px;
+    white-space: nowrap;
+    display: inline-block;
+    margin: 1%;
+}
+
+.actionButtons button:hover, .actionButtons a:hover {
+    cursor: pointer;
+    color: white;
+    background-color : #666666;
 }

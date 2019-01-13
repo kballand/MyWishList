@@ -24,7 +24,7 @@ class ItemReservationView implements IView
         return
             <<< END
 <section class="basicForm">
-    <form id="itemReservationForm" method="post">
+    <form id="itemReservationForm" method="post" novalidate>
         <label for="reservationName">Nom</label>
         <div class="errorDisplayedField">
             <input type="text" name="name" id="reservationName" placeholder="Nom de participation" class="notEmptyField" value="$reservationName" aria-invalid="true">

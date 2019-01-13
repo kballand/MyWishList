@@ -14,4 +14,8 @@ class ListModel extends Model
     {
         return $this->hasMany('\MyWishList\models\ItemModel', 'list_id');
     }
+
+    public function comments() {
+        return $this->hasMany('\MyWishList\models\CommentModel', 'list_id');
+    }
 }

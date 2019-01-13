@@ -24,6 +24,14 @@ CREATE TABLE `reservation` (
   PRIMARY KEY (`no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `list_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 INSERT INTO `item` (`id`, `list_id`, `name`, `description`, `img`, `url`, `price`) VALUES
 (1,	2,	'Champagne',	'Bouteille de champagne + flutes + jeux à gratter',	'champagne.jpg',	'',	20.00),
 (2,	2,	'Musique',	'Partitions de piano à 4 mains',	'musique.jpg',	'',	25.00),

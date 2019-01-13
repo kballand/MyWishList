@@ -44,7 +44,7 @@ $(document).ready(function() {
     fields = $('form');
     fields.submit(function(e) {
         checkIn();
-        let errorFields = $(this).find('.errorDisplayedField input[aria-invalid="true"]');
+        let errorFields = $(this).find('.errorDisplayedField *[aria-invalid="true"]');
         if(errorFields.length > 0) {
             e.preventDefault();
             let first = errorFields.first().nextAll('.displayedError.displayed');

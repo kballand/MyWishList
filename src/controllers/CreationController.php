@@ -2,6 +2,7 @@
 
 namespace MyWishList\controllers;
 
+use MyWishList\models\CommentModel;
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
 use MyWishList\models\ReservationModel;
@@ -140,6 +141,50 @@ class CreationController
             }
         } else {
             $view = $canReserve;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function commentList(Request $request, $no)
+    {
+        $canModify = CommonUtils::canAccessList($request, $no, 'Echec de l\'ajout du commentaire à la liste !', false, $modificationGranted);
+        if ($canModify instanceof ListModel) {
+            $list = $canModify;
+            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $listPath = $router->pathFor('displayList', ['no' => $list->no]) . '?token=';
+            if ($modificationGranted || CommonUtils::ownList($list)) {
+                if ($modificationGranted) {
+                    $listPath .= $list->modify_token;
+                } else {
+                    $listPath .= $list->access_token;
+                }
+                $view = new RedirectionView($listPath, 'Echec de l\'ajout du commentaire à la liste !', 'Vous ne pouvez pas commenter votre propre liste, vous allez être redirigé vers celui-ci dans 5 secondes.');
+            } else {
+                $listPath .= $list->access_token;
+                if (!CommonUtils::hasExpired($list)) {
+                    $queries = $request->getParsedBody();
+                    if (isset($queries['comment'])) {
+                        $commentMessage = filter_var($queries['comment'], FILTER_SANITIZE_STRING);
+                        if (strlen(trim($commentMessage)) > 0) {
+                            $comment = new CommentModel();
+                            $comment->list_id = $list->no;
+                            $comment->comment = $commentMessage;
+                            $comment->save();
+                            $view = new RedirectionView($listPath, 'Ajout du commentaire réussi avec succès !', 'Le commentaire a bien été ajouté à la liste, vous allez être redirigé vers celle-ci dans 5 secondes.');
+                        } else {
+                            $view = new RedirectionView($listPath, 'Echec de l\'ajout du commentaire à la liste !', 'Le commentaire ne peut pas être vide, vous allez être ridirigé vers la liste dans 5 secondes.');
+                        }
+                    } else {
+                        $view = new RedirectionView($listPath, 'Echec de l\'ajout du commentaire à la liste !', 'Une erreur est subvenue lors de la tentative d\'ajout du commentaire, vous allez être ridirigé vers la liste dans 5 secondes.');
+                    }
+                } else {
+                    $view = new RedirectionView($listPath, 'Echec de l\'ajout du commentaire à la liste !', 'Cette liste a expiré, vous allez être redirigé vers celui-ci dans 5 secondes.');
+                }
+            }
+        } else {
+            $view = $canModify;
         }
         $view = new NavBarView($view);
         $view = new BasicView($view);

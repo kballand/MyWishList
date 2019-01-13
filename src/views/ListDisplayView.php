@@ -39,11 +39,11 @@ class ListDisplayView implements IView
                 $accessPath = $_SERVER['HTTP_HOST'] . $router->pathFor('displayList', ['no' => $this->lists->no]) . "?token=" . $this->lists->access_token;
                 $actionButtons =
                     <<< END
-<span class="actionButtons">
+<div class="actionButtons">
     <a id="deleteButton"  href="$deletePath">Supprimer la liste</a>
     <a id="modifyButton" href="$modifyPath">Modifier la liste</a>
     <a id="addItemButton" href="$addItemPath">Ajouter un item</a>
-    <button id="shareButton" class="popupOpener">Obtenir mon lien de partage</button>
+    <button id="shareButton" class="popupOpener">Voir le lien de partage</button>
     <div class="popup">
         <div class="popupContent">
             <div>
@@ -52,10 +52,27 @@ class ListDisplayView implements IView
             </div>
         </div>
     </div>
-</span> 
+</div> 
 END;
             }
-
+            $commentForm = "";
+            if(!$this->forModification && !CommonUtils::ownList($this->lists) && !CommonUtils::hasExpired($this->lists)) {
+                $commentForm =
+                    <<< END
+<div class="basicForm">
+    <form id="listCommentForm" method="post" novalidate>
+        <label for="listCommentMessage">Commentaire</label>
+        <div class="errorDisplayedField">
+            <textarea name="comment" id="listCommentMessage" class="notEmptyField" rows="10" cols="60" placeholder="Entrez ici un commentaire à propos de cette liste de souhaits... (500 caractères maximum)" maxlength="500" aria-invalid="true"></textarea>
+            <span class="displayedError fieldEmptyError" id="listCommentMessageEmptyError">
+                <p class="displayedMessage" id="listCommentMessageEmptyMessage">Votre commentaire ne peut être vide !</p>
+            </span>
+        </div>
+        <input type="submit" value="Envoyer ce commentaire" id="commentListButton" class="validateButton">
+    </form>
+</div>
+END;
+            }
             return
                 <<< END
 <div id="listContent">
@@ -65,6 +82,7 @@ END;
     $itemsContent
     $actionButtons
 </div>
+$commentForm
 END;
         } else {
             $sectionContent = "";
@@ -93,11 +111,11 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/popup.css'];
+        return ['/css/popup.css', '/css/form.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/popup.js'];
+        return ['/js/popup.js', '/js/form.js'];
     }
 }

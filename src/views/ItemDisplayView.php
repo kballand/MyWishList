@@ -59,18 +59,18 @@ END;
                     $deletePath = $router->pathFor('deleteItem', ['no' => $this->items->list->no, 'id' => $this->items->id]) . "?token={$this->items->list->modify_token}";
                     $actionButtons =
                         <<< END
-<span class="actionButtons">
+<div class="actionButtons">
     <a id="deleteButton"  href="$deletePath">Supprimer l'item</a>
     <a id="modifyButton" href="$modifyPath">Modifier l'item</a>
-</span>
+</div>
 END;
                 } else if (!isset($this->items->reservation) && !CommonUtils::ownList($this->items->list)) {
                     $reservePath = $router->pathFor('reserveItem', ['no' => $this->items->list->no, 'id' => $this->items->id]) . "?token={$this->items->list->access_token}";
                     $actionButtons =
                         <<< END
-<span class="actionButtons">
+<div class="actionButtons">
     <a id="reserveButton"  href="$reservePath">Réserver</a>
-</span>
+</div>
 END;
                 }
             }
