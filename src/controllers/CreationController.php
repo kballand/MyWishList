@@ -92,7 +92,6 @@ class CreationController
                             $item->url = $url;
                             $item->save();
                             $view = new RedirectionView($listPath, 'Création de l\'item réussie avec succès !', 'Votre item a bien été ajouté à votre liste, vous allez être redirigé vers votre liste dans 5 secondes.');
-
                         } else {
                             $view = new RedirectionView($listPath, 'Echec de la création de l\'item !', 'Le site web détaillant l\'item est invalide, vous allez être ridirigé vers votre liste dans 5 secondes.');
                         }
