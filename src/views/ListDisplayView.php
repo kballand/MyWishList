@@ -47,7 +47,8 @@ class ListDisplayView implements IView
     <div class="popup">
         <div class="popupContent">
             <div>
-                <input type="text" value="$accessPath" id="accessURL" class="copiedText" readonly>
+                <input type="url" value="$accessPath" id="accessURL" class="copiedText" readonly>
+                <button class="popupCloser">Fermer</button>
                 <button class="textCopier">Copier sur le presse-papier</button>
             </div>
         </div>

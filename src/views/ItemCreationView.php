@@ -35,8 +35,24 @@ class ItemCreationView implements IView
         <div class="uploadField" id="itemImage">
             <img src="" alt="" id="itemImagePreview" class="imagePreview"/>
             <input type="button" value="Supprimer l'image" class="previewDelete">
-            <label for="itemImageUploader" class="previewChanger">Ajouter une image</label>
-            <input type="file" accept="image/*" name="itemImageUploader" id="itemImageUploader" class="imageUploader">
+            <label class="popupOpener previewChanger">Ajouter une image</label>
+            <div class="popup">
+                <div class="popupContent">
+                    <div class="imageHotlinkField">
+                        <label for="itemImageHotlink">URL de l'image</label>
+                        <input type="url" name="imageHotlink" id="itemImageHotlink" class="imageHotlink">
+                    </div>
+                    <div class="imageUploaderField">
+                        <label>Uploadez votre image</label>
+                        <input type="file" accept="image/*" id="itemImageUploader" class="imageUploader">
+                    </div>
+                    <span class="actionButtons">
+                        <button class="popupCloser">Fermer</button>
+                        <button class="imageReset">Réinitialiser</button>
+                        <button class="popupCloser imageValidate">Valider</button>
+                    </span>
+                </div>
+            </div>
         </div>
         <label for="itemWebsite">Site détaillant le produit</label>
         <input type="text" name="website" id="itemWebsite" placeholder="URL du site">
@@ -48,11 +64,11 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/form.css'];
+        return ['/css/form.css', '/css/popup.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/upload.js', '/js/form.js'];
+        return ['/js/upload.js', '/js/form.js', '/js/popup.js'];
     }
 }

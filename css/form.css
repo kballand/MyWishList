@@ -16,13 +16,13 @@
     width: 200px;
 }
 
+.basicForm input[type='url'] {
+    width: 275px;
+}
+
 .basicForm textarea {
     width: 400px;
     resize: none;
-}
-
-.basicForm input[type='file'] {
-    display: none;
 }
 
 .basicForm label {
@@ -52,7 +52,7 @@
     margin: 20px auto 20px auto;
 }
 
-.uploadField label, .uploadField input[type='button'] {
+.uploadField .previewDelete, .uploadField .previewChanger {
     padding: 5px;
     border: 1px solid #aaaaaa;
     border-radius: 5px 5px;
@@ -65,7 +65,7 @@
     display: inline-block;
 }
 
-.uploadField label:hover, input[type='button']:hover {
+.uploadField .previewDelete:hover, .uploadField .previewChanger:hover {
     cursor: pointer;
     color: white;
     background-color : #666666;
