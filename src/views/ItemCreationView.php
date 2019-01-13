@@ -44,7 +44,7 @@ class ItemCreationView implements IView
                     </div>
                     <div class="imageUploaderField">
                         <label>Uploadez votre image</label>
-                        <input type="file" accept="image/*" id="itemImageUploader" class="imageUploader">
+                        <input type="file" accept="image/*" name="imageUpload" id="itemImageUploader" class="imageUploader">
                     </div>
                     <span class="actionButtons">
                         <button class="popupCloser uploadCloser">Fermer</button>

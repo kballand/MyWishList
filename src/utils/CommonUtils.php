@@ -190,4 +190,24 @@ END;
     {
         return strtotime($list->expiration) <= strtotime('now');
     }
+
+    public static function areIdentical($fileA, $fileB)
+    {
+        if (filesize($fileA) === filesize($fileB)) {
+            $readerA = fopen($fileA, 'rb');
+            $readerB = fopen($fileB, 'rb');
+            while (($bytesA = fread($readerA, 4096)) !== false) {
+                $bytesB = fread($readerB, 4096);
+                if ($bytesA !== $bytesB) {
+                    fclose($readerA);
+                    fclose($readerB);
+                    return false;
+                }
+            }
+            fclose($readerA);
+            fclose($readerB);
+            return true;
+        }
+        return false;
+    }
 }

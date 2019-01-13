@@ -90,8 +90,44 @@ class CreationController
                             $item->description = $description;
                             $item->price = $price;
                             $item->url = $url;
-                            $item->save();
-                            $view = new RedirectionView($listPath, 'Création de l\'item réussie avec succès !', 'Votre item a bien été ajouté à votre liste, vous allez être redirigé vers votre liste dans 5 secondes.');
+                            if (isset($_FILES['imageUpload']) && is_uploaded_file($_FILES['imageUpload']['tmp_name']) && file_exists($_FILES['imageUpload']['tmp_name'])) {
+                                $file = $_FILES['imageUpload'];
+                                $tmpName = $file['tmp_name'];
+                                if (getimagesize($tmpName) !== false) {
+                                    $name = basename($file['name']);
+                                    $finalName = $name;
+                                    $count = 1;
+                                    while (file_exists('/img/' . $finalName) && !CommonUtils::areIdentical('/img/' . $finalName, $tmpName)) {
+                                        $finalName = $name . ' (' . $count . ')';
+                                        ++$count;
+                                    }
+                                    if (move_uploaded_file($tmpName, 'img/' . $finalName)) {
+                                        $item->img = $finalName;
+                                        $item->save();
+                                        $view = new RedirectionView($listPath, 'Création de l\'item réussie avec succès !', 'Votre item a bien été ajouté à votre liste, vous allez être redirigé vers votre liste dans 5 secondes.');
+                                    } else {
+                                        $view = new RedirectionView($listPath, 'Echec de la création de l\'item !', 'Une erreur est survenue lors de l\'upload de l\'image, vous allez être ridirigé vers votre liste dans 5 secondes.');
+                                    }
+                                } else {
+                                    $view = new RedirectionView($listPath, 'Echec de la création de l\'item !', 'L\'image fournie n\'existe pas, vous allez être ridirigé vers votre liste dans 5 secondes.');
+                                }
+                            } else if (isset($_POST['imageHotlink']) && !empty($_POST['imageHotlink'])) {
+                                $imageHotlink = $_POST['imageHotlink'];
+                                if (file_exists('img/' . $imageHotlink) || getimagesize($imageHotlink) !== false) {
+                                    if (file_exists('img/' . $imageHotlink)) {
+                                        $item->img = $imageHotlink;
+                                    } else {
+                                        $item->img = $imageHotlink;
+                                    }
+                                    $item->save();
+                                    $view = new RedirectionView($listPath, 'Création de l\'item réussie avec succès !', 'Votre item a bien été ajouté à votre liste, vous allez être redirigé vers votre liste dans 5 secondes.');
+                                } else {
+                                    $view = new RedirectionView($listPath, 'Echec de la création de l\'item !', 'L\'image fournie n\'existe pas, vous allez être ridirigé vers votre liste dans 5 secondes.');
+                                }
+                            } else {
+                                $item->save();
+                                $view = new RedirectionView($listPath, 'Création de l\'item réussie avec succès !', 'Votre item a bien été ajouté à votre liste, vous allez être redirigé vers votre liste dans 5 secondes.');
+                            }
                         } else {
                             $view = new RedirectionView($listPath, 'Echec de la création de l\'item !', 'Le site web détaillant l\'item est invalide, vous allez être ridirigé vers votre liste dans 5 secondes.');
                         }
