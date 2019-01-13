@@ -53,7 +53,7 @@ END;
                 }
             }
             $actionButtons = "";
-            if(!CommonUtils::hasExpired($this->items->list)) {
+            if (!CommonUtils::hasExpired($this->items->list)) {
                 if ($this->forModification) {
                     $modifyPath = $router->pathFor('modifyItem', ['no' => $this->items->list->no, 'id' => $this->items->id]) . "?token={$this->items->list->modify_token}";
                     $deletePath = $router->pathFor('deleteItem', ['no' => $this->items->list->no, 'id' => $this->items->id]) . "?token={$this->items->list->modify_token}";
