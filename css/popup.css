@@ -23,3 +23,13 @@
     border-radius: 20px;
     background: rgb(0, 77, 101);
 }
+
+.popupContent .copiedText {
+    width: 275px;
+    padding: 5px;
+    border: 1px solid #aaaaaa;
+    border-radius: 5px 5px;
+    font-size: 18px;
+    margin: 20px auto 20px auto;
+    display: block;
+}

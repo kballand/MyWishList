@@ -27,7 +27,7 @@ $(document).ready(function () {
     });
     let textCopier = $('.textCopier');
     textCopier.click(function () {
-        let copiedText = $(this).prev('.copiedText');
+        let copiedText = $(this).closest('.popupContent').find('.copiedText');
         copiedText.select();
         document.execCommand('copy');
     });
