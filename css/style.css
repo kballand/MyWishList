@@ -170,3 +170,20 @@
     color: white;
     background-color : #666666;
 }
+
+#listCommentsPart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#listCommentsPart .listComment {
+    display: inline-block;
+    max-width: 400px;
+    width: 50%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #aaaaaa;
+    margin: 10px;
+    word-wrap: break-word;
+}

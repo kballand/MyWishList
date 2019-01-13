@@ -55,10 +55,25 @@ class ListDisplayView implements IView
 </div> 
 END;
             }
+            $commentsPart = "";
             $commentForm = "";
             if(!$this->forModification && !CommonUtils::ownList($this->lists) && !CommonUtils::hasExpired($this->lists)) {
-                $commentForm =
+                $comments = "";
+                foreach($this->lists->comments as $comment) {
+                    $comments .=
+                        <<< END
+<p class="listComment">$comment->comment</p>
+END;
+                }
+                $commentsPart =
                     <<< END
+<div id="listCommentsPart">
+    $comments
+</div>
+END;
+                if(!CommonUtils::hasExpired($this->lists)) {
+                    $commentForm =
+                        <<< END
 <div class="basicForm">
     <form id="listCommentForm" method="post" novalidate>
         <label for="listCommentMessage">Commentaire</label>
@@ -72,6 +87,7 @@ END;
     </form>
 </div>
 END;
+                }
             }
             return
                 <<< END
@@ -83,6 +99,7 @@ END;
     $actionButtons
 </div>
 $commentForm
+$commentsPart
 END;
         } else {
             $sectionContent = "";
