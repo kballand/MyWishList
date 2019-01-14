@@ -22,37 +22,36 @@ nav {
 #signBar {
     margin-top: 7px;
     position: absolute;
-    right: 0;
-    width: 500px;
+    right: 20px;
+    display: inline-flex;
+    flex-direction: row;
 }
 
-/* Boutons de connection et d'enregistrement */
-
-#loginSubmit, #registerButton {
-    color: white;
-    background-color : #1d8eb8;
-}
-
-#loginSubmit:hover, #registerButton:hover {
+#signBar a:hover {
     opacity: 0.9;
 }
 
-/* Chanmps de connection */
+/* Tous les boutons de connection */
 
-#loginUsername, #loginPassword {
-    background-color: #eeeeee;
-    width: 100px;
-}
-
-/* Tous les champs et boutons de connection */
-
-#signBar input {
+#signBar a {
     font-size: 15px;
     padding: 7px;
     border:none;
     border-radius: 3px 3px;
-    margin-left: 1%;
-    margin-right: 1%;
+    margin-left: 5px;
+    margin-right: 5px;
+    color: white;
+    background-color : #1d8eb8;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+#signBar a:first-child {
+    margin-left: 0;
+}
+
+#signBar a:last-child {
+    margin-right: 0;
 }
 
 /* Les menus déroulannts */

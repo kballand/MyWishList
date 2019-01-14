@@ -10,30 +10,37 @@ class RegisterView implements IView
         return
             <<< END
 <section class="basicForm">
-    <form id="registerForm">
+    <form id="registerForm" method="post" novalidate>
         <div class="registerPart">
-            <label for="password">Enter your first name</label>
-            <input type="text" name="firstName" id="registerFirstName" placeholder="First Name" required>
-            <div class="errorContainer">
-                <label class="error" id="firstNameError" for="firstName">This field can't be empty</label>
+            <label for="registerFirstName">Prénom</label>
+            <div class="errorDisplayedField">
+                <input type="text" name="firstName" id="registerFirstName" placeholder="Votre prénom" class="notEmptyField" aria-invalid="true">
+                <span class="displayedError fieldEmptyError" id="itemNameEmptyError">
+                    <p class="displayedMessage" id="firstNameEmptyMessage">Votre prénom ne peut être laissé vide !</p>
+                </span>
             </div>
-            <label for="password">Enter your last name</label>
-            <input type="text" name="lastName" id="registerLastName" placeholder="Last Name" required>
-            <div class="errorContainer">
-                <label class="error" id="lastNameError" for="lastName">This field can't be empty</label>
+            <label for="registerLastName">Nom</label>
+            <div class="errorDisplayedField">
+                <input type="text" name="lastName" id="registerLastName" placeholder="Votre nom" class="notEmptyField" aria-invalid="true">
+                <span class="displayedError fieldEmptyError" id="itemNameEmptyError">
+                    <p class="displayedMessage" id="lastNameEmptyMessage">Votre nom ne peut être laissé vide !</p>
+                </span>
             </div>
         </div>
         <div class="registerPart">
-            <label for="username">Enter your username</label>
-            <input type="text" name="username" id="registerUsername" placeholder="Username" required>
-            <div class="errorContainer">
-                <label class="error" id="usernameLengthError" for="username">Your username must contain at least 5 characters</label>
-                <label class="error" id="usernameTakenError" for="username">Username already taken</label>
+            <label for="registerUsername">Nom d'utilisateur</label>
+            <div class="errorDisplayedField">
+                <input type="text" name="username" id="registerUsername" placeholder="Votre nom d'utilisateur" class="minLengthField" aria-invalid="true">
+                <span class="displayedError fieldMinLengthError" id="usernameMinLengthError">
+                    <p class="displayedMessage" id="usernameMinLengthMessage">Votre nom d'utilisateur doit contenir au moins 5 caractères !</p>
+                </span>
             </div>
-            <label for="email">Enter your email</label>
-            <input type="email" name="email" id="registerEmail" placeholder="Email" required>
-            <div class="errorContainer">
-                <label class="error" id="emailError" for="email">Incorrect format of email</label>
+            <label for="registerEmail">E-mail</label>
+            <div class="errorDisplayedField">
+                <input type="email" name="email" id="registerEmail" placeholder="Votre email" class="emailField" aria-invalid="true">
+                <span class="displayedError emailInvalidError" id="registerEmailInvalidError">
+                    <p class="displayedMessage" id="registerEmailInvalidMessage">Vous devez entrer un email valide !</p>
+                </span>
             </div>
         </div>
         <div class="registerPart">
@@ -69,6 +76,6 @@ END;
 
     public function getRequiredScripts()
     {
-        return [];
+        return ['/js/form.js'];
     }
 }

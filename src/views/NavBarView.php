@@ -48,14 +48,10 @@ class NavBarView implements IView
 			</div>
 		</li>
 	</ul>
-	<span id="signBar">
-		<form id="loginForm">
-		    <input type="text" name="username" id="loginUsername" placeholder="Username">
-		    <input type="password" name="password" id="loginPassword" placeholder="Password">
-		    <input type="submit" id="loginSubmit" value="Se connecter">
-		    <input type="button" id="registerButton" value="S'enregistrer" onclick="window.location.href='$register'">
-        </form>
-    </span>
+	<div id="signBar">
+		<a href="" id="loginButton">Se connecter</a>
+	    <a href="$register" id="registerButton">S'enregistrer</a>
+    </div>
 </nav>
 <div class="content">
     {$this->contentView->render()}
