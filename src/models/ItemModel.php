@@ -19,4 +19,9 @@ class ItemModel extends Model
     {
         return $this->belongsTo('\MyWishList\models\ReservationModel', 'reservation_id');
     }
+
+    public function image()
+    {
+        return $this->belongsTo('\MyWishList\models\ImageModel', 'img');
+    }
 }

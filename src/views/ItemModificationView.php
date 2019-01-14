@@ -16,6 +16,25 @@ class ItemModificationView implements IView
 
     public function render()
     {
+        $imageDisplay = "";
+        $buttonsDisplay = "";
+        $otherDisplay = "";
+        $buttonText = "Ajouter une image";
+        $src = "";
+        $hotlink = "";
+        if(isset($this->item->image)) {
+            $imageDisplay = 'style="display: block"';
+            $buttonsDisplay = 'style="display: inline-block"';
+            $otherDisplay = 'style="display: none"';
+            $buttonText = "Modifier l'image";
+            $image = $this->item->image;
+            if($image->uploaded) {
+                $src = '/img/' . $image->basename;
+            } else {
+                $src = $image->basename;
+            }
+            $hotlink = $image->basename;
+        }
         return
             <<< END
 <section class="basicForm">
@@ -38,16 +57,16 @@ class ItemModificationView implements IView
         </div>
         <label for="itemImage">Image de l'item</label>
         <div class="uploadField" id="itemImage">
-            <img src="" alt="" id="itemImagePreview" class="imagePreview"/>
-            <input type="button" value="Supprimer l'image" class="previewDelete">
-            <label class="popupOpener previewChanger">Ajouter une image</label>
+            <img src="$src" alt="" id="itemImagePreview" class="imagePreview" $imageDisplay>
+            <input type="button" value="Supprimer l'image" class="previewDelete" $buttonsDisplay>
+            <label class="popupOpener previewChanger">$buttonText</label>
             <div class="popup">
                 <div class="popupContent">
                     <div class="imageHotlinkField">
                         <label for="itemImageHotlink">URL de l'image</label>
-                        <input type="url" name="imageHotlink" id="itemImageHotlink" class="imageHotlink">
+                        <input type="url" name="imageHotlink" id="itemImageHotlink" class="imageHotlink" value="$hotlink">
                     </div>
-                    <div class="imageUploaderField">
+                    <div class="imageUploaderField" $otherDisplay>
                         <label>Uploadez votre image</label>
                         <input type="file" accept="image/*" name="imageUpload" id="itemImageUploader" class="imageUploader">
                     </div>
@@ -67,11 +86,11 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/form.css'];
+        return ['/css/form.css', '/css/popup.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/upload.js', '/js/form.js'];
+        return ['/js/upload.js', '/js/form.js', '/js/popup.js'];
     }
 }

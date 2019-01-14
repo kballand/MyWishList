@@ -3,6 +3,7 @@
 namespace MyWishList\utils;
 
 
+use MyWishList\models\ImageModel;
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
 use MyWishList\views\RedirectionView;
@@ -141,7 +142,7 @@ END;
         return substr($haystack, 0, $length) === $needle;
     }
 
-    public static function ownList($list)
+    public static function ownList(ListModel $list)
     {
         if (!self::hasExpired($list)) {
             if (isset($_COOKIE['mywishlist-' . $list->no])) {
@@ -186,28 +187,32 @@ END;
         return $view;
     }
 
-    public static function hasExpired($list)
+    public static function hasExpired(ListModel $list)
     {
         return strtotime($list->expiration) <= strtotime('now');
     }
 
-    public static function areIdentical($fileA, $fileB)
-    {
-        if (filesize($fileA) === filesize($fileB)) {
-            $readerA = fopen($fileA, 'rb');
-            $readerB = fopen($fileB, 'rb');
-            while (($bytesA = fread($readerA, 4096)) !== false) {
-                $bytesB = fread($readerB, 4096);
-                if ($bytesA !== $bytesB) {
-                    fclose($readerA);
-                    fclose($readerB);
-                    return false;
-                }
-            }
-            fclose($readerA);
-            fclose($readerB);
-            return true;
+    public static function deleteList(ListModel $list) {
+        foreach($list->items as $item) {
+            self::deleteItem($item);
         }
-        return false;
+        $list->delete();
+    }
+
+    public static function deleteItem(ItemModel $item) {
+        $image = $item->image;
+        $item->delete();
+        self::deleteUnusedImage($image);
+    }
+
+    public static function deleteUnusedImage(ImageModel $image) {
+        if(isset($image)) {
+            if((!isset($image->items) || count($image->items) === 0) && !$image->local) {
+                if($image->uploaded && file_exists('img/' . $image->basename)) {
+                    unlink('img/' . $image->basename);
+                }
+                $image->delete();
+            }
+        }
     }
 }

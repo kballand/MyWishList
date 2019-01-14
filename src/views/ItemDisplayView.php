@@ -24,8 +24,12 @@ class ItemDisplayView implements IView
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
         if ($this->items instanceof ItemModel) {
             $img = "";
-            if (isset($this->items->img) && !empty($this->items->img)) {
-                $img = '<img class="itemImg" src="/img/' . $this->items->img . '" />';
+            if (isset($this->items->image)) {
+                if($this->items->image->uploaded) {
+                    $img = '<img class="itemImg" src="/img/' . $this->items->image->basename . '" />';
+                } else {
+                    $img = '<img class="itemImg" src="' . $this->items->image->basename . '" />';
+                }
             }
             $description = "";
             if (isset($this->items->description) && !empty($this->items->description)) {
@@ -101,8 +105,12 @@ END;
             }
             foreach ($this->items as $item) {
                 $img = "";
-                if (isset($item->img) && !empty($item->img)) {
-                    $img = '<img class="itemImg" src="/img/' . $item->img . '" />';
+                if (isset($item->image)) {
+                    if($item->image->uploaded) {
+                        $img = '<img class="itemImg" src="/img/' . $item->image->basename . '" />';
+                    } else {
+                        $img = '<img class="itemImg" src="' . $item->image->basename . '" />';
+                    }
                 }
                 $reservationState = "Non réservé";
                 if (isset($item->reservation)) {

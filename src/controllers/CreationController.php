@@ -3,6 +3,7 @@
 namespace MyWishList\controllers;
 
 use MyWishList\models\CommentModel;
+use MyWishList\models\ImageModel;
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
 use MyWishList\models\ReservationModel;
@@ -95,32 +96,72 @@ class CreationController
                                 $tmpName = $file['tmp_name'];
                                 if (getimagesize($tmpName) !== false) {
                                     $name = basename($file['name']);
+                                    if($name > 255 && file_exists('img/' . $name)) {
+                                        $name = substr($name, 0, 251);
+                                    } else if($name > 255) {
+                                        $name = substr($name, 0, 255);
+                                    }
                                     $finalName = $name;
                                     $count = 1;
-                                    while (file_exists('/img/' . $finalName) && !CommonUtils::areIdentical('/img/' . $finalName, $tmpName)) {
+                                    while (file_exists('img/' . $finalName) && !(md5_file('img/' . $finalName) === md5_file($tmpName))) {
                                         $finalName = $name . ' (' . $count . ')';
                                         ++$count;
                                     }
-                                    if (move_uploaded_file($tmpName, 'img/' . $finalName)) {
+                                    if (file_exists('img/' . $finalName)) {
+                                        $image = ImageModel::where('basename', '=', $finalName)->first();
+                                        if(!isset($image)) {
+                                            $image = new ImageModel();
+                                            $image->basename = $finalName;
+                                            $image->uploaded = true;
+                                            $image->local = false;
+                                            $image->save();
+                                        }
                                         $item->img = $finalName;
                                         $item->save();
                                         $view = new RedirectionView($listPath, 'Création de l\'item réussie avec succès !', 'Votre item a bien été ajouté à votre liste, vous allez être redirigé vers votre liste dans 5 secondes.');
                                     } else {
-                                        $view = new RedirectionView($listPath, 'Echec de la création de l\'item !', 'Une erreur est survenue lors de l\'upload de l\'image, vous allez être ridirigé vers votre liste dans 5 secondes.');
+                                        if (move_uploaded_file($tmpName, 'img/' . $finalName)) {
+                                            $image = new ImageModel();
+                                            $image->basename = $finalName;
+                                            $image->uploaded = true;
+                                            $image->local = false;
+                                            $image->save();
+                                            $item->img = $finalName;
+                                            $item->save();
+                                            $view = new RedirectionView($listPath, 'Création de l\'item réussie avec succès !', 'Votre item a bien été ajouté à votre liste, vous allez être redirigé vers votre liste dans 5 secondes.');
+                                        } else {
+                                            $view = new RedirectionView($listPath, 'Echec de la création de l\'item !', 'Une erreur est survenue lors de l\'upload de l\'image, vous allez être ridirigé vers votre liste dans 5 secondes.');
+                                        }
                                     }
                                 } else {
                                     $view = new RedirectionView($listPath, 'Echec de la création de l\'item !', 'L\'image fournie n\'existe pas, vous allez être ridirigé vers votre liste dans 5 secondes.');
                                 }
                             } else if (isset($_POST['imageHotlink']) && !empty($_POST['imageHotlink'])) {
-                                $imageHotlink = $_POST['imageHotlink'];
+                                $imageHotlink = filter_var($_POST['imageHotlink'], FILTER_SANITIZE_URL);
                                 if (file_exists('img/' . $imageHotlink) || getimagesize($imageHotlink) !== false) {
-                                    if (file_exists('img/' . $imageHotlink)) {
+                                    if(strlen($imageHotlink) <= 255) {
+                                        if (file_exists('img/' . $imageHotlink)) {
+                                            $image = ImageModel::where('basename', '=', $imageHotlink)->first();
+                                            if(!isset($image)) {
+                                                $image = new ImageModel();
+                                                $image->basename = $imageHotlink;
+                                                $image->uploaded = true;
+                                                $image->local = false;
+                                                $image->save();
+                                            }
+                                        } else {
+                                            $image = new ImageModel();
+                                            $image->basename = $imageHotlink;
+                                            $image->uploaded = false;
+                                            $image->local = false;
+                                            $image->save();
+                                        }
                                         $item->img = $imageHotlink;
+                                        $item->save();
+                                        $view = new RedirectionView($listPath, 'Création de l\'item réussie avec succès !', 'Votre item a bien été ajouté à votre liste, vous allez être redirigé vers votre liste dans 5 secondes.');
                                     } else {
-                                        $item->img = $imageHotlink;
+                                        $view = new RedirectionView($listPath, 'Echec de la création de l\'item !', 'L\'url de l\'image fournie est trop long, vous allez être ridirigé vers votre liste dans 5 secondes.');
                                     }
-                                    $item->save();
-                                    $view = new RedirectionView($listPath, 'Création de l\'item réussie avec succès !', 'Votre item a bien été ajouté à votre liste, vous allez être redirigé vers votre liste dans 5 secondes.');
                                 } else {
                                     $view = new RedirectionView($listPath, 'Echec de la création de l\'item !', 'L\'image fournie n\'existe pas, vous allez être ridirigé vers votre liste dans 5 secondes.');
                                 }
