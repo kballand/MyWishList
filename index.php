@@ -59,12 +59,12 @@ $app->getContainer()['notFoundHandler'] = function () {
 
 $app->get('/liste/partage/{no}', function($token_partage){
     $controller = ShareController::getInstance();
-    $ctrl->shareList($token_partage);
-})->name('Msg2');
+    $content = $controller->shareList($token_partage);
+});
 
-$app->post('/liste/partage/:token', function($token_partage){
-    $ctrl=new ShareController::ge;
-    $ctrl->setMsg();
+$app->post('/liste/partage/{no}', function($token_partage){
+    $controller=ShareController::getInstance();
+    $content=$controller->setMsg();
 });
 
 $app->get('/', function(Request $request, Response $response) {
