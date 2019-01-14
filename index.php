@@ -5,6 +5,7 @@ include_once "vendor/autoload.php";
 use Illuminate\Database\Capsule\Manager;
 use MyWishList\controllers\DisplayController;
 use MyWishList\controllers\ModifyController;
+use MyWishList\controllers\ShareController;
 use \Slim\Http\Response;
 use \Slim\Http\Request;
 use MyWishList\utils\SlimSingleton;
@@ -44,6 +45,16 @@ $app->getContainer()['notFoundHandler'] = function () {
         return $response;
     };
 };
+
+$app->get('/liste/partage/{no}', function($token_partage){
+    $controller = ShareController::getInstance();
+    $ctrl->shareList($token_partage);
+})->name('Msg2');
+
+$app->post('/liste/partage/:token', function($token_partage){
+    $ctrl=new ShareController::ge;
+    $ctrl->setMsg();
+});
 
 $app->get('/', function(Request $request, Response $response) {
     $controller = DisplayController::getInstance();
