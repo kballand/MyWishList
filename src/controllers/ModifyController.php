@@ -93,9 +93,9 @@ class ModifyController
                                 $tmpName = $file['tmp_name'];
                                 if (getimagesize($tmpName) !== false) {
                                     $name = basename($file['name']);
-                                    if($name > 255 && file_exists('img/' . $name)) {
+                                    if ($name > 255 && file_exists('img/' . $name)) {
                                         $name = substr($name, 0, 251);
-                                    } else if($name > 255) {
+                                    } else if ($name > 255) {
                                         $name = substr($name, 0, 255);
                                     }
                                     $finalName = $name;
@@ -106,7 +106,7 @@ class ModifyController
                                     }
                                     if (file_exists('img/' . $finalName)) {
                                         $image = ImageModel::where('basename', '=', $finalName)->first();
-                                        if(!isset($image)) {
+                                        if (!isset($image)) {
                                             $image = new ImageModel();
                                             $image->basename = $finalName;
                                             $image->uploaded = true;
@@ -140,10 +140,10 @@ class ModifyController
                             } else if (isset($_POST['imageHotlink']) && !empty($_POST['imageHotlink'])) {
                                 $imageHotlink = filter_var($_POST['imageHotlink'], FILTER_SANITIZE_URL);
                                 if (file_exists('img/' . $imageHotlink) || getimagesize($imageHotlink) !== false) {
-                                    if(strlen($imageHotlink) <= 255) {
+                                    if (strlen($imageHotlink) <= 255) {
                                         if (file_exists('img/' . $imageHotlink)) {
                                             $image = ImageModel::where('basename', '=', $imageHotlink)->first();
-                                            if(!isset($image)) {
+                                            if (!isset($image)) {
                                                 $image = new ImageModel();
                                                 $image->basename = $imageHotlink;
                                                 $image->uploaded = true;

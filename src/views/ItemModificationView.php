@@ -22,13 +22,13 @@ class ItemModificationView implements IView
         $buttonText = "Ajouter une image";
         $src = "";
         $hotlink = "";
-        if(isset($this->item->image)) {
+        if (isset($this->item->image)) {
             $imageDisplay = 'style="display: block"';
             $buttonsDisplay = 'style="display: inline-block"';
             $otherDisplay = 'style="display: none"';
             $buttonText = "Modifier l'image";
             $image = $this->item->image;
-            if($image->uploaded) {
+            if ($image->uploaded) {
                 $src = '/img/' . $image->basename;
             } else {
                 $src = $image->basename;

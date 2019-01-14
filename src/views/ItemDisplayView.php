@@ -25,7 +25,7 @@ class ItemDisplayView implements IView
         if ($this->items instanceof ItemModel) {
             $img = "";
             if (isset($this->items->image)) {
-                if($this->items->image->uploaded) {
+                if ($this->items->image->uploaded) {
                     $img = '<img class="itemImg" src="/img/' . $this->items->image->basename . '" />';
                 } else {
                     $img = '<img class="itemImg" src="' . $this->items->image->basename . '" />';
@@ -106,7 +106,7 @@ END;
             foreach ($this->items as $item) {
                 $img = "";
                 if (isset($item->image)) {
-                    if($item->image->uploaded) {
+                    if ($item->image->uploaded) {
                         $img = '<img class="itemImg" src="/img/' . $item->image->basename . '" />';
                     } else {
                         $img = '<img class="itemImg" src="' . $item->image->basename . '" />';

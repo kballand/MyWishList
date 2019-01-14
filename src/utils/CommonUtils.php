@@ -192,23 +192,26 @@ END;
         return strtotime($list->expiration) <= strtotime('now');
     }
 
-    public static function deleteList(ListModel $list) {
-        foreach($list->items as $item) {
+    public static function deleteList(ListModel $list)
+    {
+        foreach ($list->items as $item) {
             self::deleteItem($item);
         }
         $list->delete();
     }
 
-    public static function deleteItem(ItemModel $item) {
+    public static function deleteItem(ItemModel $item)
+    {
         $image = $item->image;
         $item->delete();
         self::deleteUnusedImage($image);
     }
 
-    public static function deleteUnusedImage(ImageModel $image) {
-        if(isset($image)) {
-            if((!isset($image->items) || count($image->items) === 0) && !$image->local) {
-                if($image->uploaded && file_exists('img/' . $image->basename)) {
+    public static function deleteUnusedImage(ImageModel $image)
+    {
+        if (isset($image)) {
+            if ((!isset($image->items) || count($image->items) === 0) && !$image->local) {
+                if ($image->uploaded && file_exists('img/' . $image->basename)) {
                     unlink('img/' . $image->basename);
                 }
                 $image->delete();
