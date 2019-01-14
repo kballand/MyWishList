@@ -6,6 +6,7 @@ use Illuminate\Database\Capsule\Manager;
 use MyWishList\controllers\CreationController;
 use MyWishList\controllers\DisplayController;
 use MyWishList\controllers\ModifyController;
+use MyWishList\controllers\ShareController;
 use \Slim\Http\Response;
 use \Slim\Http\Request;
 use MyWishList\utils\SlimSingleton;
@@ -55,6 +56,16 @@ $app->getContainer()['notFoundHandler'] = function () {
         return $response;
     };
 };
+
+$app->get('/liste/partage/{no}', function($token_partage){
+    $controller = ShareController::getInstance();
+    $content = $controller->shareList($token_partage);
+});
+
+$app->post('/liste/partage/{no}', function($token_partage){
+    $controller=ShareController::getInstance();
+    $content=$controller->setMsg();
+});
 
 $app->get('/', function(Request $request, Response $response) {
     $controller = DisplayController::getInstance();
