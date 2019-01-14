@@ -5,14 +5,16 @@ namespace MyWishList\views;
 
 use DateTime;
 
-class ListCreationView implements IView {
+class ListCreationView implements IView
+{
 
-    public function render() {
-        $date = new DateTime('now');
+    public function render()
+    {
+        $date = new DateTime('tomorrow');
         return
-<<< END
+            <<< END
 <section class="basicForm">
-    <form id="listCreationForm" method="post">
+    <form id="listCreationForm" method="post" novalidate>
         <label for="listTitle">Titre</label>
         <div class="errorDisplayedField">
             <input type="text" name="title" id="listTitle" placeholder="Titre de la liste" class="notEmptyField" aria-invalid="true">
@@ -23,7 +25,7 @@ class ListCreationView implements IView {
         <label for="listDescription">Description</label>
         <textarea name="description" id="listDescription" rows="10" cols="60" placeholder="Entrez ici la description de votre liste... (500 caractères maximum)" maxlength="500"></textarea>
         <label for="listExpiration">Date d'expiration</label>
-        <div class="errorDisplayedField">
+        <div class="dateField errorDisplayedField">
             <input type="date" name="expirationDate" id="listExpirationDate" min="{$date->format('Y-m-d')}" class="notEmptyField ulteriorDate" aria-invalid="true">
             <span class="displayedError fieldEmptyError" id="listDateEmptyError">
                 <p class="displayedMessage" id="dateEmptyMessage">La date d'expiration de la liste doit être complétée !</p>
@@ -32,24 +34,19 @@ class ListCreationView implements IView {
                 <p class="displayedMessage" id="incorrectDateMessage">La date d'expiration de la liste doit être ultérieure à la date actuelle !</p>
             </span>
         </div>
-        <label for="listImage">Image de la liste</label>
-        <div class="uploadField" id="listImage">
-            <img src="" alt="" id="listImagePreview" class="imagePreview"/>
-            <input type="button" value="Supprimer l'image" class="previewDelete">
-            <label for="listImageUploader" class="previewChanger">Ajouter une image</label>
-            <input type="file" accept="image/*" name="imageName" id="listImageUploader" class="imageUploader">
-        </div>
-        <input type="submit" value="Créer la liste" id="createListButton">
+        <input type="submit" value="Créer la liste" id="createListButton" class="validateButton">
     </form>
 </section>
 END;
     }
 
-    public function getRequiredCSS() {
-        return ['/css/form.css', '/css/list.css'];
+    public function getRequiredCSS()
+    {
+        return ['/css/form.css'];
     }
 
-    public function getRequiredScripts() {
+    public function getRequiredScripts()
+    {
         return ['/js/upload.js', '/js/form.js'];
     }
 }

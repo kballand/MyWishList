@@ -3,15 +3,18 @@
 namespace MyWishList\views;
 
 
-class NotFoundView implements IView {
+class NotFoundView implements IView
+{
     private $urlRequested;
 
-    public function __construct($urlRequested) {
+    public function __construct($urlRequested)
+    {
         $this->urlRequested = $urlRequested;
     }
 
 
-    public function render() {
+    public function render()
+    {
         return
             <<< END
 <!DOCTYPE html>
@@ -31,11 +34,13 @@ class NotFoundView implements IView {
 END;
     }
 
-    public function getRequiredCSS() {
+    public function getRequiredCSS()
+    {
         return [];
     }
 
-    public function getRequiredScripts() {
+    public function getRequiredScripts()
+    {
         return [];
     }
 }

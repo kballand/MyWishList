@@ -4,20 +4,24 @@ namespace MyWishList\views;
 
 
 use DateTime;
+use MyWishList\models\ListModel;
 
-class ListModificationView implements IView {
+class ListModificationView implements IView
+{
     private $list;
 
-    public function __construct($list) {
+    public function __construct(ListModel $list)
+    {
         $this->list = $list;
     }
 
-    public function render() {
-        $date = new DateTime('now');
+    public function render()
+    {
+        $date = new DateTime('tomorrow');
         return
-<<< END
+            <<< END
 <section class="basicForm">
-    <form id="listCreationForm" method="post">
+    <form id="listCreationForm" method="post" novalidate>
         <label for="listTitle">Titre</label>
         <div class="errorDisplayedField">
             <input type="text" name="title" id="listTitle" placeholder="Titre de la liste" class="notEmptyField" value="{$this->list->title}" aria-invalid="true">
@@ -37,24 +41,19 @@ class ListModificationView implements IView {
                 <p class="displayedMessage" id="incorrectDateMessage">La date d'expiration de la liste doit être ultérieure à la date actuelle !</p>
             </span>
         </div>
-        <label for="listImage">Image de la liste</label>
-        <div class="uploadField" id="listImage">
-            <img src="" alt="" id="listImagePreview" class="imagePreview"/>
-            <input type="button" value="Supprimer l'image" class="previewDelete">
-            <label for="listImageUploader" class="previewChanger">Ajouter une image</label>
-            <input type="file" accept="image/*" name="imageName" id="listImageUploader" class="imageUploader">
-        </div>
-        <input type="submit" value="Modifier la liste" id="createListButton">
+        <input type="submit" value="Modifier la liste" id="modifyListButton" class="validateButton">
     </form>
 </section>
 END;
     }
 
-    public function getRequiredCSS() {
-        return ['/css/form.css', '/css/list.css'];
+    public function getRequiredCSS()
+    {
+        return ['/css/form.css'];
     }
 
-    public function getRequiredScripts() {
+    public function getRequiredScripts()
+    {
         return ['/js/upload.js', '/js/form.js'];
     }
 }

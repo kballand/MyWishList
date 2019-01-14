@@ -21,8 +21,8 @@ $(document).ready(function () {
     });
     let navBar = $('nav');
     let offset = navBar.offset().top;
-    window.onscroll = function() {
-        if(window.pageYOffset >= offset) {
+    window.onscroll = function () {
+        if (window.pageYOffset >= offset) {
             navBar.addClass('sticky');
         } else {
             navBar.removeClass('sticky');
@@ -39,8 +39,8 @@ $(document).ready(function () {
     parts.hide();
     parts.first().show();
     next.click(function () {
-        if(currentPart < parts.length - 1) {
-            if(currentPart === 0) {
+        if (currentPart < parts.length - 1) {
+            if (currentPart === 0) {
                 prev.show();
                 next.css('margin-left', '12%');
             }
@@ -48,7 +48,7 @@ $(document).ready(function () {
             steps.eq(currentPart).addClass('stepFinish');
             parts.eq(currentPart).hide();
             ++currentPart;
-            if(currentPart === parts.length - 1) {
+            if (currentPart === parts.length - 1) {
                 next.text('Submit');
             }
             parts.eq(currentPart).show();
@@ -58,14 +58,14 @@ $(document).ready(function () {
         }
     });
     prev.click(function () {
-        if(currentPart !== 0) {
-            if(currentPart === parts.length - 1) {
+        if (currentPart !== 0) {
+            if (currentPart === parts.length - 1) {
                 next.text('Next');
             }
             steps.eq(currentPart).removeClass('stepActive');
             parts.eq(currentPart).hide();
             --currentPart;
-            if(currentPart === 0) {
+            if (currentPart === 0) {
                 next.css('margin-left', '0');
                 prev.hide();
             }
@@ -73,34 +73,4 @@ $(document).ready(function () {
             steps.eq(currentPart).addClass('stepActive');
         }
     });
-
-    //popup pour partager
-
-    let popup = document.getElementById('myPopup');
-
-    let btn = document.getElementById("myBtn");
-
-    let span = document.getElementsByClassName("close")[0];
-
-    btn.onclick = function() {
-        popup.style.display = "block";
-    };
-
-    span.onclick = function() {
-        popup.style.display = "none";
-    };
-    window.onclick = function(event) {
-        if (event.target == popup) {
-            popup.style.display = "none";
-        }
-    };
-
-//copier dans le presse papier
-
-
 });
-function copier() {
-    let copyText = document.getElementById("textcopy");
-    copyText.select();
-    document.execCommand("copy");
-};

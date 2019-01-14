@@ -9,11 +9,67 @@ CREATE TABLE `item` (
   `list_id` int(11) NOT NULL,
   `name` text NOT NULL,
   `description` text,
-  `img` text,
+  `img` varchar(255),
   `url` text,
   `price` decimal(5,2) DEFAULT NULL,
+  `reservation_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `reservation`;
+CREATE TABLE `reservation` (
+  `no` int(11) NOT NULL AUTO_INCREMENT,
+  `participant` text NOT NULL,
+  `message` text,
+  PRIMARY KEY (`no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `list_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- uploaded = sur le serveur et local = present à la base et à ne pas supprimer
+
+DROP TABLE IF EXISTS `image`;
+CREATE TABLE `image` (
+  `basename` varchar(255) NOT NULL,
+  `uploaded` boolean NOT NULL,
+  `local` text NOT NULL,
+  PRIMARY KEY (`basename`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `image` VALUES
+('opera.jpg', true, true),
+('index.jpg', true, true),
+('diner.jpg', true, true),
+('connaissance.jpg', true, true),
+('cocktail.jpg', true, true),
+('cadeaux.jpg', true, true),
+('animateur.jpg', true, true),
+('champagne.jpg', true, true),
+('musique.jpg', true, true),
+('poirelregarder.jpg', true, true),
+('gouter.jpg', true, true),
+('film.jpg', true, true),
+('rose.jpg', true, true),
+('bonroi.jpg', true, true),
+('origami.jpg', true, true),
+('bricolage.jpg', true, true),
+('grandrue.jpg', true, true),
+('place.jpg', true, true),
+('bijoux.jpg', true, true),
+('contact.jpg', true, true),
+('concert.jpg', true, true),
+('apparthotel.jpg', true, true),
+('hotelreine.jpg', true, true),
+('hotel_haussonville_logo.jpg', true, true),
+('boitedenuit.jpg', true, true),
+('laser.jpg', true, true),
+('fort.jpg', true, true);
 
 INSERT INTO `item` (`id`, `list_id`, `name`, `description`, `img`, `url`, `price`) VALUES
 (1,	2,	'Champagne',	'Bouteille de champagne + flutes + jeux à gratter',	'champagne.jpg',	'',	20.00),

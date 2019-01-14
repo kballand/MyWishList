@@ -3,8 +3,10 @@
 namespace MyWishList\views;
 
 
-class RegisterView implements IView {
-    public function render() {
+class RegisterView implements IView
+{
+    public function render()
+    {
         return
             <<< END
 <section class="basicForm">
@@ -60,11 +62,13 @@ class RegisterView implements IView {
 END;
     }
 
-    public function getRequiredCSS() {
+    public function getRequiredCSS()
+    {
         return ['/css/form.css', '/css/registration.css'];
     }
 
-    public function getRequiredScripts() {
+    public function getRequiredScripts()
+    {
         return [];
     }
 }

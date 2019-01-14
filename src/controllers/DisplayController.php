@@ -1,107 +1,168 @@
 <?php
+
 namespace MyWishList\controllers;
 
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
-use MyWishList\utils\SlimSingleton;
+use MyWishList\utils\CommonUtils;
 use MyWishList\views\BasicView;
 use MyWishList\views\IndexView;
-use MyWishList\views\ItemsDisplayView;
+use MyWishList\views\ItemCreationView;
+use MyWishList\views\ItemDisplayView;
+use MyWishList\views\ItemModificationView;
+use MyWishList\views\ItemReservationView;
 use MyWishList\views\ListCreationView;
+use MyWishList\views\ListDisplayView;
 use MyWishList\views\ListModificationView;
-use MyWishList\views\ListsDisplayView;
 use MyWishList\views\NavBarView;
 use MyWishList\views\NotFoundView;
-use MyWishList\views\RedirectionView;
 use MyWishList\views\RegisterView;
 use Slim\Http\Request;
 
-class DisplayController {
+class DisplayController
+{
     private static $instance;
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
-    public static function getInstance() {
-        if(!isset(self::$instance)) {
+    public static function getInstance()
+    {
+        if (!isset(self::$instance)) {
             self::$instance = new DisplayController();
         }
         return self::$instance;
     }
 
-    public function displayLists() {
+    public function displayLists()
+    {
         $lists = ListModel::get();
-        $view = new ListsDisplayView($lists);
-        $view = new BasicView(new NavBarView($view));
+        $view = new ListDisplayView($lists, true);
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayList($no) {
-        $no = filter_var($no, FILTER_SANITIZE_NUMBER_INT);
-        $list = ListModel::where('no', '=', $no)->first();
-        $view = new ListsDisplayView($list);
-        $view = new BasicView(new NavBarView($view));
+    public function displayList(Request $request, $no)
+    {
+        $canAccess = CommonUtils::canAccessList($request, $no, 'Echec de l\'accès à la liste', false, $modificationGranted);
+        if ($canAccess instanceof ListModel) {
+            $list = $canAccess;
+            if ($modificationGranted) {
+                $view = new ListDisplayView($list, true);
+            } else {
+                $view = new ListDisplayView($list, false, CommonUtils::ownList($list));
+            }
+        } else {
+            $view = $canAccess;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayItem($id) {
-        $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-        $item = ItemModel::where('id', '=', $id)->first();
-        $view = new ItemsDisplayView($item);
-        $view = new BasicView(new NavBarView($view));
+    public function displayItem(Request $request, $no, $id)
+    {
+        $canAccess = CommonUtils::canAccessItem($request, $no, $id, 'Echec de l\'accès à l\'item !', false, $modificationGranted);
+        if ($canAccess instanceof ItemModel) {
+            $item = $canAccess;
+            if ($modificationGranted) {
+                $view = new ItemDisplayView($item, true);
+            } else {
+                $view = new ItemDisplayView($item, false);
+            }
+        } else {
+            $view = $canAccess;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayBookings($no) {
-
-    }
-
-    public function displayListBooking($no) {
-
-    }
-
-    public function displayIndex() {
-        $view = new BasicView(new NavBarView(new IndexView()));
+    public function displayIndex()
+    {
+        $view = new IndexView();
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayRegistration() {
+    public function displayRegistration()
+    {
         $view = new RegisterView();
-        $view = new BasicView(new NavBarView($view));
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayNotFound($requestedUrl) {
+    public function displayNotFound($requestedUrl)
+    {
         $requestedUrl = filter_var($requestedUrl, FILTER_SANITIZE_URL);
         $view = new NotFoundView($requestedUrl);
         return $view->render();
     }
 
-    public function displayListCreation() {
+    public function displayListCreation()
+    {
         $view = new ListCreationView();
-        $view = new BasicView(new NavBarView($view));
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 
-    public function displayListModification(Request $request, $no) {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
-        $no = filter_var($no, FILTER_SANITIZE_NUMBER_INT);
-        $list = ListModel::where('no', '=', $no)->first();
-        if(isset($list)) {
-            $token = $request->getParam('token');
-            if(isset($token)) {
-                $modify_token = $list->modify_token;
-                if($token === $modify_token) {
-                    $view = new ListModificationView($list);
-                } else {
-                    $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'accès à la modification de la liste !', 'Mauvais token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
-                }
-            } else {
-                $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'accès à la modification de la liste !', 'Absence du token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
-            }
+    public function displayListModification(Request $request, $no)
+    {
+        $canModify = CommonUtils::canAccessList($request, $no, 'Echec de l\'accès à la modification de la liste !', true);
+        if ($canModify instanceof ListModel) {
+            $list = $canModify;
+            $view = new ListModificationView($list);
         } else {
-            $view = new RedirectionView($router->pathFor('index'), 'Echec de l\'accès à la modification de la liste !', 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+            $view = $canModify;
         }
-        $view = new BasicView(new NavBarView($view));
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function displayItemCreation(Request $request, $no)
+    {
+        $canModify = CommonUtils::canAccessList($request, $no, 'Echec de l\'ajout d\'un item à la liste !', true);
+        if ($canModify instanceof ListModel) {
+            $view = new ItemCreationView();
+        } else {
+            $view = $canModify;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function displayItemModification(Request $request, $no, $id)
+    {
+        $canModify = CommonUtils::canAccessItem($request, $no, $id, 'Echec de l\'accès à la modification de l\'item !', true);
+        if ($canModify instanceof ItemModel) {
+            $item = $canModify;
+            $view = new ItemModificationView($item);
+        } else {
+            $view = $canModify;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function displayItemReservation(Request $request, $no, $id)
+    {
+        $canReserve = CommonUtils::canReserveItem($request, $no, $id, 'Echec de l\'accès à la réservation de l\'item !');
+        if ($canReserve instanceof ItemModel) {
+            $item = $canReserve;
+            $view = new ItemReservationView($item);
+        } else {
+            $view = $canReserve;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
         return $view->render();
     }
 }
