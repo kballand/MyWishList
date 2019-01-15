@@ -212,6 +212,6 @@ $app->get('/public', function (Request $request, Response $response) {
 $app->get('/account/modify', function (Request $request, Response $response) {
    $controller = DisplayController::getInstance();
    $response->write($controller->displayAccountModification());
-});
+})->setName('modifyAccount');
 
 $app->run();

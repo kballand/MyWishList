@@ -9,6 +9,7 @@ use MyWishList\utils\Authentication;
 use MyWishList\utils\CommonUtils;
 use MyWishList\utils\SlimSingleton;
 use MyWishList\views\AccountDisplayView;
+use MyWishList\views\AccountModificationView;
 use MyWishList\views\BasicView;
 use MyWishList\views\IndexView;
 use MyWishList\views\ItemCreationView;
