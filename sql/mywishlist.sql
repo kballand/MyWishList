@@ -19,6 +19,7 @@ CREATE TABLE `item` (
 DROP TABLE IF EXISTS `reservation`;
 CREATE TABLE `reservation` (
   `no` int(11) NOT NULL AUTO_INCREMENT,
+  `purchaser` varchar(20) DEFAULT NULL,
   `participant` text NOT NULL,
   `message` text,
   PRIMARY KEY (`no`)
@@ -29,6 +30,7 @@ CREATE TABLE `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `list_id` int(11) NOT NULL,
   `comment` text NOT NULL,
+  `sender` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -40,6 +42,17 @@ CREATE TABLE `image` (
   `uploaded` boolean NOT NULL,
   `local` text NOT NULL,
   PRIMARY KEY (`basename`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
+  `username` varchar(20) NOT NULL,
+  `first_name` text NOT NULL,
+  `last_name` text NOT NULL,
+  `email` text NOT NULL,
+  `password` text NOT NULL,
+  `participant` boolean DEFAULT FALSE,
+  PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `image` VALUES
@@ -99,8 +112,10 @@ CREATE TABLE `list` (
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci,
   `expiration` date DEFAULT NULL,
+  `owner_name` varchar(20) DEFAULT NULL,
   `access_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `modify_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `public` boolean DEFAULT FALSE,
   PRIMARY KEY (`no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

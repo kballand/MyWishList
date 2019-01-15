@@ -10,7 +10,7 @@ class RegisterView implements IView
         return
             <<< END
 <section class="basicForm">
-    <form id="registerForm" method="post" novalidate>
+    <form id="registerForm" class="multipartForm" method="post" novalidate>
         <div class="registerPart">
             <label for="registerFirstName">Prénom</label>
             <div class="errorDisplayedField">
@@ -30,9 +30,9 @@ class RegisterView implements IView
         <div class="registerPart">
             <label for="registerUsername">Nom d'utilisateur</label>
             <div class="errorDisplayedField">
-                <input type="text" name="username" id="registerUsername" placeholder="Votre nom d'utilisateur" class="minLengthField" aria-invalid="true">
-                <span class="displayedError fieldMinLengthError" id="usernameMinLengthError">
-                    <p class="displayedMessage" id="usernameMinLengthMessage">Votre nom d'utilisateur doit contenir au moins 5 caractères !</p>
+                <input type="text" name="username" id="registerUsername" placeholder="Votre nom d'utilisateur" class="usernameUniqueField" maxlength="20" aria-invalid="true">
+                <span class="displayedError usernameUniqueError" id="registerUsernameUniqueError">
+                    <p class="displayedMessage" id="registerUsernameUniqueMessage"></p>
                 </span>
             </div>
             <label for="registerEmail">E-mail</label>
@@ -44,16 +44,22 @@ class RegisterView implements IView
             </div>
         </div>
         <div class="registerPart">
-            <label for="password">Enter your password</label>
-            <input type="password" name="password" id="registerPassword" placeholder="Password" required>
-            <div class="errorContainer">
-                <label class="error" id="passwordError" for="password">Your password must contain at least 5 characters</label>
+            <label for="registerPassword">Mot de passe</label>
+            <div class="errorDisplayedField">
+                <input type="password" name="password" id="registerPassword" placeholder="Votre mot de passe" class="passwordField" aria-invalid="true">
+                <span class="displayedError passwordInvalidError" id="registerPasswordInvalidError">
+                    <p class="displayedMessage" id="registerPasswordInvalidMessage">Mot de passe invalide !</p>
+                </span>
             </div>
-            <label for="password">Enter the same password</label>
-            <input type="password" id="registerPasswordChecker" placeholder="Password" required>
-            <div class="errorContainer">
-                <label class="error" id="passwordCopyError" for="password">This password is different from the previous one</label>
+            <label for="registerVerifyPassword">Même mot de passe</label>
+            <div class="errorDisplayedField">
+                <input type="password" id="registerVerifyPassword" placeholder="Retapez votre mot de passe" class="passwordVerifyField" aria-invalid="true">
+                <span class="displayedError passwordVerifyInvalidError" id="registerPasswordVerifyInvalidError">
+                    <p class="displayedMessage" id="registerPasswordVerifyInvalidMessage">Mot de passe différent !</p>
+                </span>
             </div>
+            <label for="registerParticipantCheckbox">Compte de participation uniquement</label>
+            <input type="checkbox" name="participant" id="registerParticipantCheckbox">
         </div>
         <div id="registerButtons">
             <button type="button" id="registerPreviousStep">Previous</button>

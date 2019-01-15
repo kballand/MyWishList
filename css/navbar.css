@@ -78,6 +78,7 @@ nav {
     flex-direction: column;
     background-color: rgb(11, 36, 76);
     position: absolute;
+    z-index: 1;
 }
 
 /* Les titres et sous titres des menus */

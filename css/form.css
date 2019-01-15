@@ -1,5 +1,5 @@
 .basicForm {
-    margin-top: 1%;
+    margin-top: 10px;
     text-align: center;
 }
 
@@ -42,6 +42,10 @@
 .basicForm input[type='time'] {
     width: 75px;
     padding-right: 0;
+}
+
+.basicForm input[type='checkbox'] {
+    transform: scale(1.5);
 }
 
 .dateField input {

@@ -15,4 +15,9 @@ class CommentModel extends Model
     {
         return $this->belongsTo('\MyWishList\models\ListModel', 'list_id');
     }
+
+    public function account()
+    {
+        return $this->belongsTo('\MyWishList\models\AccountModel', 'sender');
+    }
 }

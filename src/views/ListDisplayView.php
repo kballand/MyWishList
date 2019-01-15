@@ -36,25 +36,50 @@ class ListDisplayView implements IView
                 $modifyPath = $router->pathFor('modifyList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
                 $deletePath = $router->pathFor('deleteList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
                 $addItemPath = $router->pathFor('addItem', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
-                $accessPath = $_SERVER['HTTP_HOST'] . $router->pathFor('displayList', ['no' => $this->lists->no]) . "?token=" . $this->lists->access_token;
+                if (isset($this->lists->access_token)) {
+                    $accessPath = $_SERVER['HTTP_HOST'] . $router->pathFor('displayList', ['no' => $this->lists->no]) . "?token=" . $this->lists->access_token;
+                    $optionalButtons =
+                        <<< END
+<button id="shareButton" class="popupOpener">Voir le lien de partage</button>
+<div class="popup">
+    <div class="popupContent">
+        <div>
+            <input type="url" value="$accessPath" id="accessURL" class="copiedText" readonly>
+            <div class="actionButtons">
+                <button class="textCopier">Copier sur le presse-papier</button>
+                <button class="popupCloser">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+END;
+                    if (!$this->lists->public) {
+                        $publicizeListPath = $router->pathFor('publicizeList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
+                        $optionalButtons .=
+                            <<< END
+<a id="publicizeListButton" href="$publicizeListPath">Rendre la liste publique</a>
+END;
+                    } else {
+                        $privatizeListPath = $router->pathFor('privatizeList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
+                        $optionalButtons .=
+                            <<< END
+<a id="privatizeListButton" href="$privatizeListPath">Rendre la liste privée</a>
+END;
+                    }
+                } else {
+                    $sharePath = $router->pathFor('shareList', ['no' => $this->lists->no]) . "?token=" . $this->lists->modify_token;
+                    $optionalButtons =
+                        <<< END
+<a id="shareListButton" href="$sharePath">Partager la liste</a>
+END;
+                }
                 $actionButtons =
                     <<< END
 <div class="actionButtons">
     <a id="deleteButton"  href="$deletePath">Supprimer la liste</a>
     <a id="modifyButton" href="$modifyPath">Modifier la liste</a>
     <a id="addItemButton" href="$addItemPath">Ajouter un item</a>
-    <button id="shareButton" class="popupOpener">Voir le lien de partage</button>
-    <div class="popup">
-        <div class="popupContent">
-            <div>
-                <input type="url" value="$accessPath" id="accessURL" class="copiedText" readonly>
-                <div class="actionButtons">
-                    <button class="textCopier">Copier sur le presse-papier</button>
-                    <button class="popupCloser">Fermer</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    $optionalButtons
 </div> 
 END;
             }
@@ -80,7 +105,7 @@ END;
     <form id="listCommentForm" method="post" novalidate>
         <label for="listCommentMessage">Commentaire</label>
         <div class="errorDisplayedField">
-            <textarea name="comment" id="listCommentMessage" class="notEmptyField" rows="10" cols="60" placeholder="Entrez ici un commentaire à propos de cette liste de souhaits... (500 caractères maximum)" maxlength="500" aria-invalid="true"></textarea>
+            <textarea name="comment" id="listCommentMessage" class="notEmptyField" rows="10" cols="60" placeholder="Entrez ici un commentaire à propos de cette liste de souhaits..." aria-invalid="true"></textarea>
             <span class="displayedError fieldEmptyError" id="listCommentMessageEmptyError">
                 <p class="displayedMessage" id="listCommentMessageEmptyMessage">Votre commentaire ne peut être vide !</p>
             </span>

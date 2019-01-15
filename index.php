@@ -7,6 +7,11 @@ use MyWishList\controllers\CreationController;
 use MyWishList\controllers\DisplayController;
 use MyWishList\controllers\ModifyController;
 use MyWishList\controllers\ShareController;
+use MyWishList\models\AccountModel;
+use MyWishList\views\BasicView;
+use MyWishList\views\NavBarView;
+use MyWishList\views\NotFoundView;
+use MyWishList\views\RedirectionView;
 use \Slim\Http\Response;
 use \Slim\Http\Request;
 use MyWishList\utils\SlimSingleton;
@@ -56,16 +61,6 @@ $app->getContainer()['notFoundHandler'] = function () {
         return $response;
     };
 };
-
-$app->get('/liste/partage/{no}', function($token_partage){
-    $controller = ShareController::getInstance();
-    $content = $controller->shareList($token_partage);
-});
-
-$app->post('/liste/partage/{no}', function($token_partage){
-    $controller=ShareController::getInstance();
-    $content=$controller->setMsg();
-});
 
 $app->get('/', function(Request $request, Response $response) {
     $controller = DisplayController::getInstance();
@@ -136,5 +131,62 @@ $app->post('/list/items/{no}/reserve/{id}', function(Request $request, Response 
    $controller = CreationController::getInstance();
    $response->write($controller->reserveItem($request, $args['no'], $args['id']));
 });
+
+$app->post('/register/check_username', function(Request $request, Response $response) {
+    $queries = $request->getParsedBody();
+    if(isset($queries['username'])) {
+        $username = filter_var($queries['username'], FILTER_SANITIZE_STRING);
+        $account = AccountModel::where('username', '=', $username)->first();
+        if(isset($account)) {
+            $response = new Response(409);
+            return $response;
+        }
+    }
+    $response = new Response(200);
+    return $response;
+});
+
+$app->post('/register', function(Request $request, Response $response) {
+   $controller = CreationController::getInstance();
+   $response->write($controller->createAccount($request));
+});
+
+$app->get('/account', function(Request $request, Response $response) {
+
+})->setName('displayAccount');
+
+$app->get('/login', function(Request $request, Response $response) {
+
+})->setName('login');
+
+$app->get('/reservations', function(Request $request, Response $response) {
+    $controller = DisplayController::getInstance();
+    $response->write($controller->displayReservations());
+})->setName('displayReservations');
+
+$app->get('/logout', function(Request $request, Response $response) {
+    $controller = DisplayController::getInstance();
+    $response->write($controller->displayLogout());
+})->setName('logout');
+
+$app->get('/list/share/{no}', function(Request $request, Response $response, $args) {
+    $controller = ShareController::getInstance();
+    $response->write($controller->shareList($request, $args['no']));
+})->setName('shareList');
+
+$app->get('/list/publicize/{no}', function(Request $request, Response $response, $args) {
+    $controller = ShareController::getInstance();
+    $response->write($controller->publicizeList($request, $args['no']));
+})->setName('publicizeList');
+
+$app->get('/list/privatize/{no}', function(Request $request, Response $response, $args) {
+    $controller = ShareController::getInstance();
+    $response->write($controller->privatizeList($request, $args['no']));
+})->setName('privatizeList');
+
+$app->get('/public', function (Request $request, Response $response) {
+    $controller = DisplayController::getInstance();
+    $response->write($controller->displayPublicLists());
+})->setName('publicLists');
 
 $app->run();

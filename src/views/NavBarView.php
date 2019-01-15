@@ -2,6 +2,7 @@
 
 namespace MyWishList\views;
 
+use MyWishList\utils\Authentication;
 use MyWishList\utils\SlimSingleton;
 
 class NavBarView implements IView
@@ -20,16 +21,49 @@ class NavBarView implements IView
 
     public function getRequiredScripts()
     {
-        return array_unique(array_merge(['/js/script.js'], $this->contentView->getRequiredScripts()));
+        return array_unique(array_merge(['/js/navbar.js'], $this->contentView->getRequiredScripts()));
     }
 
     public function render()
     {
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
-        $index = $router->pathFor('index');
-        $lists = $router->pathFor('displayLists');
-        $register = $router->pathFor('registration');
-        $creation = $router->pathFor('createList');
+        $indexPath = $router->pathFor('index');
+        $publicListsPath = $router->pathFor('publicLists');
+        $creationPath = $router->pathFor('createList');
+        if (Authentication::hasProfile()) {
+            $accountPath = $router->pathFor('displayAccount');
+            $logoutPath = $router->pathFor('logout');
+            $signPossibilities =
+                <<< END
+<a href="$accountPath" id="myAccountButton">Mon compte</a>
+<a href="$logoutPath" id="logoutButton">Se déconnecter</a>
+END;
+            $reservationsPath = $router->pathFor('displayReservations');
+            $additionalPossibilities =
+                <<< END
+<a href="$reservationsPath" class="subMenuTitle">Mes participations</a>
+END;
+            if (!Authentication::getProfile()['participant']) {
+                $listsPath = $router->pathFor('displayLists');
+                $additionalPossibilities .=
+                    <<< END
+<a href="$creationPath" class="subMenuTitle">Créer une liste</a>
+<a href="$listsPath" class="subMenuTitle">Mes listes</a>
+END;
+            }
+        } else {
+            $loginPath = $router->pathFor('login');
+            $registrationPath = $router->pathFor('registration');
+            $additionalPossibilities =
+                <<< END
+<a href="$creationPath" class="subMenuTitle">Créer une liste</a>
+END;
+            $signPossibilities =
+                <<< END
+<a href="$loginPath" id="loginButton">Se connecter</a>
+<a href="$registrationPath" id="registerButton">S'enregistrer</a>
+END;
+        }
         return
             <<< END
 <header>
@@ -38,27 +72,23 @@ class NavBarView implements IView
 <nav>
 	<ul id="menus">
 		<li class="menu">
-			<a class="menuTitle" href="$index">Accueil</a>
+			<a class="menuTitle" href="$indexPath">Accueil</a>
 		</li>
 		<li class="menu">
-			<a class="menuTitle" href="$lists">Listes</a>
+			<a class="menuTitle" href="$creationPath">Listes</a>
 			<div class="subMenu">
-				<a href="$lists" class="subMenuTitle">Mes listes</a>
-				<a href="$creation" class="subMenuTitle">Créer une liste</a>
+				$additionalPossibilities
+				<a href="$publicListsPath" class="subMenuTitle">Consulter les listes publiques</a>
 			</div>
 		</li>
 	</ul>
 	<div id="signBar">
-		<a href="" id="loginButton">Se connecter</a>
-	    <a href="$register" id="registerButton">S'enregistrer</a>
+		$signPossibilities
     </div>
 </nav>
 <div class="content">
     {$this->contentView->render()}
 </div>
-<footer>
-
-</footer>
 END;
     }
 }

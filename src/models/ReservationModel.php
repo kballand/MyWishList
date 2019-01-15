@@ -13,6 +13,11 @@ class ReservationModel extends Model
 
     public function item()
     {
-        return $this->belongsTo('\MyWishList\models\ItemModel', 'reservation_id');
+        return $this->hasOne('\MyWishList\models\ItemModel', 'reservation_id');
+    }
+
+    public function account()
+    {
+        return $this->belongsTo('\MyWishList\models\AccountModel', 'purchaser');
     }
 }

@@ -3,7 +3,6 @@
 namespace MyWishList\utils;
 
 
-use MyWishList\models\ImageModel;
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
 use MyWishList\views\RedirectionView;
@@ -59,43 +58,51 @@ END;
     {
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
         $indexPath = $router->pathFor('index');
-        $no = filter_var($no, FILTER_SANITIZE_NUMBER_INT);
-        $list = ListModel::where('no', '=', $no)->first();
-        if (isset($list)) {
-            $token = $request->getParam('token');
-            if (isset($token)) {
-                if ($forModificationOnly) {
-                    if ($token === $list->modify_token) {
-                        if (!self::hasExpired($list)) {
-                            $modificationGranted = true;
-                            return $list;
+        if ($forModificationOnly && Authentication::hasProfile() && Authentication::getProfile()['participant']) {
+            $view = new RedirectionView($indexPath, $errorTitle, 'Vous ne pouvez pas modifier une liste avec un compte participant, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+        } else {
+            $no = filter_var($no, FILTER_SANITIZE_NUMBER_INT);
+            $list = ListModel::where('no', '=', $no)->first();
+            if (isset($list)) {
+                $token = $request->getParam('token');
+                if (isset($token)) {
+                    if ($forModificationOnly) {
+                        if ($token === $list->modify_token) {
+                            if (!self::hasExpired($list)) {
+                                $modificationGranted = true;
+                                return $list;
+                            } else {
+                                $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
+                                $view = new RedirectionView($listPath, $errorTitle, 'Votre liste a expiré, vous allez être ridirigé vers celle-ci dans 5 secondes.');
+                            }
                         } else {
-                            $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
-                            $view = new RedirectionView($listPath, $errorTitle, 'Votre liste a expiré, vous allez être ridirigé vers celle-ci dans 5 secondes.');
+                            $view = new RedirectionView($indexPath, $errorTitle, 'Mauvais token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
                         }
                     } else {
-                        $view = new RedirectionView($indexPath, $errorTitle, 'Mauvais token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                        if ($token === $list->modify_token) {
+                            if (Authentication::hasProfile() && Authentication::getProfile()['participant']) {
+                                $view = new RedirectionView($indexPath, $errorTitle, 'Vous ne pouvez pas accèder à la modification d\'une liste avec un compte participant, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                            } else {
+                                $modificationGranted = true;
+                                return $list;
+                            }
+                        } else if ($token === $list->access_token) {
+                            $modificationGranted = false;
+                            return $list;
+                        } else {
+                            $view = new RedirectionView($indexPath, $errorTitle, 'Mauvais token d\'accès à la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                        }
                     }
                 } else {
-                    if ($token === $list->modify_token) {
-                        $modificationGranted = true;
-                        return $list;
-                    } else if ($token === $list->access_token) {
-                        $modificationGranted = false;
-                        return $list;
+                    if ($forModificationOnly) {
+                        $view = new RedirectionView($indexPath, $errorTitle, 'Absence du token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
                     } else {
-                        $view = new RedirectionView($indexPath, $errorTitle, 'Mauvais token d\'accès à la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                        $view = new RedirectionView($indexPath, $errorTitle, 'Absence du token d\'accès à la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
                     }
                 }
             } else {
-                if ($forModificationOnly) {
-                    $view = new RedirectionView($indexPath, $errorTitle, 'Absence du token de modification de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
-                } else {
-                    $view = new RedirectionView($indexPath, $errorTitle, 'Absence du token d\'accès à la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
-                }
+                $view = new RedirectionView($indexPath, $errorTitle, 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
             }
-        } else {
-            $view = new RedirectionView($indexPath, $errorTitle, 'Cette liste n\'existe pas, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
         }
         return $view;
     }
@@ -148,6 +155,10 @@ END;
             if (isset($_COOKIE['mywishlist-' . $list->no])) {
                 $hash = $_COOKIE['mywishlist-' . $list->no];
                 if (password_verify($list->modify_token, $hash)) {
+                    return true;
+                }
+            } else if (Authentication::hasProfile()) {
+                if (Authentication::getProfile()['username'] === $list->owner_name) {
                     return true;
                 }
             }
@@ -206,11 +217,12 @@ END;
         $item->delete();
         self::deleteUnusedImage($image);
     }
-    
-    public static function deleteUnusedImage($image) {
-        if(isset($image) && !is_null($image)) {
-            if((!isset($image->items) || count($image->items) === 0) && !$image->local) {
-                if($image->uploaded && file_exists('img/' . $image->basename)) {
+
+    public static function deleteUnusedImage($image)
+    {
+        if (isset($image) && !is_null($image)) {
+            if ((!isset($image->items) || count($image->items) === 0) && !$image->local) {
+                if ($image->uploaded && file_exists('img/' . $image->basename)) {
                     unlink('img/' . $image->basename);
                 }
                 $image->delete();

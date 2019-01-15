@@ -2,9 +2,12 @@
 
 namespace MyWishList\controllers;
 
+use MyWishList\models\AccountModel;
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
+use MyWishList\utils\Authentication;
 use MyWishList\utils\CommonUtils;
+use MyWishList\utils\SlimSingleton;
 use MyWishList\views\BasicView;
 use MyWishList\views\IndexView;
 use MyWishList\views\ItemCreationView;
@@ -16,6 +19,7 @@ use MyWishList\views\ListDisplayView;
 use MyWishList\views\ListModificationView;
 use MyWishList\views\NavBarView;
 use MyWishList\views\NotFoundView;
+use MyWishList\views\RedirectionView;
 use MyWishList\views\RegisterView;
 use Slim\Http\Request;
 
@@ -37,8 +41,28 @@ class DisplayController
 
     public function displayLists()
     {
-        $lists = ListModel::get();
-        $view = new ListDisplayView($lists, true);
+        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $indexPath = $router->pathFor('index');
+        if (Authentication::hasProfile() && Authentication::getProfile()['participant']) {
+            $view = new RedirectionView($indexPath, 'Echec de l\'accès à vos listes !', 'Vous ne pouvez pas accèder à vos listes avec un compte participant, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+        } else if (Authentication::hasProfile()) {
+            $account = AccountModel::where('username', '=', Authentication::getProfile()['username'])->first();
+            $lists = $account->lists;
+            $view = new ListDisplayView($lists, true);
+        } else {
+            $view = new RedirectionView($indexPath, 'Echec de l\'accès à vos listes !', 'Vous devez être connecté pour accéder à vos listes, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function displayPublicLists()
+    {
+        $dateToday = new \DateTime('now');
+        $dateToday = $dateToday->format('Y-m-d');
+        $publicLists = ListModel::where('public', '=', true)->where('expiration', '>', $dateToday)->orderBy('expiration', 'ASC')->get();
+        $view = new ListDisplayView($publicLists, false);
         $view = new NavBarView($view);
         $view = new BasicView($view);
         return $view->render();
@@ -46,13 +70,13 @@ class DisplayController
 
     public function displayList(Request $request, $no)
     {
-        $canAccess = CommonUtils::canAccessList($request, $no, 'Echec de l\'accès à la liste', false, $modificationGranted);
+        $canAccess = CommonUtils::canAccessList($request, $no, 'Echec de l\'accès à la liste !', false, $modificationGranted);
         if ($canAccess instanceof ListModel) {
             $list = $canAccess;
             if ($modificationGranted) {
                 $view = new ListDisplayView($list, true);
             } else {
-                $view = new ListDisplayView($list, false, CommonUtils::ownList($list));
+                $view = new ListDisplayView($list, false);
             }
         } else {
             $view = $canAccess;
@@ -105,7 +129,13 @@ class DisplayController
 
     public function displayListCreation()
     {
-        $view = new ListCreationView();
+        if (Authentication::hasProfile() && Authentication::getProfile()['participant']) {
+            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $indexPath = $router->pathFor('index');
+            $view = new RedirectionView($indexPath, 'Echec de l\'accès à la création de liste !', 'Vous ne pouvez pas créer de liste avec un compte participant, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+        } else {
+            $view = new ListCreationView();
+        }
         $view = new NavBarView($view);
         $view = new BasicView($view);
         return $view->render();
@@ -160,6 +190,43 @@ class DisplayController
             $view = new ItemReservationView($item);
         } else {
             $view = $canReserve;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function displayReservations()
+    {
+        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $indexPath = $router->pathFor('index');
+        if (Authentication::hasProfile()) {
+            $account = AccountModel::where('username', '=', Authentication::getProfile()['username'])->first();
+            $reservations = $account->reservations;
+            $lists = [];
+            foreach ($reservations as $reservation) {
+                if (!in_array($reservation->item->list, $lists)) {
+                    $lists[] = $reservation->item->list;
+                }
+            }
+            $view = new ListDisplayView($lists, false);
+        } else {
+            $view = new RedirectionView($indexPath, 'Echec de l\'acces à la liste de vos participations !', 'Vous devez être connecté pour pouvoir afficher vos participations, vous allez être rédirigé vers l\'accueil dans 5 secondes.');
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function displayLogout()
+    {
+        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $indexPath = $router->pathFor('index');
+        if (Authentication::hasProfile()) {
+            Authentication::deleteProfile();
+            $view = new RedirectionView($indexPath, 'Déconnection réussie avec succès', 'Vous vous êtes bien déconnecté, vous allez être rédirigé vers l\'accueil dans 5 secondes.');
+        } else {
+            $view = new RedirectionView($indexPath, 'Echec de la déconnection !', 'Vous devez être connecté pour pouvoir vous déconnecter, vous allez être rédirigé vers l\'accueil dans 5 secondes.');
         }
         $view = new NavBarView($view);
         $view = new BasicView($view);

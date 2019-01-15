@@ -2,11 +2,13 @@
 
 namespace MyWishList\controllers;
 
+use MyWishList\models\AccountModel;
 use MyWishList\models\CommentModel;
 use MyWishList\models\ImageModel;
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
 use MyWishList\models\ReservationModel;
+use MyWishList\utils\Authentication;
 use MyWishList\utils\CommonUtils;
 use MyWishList\utils\SlimSingleton;
 use MyWishList\views\BasicView;
@@ -33,36 +35,40 @@ class CreationController
     public function createList(Request $request)
     {
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
-        $queries = $request->getParsedBody();
         $indexPath = $router->pathFor('index');
-        if (isset($queries['title']) && isset($queries['description']) && isset($queries['expirationDate'])) {
-            $title = filter_var($queries['title'], FILTER_SANITIZE_STRING);
-            if (strlen(trim($title)) > 0) {
-                $expirationDate = filter_var($queries['expirationDate'], FILTER_SANITIZE_STRING);
-                $timeDate = strtotime($expirationDate);
-                $timeNow = strtotime('now');
-                if ($timeDate && $timeDate > $timeNow) {
-                    $description = filter_var($queries['description'], FILTER_SANITIZE_STRING);
-                    $list = new ListModel();
-                    $list->title = $title;
-                    $list->description = $description;
-                    $list->expiration = $expirationDate;
-                    $list->modify_token = bin2hex(random_bytes(8));
-                    do {
-                        $list->access_token = bin2hex(random_bytes(8));
-                    } while ($list->access_token === $list->modify_token);
-                    $list->save();
-                    setcookie('mywishlist-' . $list->no, password_hash($list->modify_token, CRYPT_BLOWFISH, ['cost' => 12]), $timeDate, '/');
-                    $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
-                    $view = new RedirectionView($listPath, 'Création de la liste réussie avec succès !', 'Votre liste de souhaits à bien été crée, vous allez être redirigé vers celle-ci dans 5 secondes.');
+        if (Authentication::hasProfile() && Authentication::getProfile()['participant']) {
+            $view = new RedirectionView($indexPath, 'Echec de la création de la liste !', 'Vous ne pouvez pas créer de liste avec un compte participant, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+        } else {
+            $queries = $request->getParsedBody();
+            if (isset($queries['title']) && isset($queries['description']) && isset($queries['expirationDate'])) {
+                $title = filter_var($queries['title'], FILTER_SANITIZE_STRING);
+                if (strlen(trim($title)) > 0) {
+                    $expirationDate = filter_var($queries['expirationDate'], FILTER_SANITIZE_STRING);
+                    $timeDate = strtotime($expirationDate);
+                    $timeNow = strtotime('now');
+                    if ($timeDate && $timeDate > $timeNow) {
+                        $description = filter_var($queries['description'], FILTER_SANITIZE_STRING);
+                        $list = new ListModel();
+                        $list->title = $title;
+                        $list->description = $description;
+                        $list->expiration = $expirationDate;
+                        $list->modify_token = bin2hex(random_bytes(8));
+                        if (Authentication::hasProfile()) {
+                            $list->owner_name = Authentication::getProfile()['username'];
+                        }
+                        $list->save();
+                        setcookie('mywishlist-' . $list->no, password_hash($list->modify_token, CRYPT_BLOWFISH, ['cost' => 12]), $timeDate, '/');
+                        $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
+                        $view = new RedirectionView($listPath, 'Création de la liste réussie avec succès !', 'Votre liste de souhaits à bien été crée, vous allez être redirigé vers celle-ci dans 5 secondes.');
+                    } else {
+                        $view = new RedirectionView($indexPath, 'Echec de la création de la liste !', 'Le date de la liste est invalide, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                    }
                 } else {
-                    $view = new RedirectionView($indexPath, 'Echec de la création de la liste !', 'Le date de la liste est invalide, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                    $view = new RedirectionView($indexPath, 'Echec de la création de la liste !', 'Le titre de la liste ne peut pas être vide, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
                 }
             } else {
-                $view = new RedirectionView($indexPath, 'Echec de la création de la liste !', 'Le titre de la liste ne peut pas être vide, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
+                $view = new RedirectionView($indexPath, 'Echec de la création de la liste !', 'Une erreur est subvenue lors de la tentative de création de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
             }
-        } else {
-            $view = new RedirectionView($indexPath, 'Echec de la création de la liste !', 'Une erreur est subvenue lors de la tentative de création de la liste, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
         }
         $view = new NavBarView($view);
         $view = new BasicView($view);
@@ -197,17 +203,21 @@ class CreationController
             $router = SlimSingleton::getInstance()->getContainer()->get('router');
             $itemPath = $router->pathFor('displayItem', ['no' => $item->list->no, 'id' => $item->id]) . "?token={$item->list->access_token}";
             $queries = $request->getParsedBody();
-            if (isset($queries['name']) && isset($queries['message'])) {
-                $name = filter_var($queries['name'], FILTER_SANITIZE_STRING);
-                if (strlen(trim($name)) > 0) {
+            if ((isset($queries['name']) || Authentication::hasProfile()) && isset($queries['message'])) {
+                if (Authentication::hasProfile() || strlen(trim(filter_var($queries['name'], FILTER_SANITIZE_STRING))) > 0) {
                     $message = filter_var($queries['message'], FILTER_SANITIZE_STRING);
                     $reservation = new ReservationModel();
-                    $reservation->participant = $name;
+                    if (Authentication::hasProfile()) {
+                        $reservation->participant = Authentication::getProfile()['username'];
+                        $reservation->purchaser = $reservation->participant;
+                    } else {
+                        $reservation->participant = filter_var($queries['name'], FILTER_SANITIZE_STRING);
+                    }
                     $reservation->message = $message;
                     $reservation->save();
                     $item->reservation_id = $reservation->no;
                     $item->save();
-                    $_SESSION['participantName'] = $name;
+                    $_SESSION['participantName'] = $reservation->participant;
                     $view = new RedirectionView($itemPath, 'Réservation de l\'item réussie avec succès !', 'L\'item a bien été réservé, vous allez être redirigé vers celui-ci dans 5 secondes.');
                 } else {
                     $view = new RedirectionView($itemPath, 'Echec de la réservation de l\'item !', 'Le nom de participation ne peut pas être vide, vous allez être ridirigé vers l\'item dans 5 secondes.');
@@ -247,6 +257,9 @@ class CreationController
                             $comment = new CommentModel();
                             $comment->list_id = $list->no;
                             $comment->comment = $commentMessage;
+                            if (Authentication::hasProfile()) {
+                                $comment->sender = Authentication::getProfile()['username'];
+                            }
                             $comment->save();
                             $view = new RedirectionView($listPath, 'Ajout du commentaire réussi avec succès !', 'Le commentaire a bien été ajouté à la liste, vous allez être redirigé vers celle-ci dans 5 secondes.');
                         } else {
@@ -261,6 +274,86 @@ class CreationController
             }
         } else {
             $view = $canModify;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function createAccount(Request $request)
+    {
+        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $indexPath = $router->pathFor('index');
+        if (!Authentication::hasProfile()) {
+            $queries = $request->getParsedBody();
+            if (isset($queries['firstName']) && isset($queries['lastName']) && isset($queries['username']) && isset($queries['email']) && isset($queries['password'])) {
+                $firstName = $queries['firstName'];
+                $lastName = $queries['lastName'];
+                if (filter_var($queries['firstName'], FILTER_SANITIZE_STRING) === $firstName && filter_var($queries['lastName'], FILTER_SANITIZE_STRING) === $lastName) {
+                    $firstName = filter_var($queries['firstName'], FILTER_SANITIZE_URL);
+                    $lastName = filter_var($queries['firstName'], FILTER_SANITIZE_URL);
+                    if (!empty(trim($firstName)) && !empty(trim($lastName))) {
+                        $username = $queries['username'];
+                        if (filter_var($queries['username'], FILTER_SANITIZE_STRING) === $username) {
+                            $username = filter_var($queries['username'], FILTER_SANITIZE_STRING);
+                            if (!empty(trim($username)) && trim($username) === $username && strlen($username) <= 20 && strlen($username) >= 5) {
+                                $possibleAccount = AccountModel::where('username', '=', $username)->first();
+                                if (!isset($possibleAccount)) {
+                                    $email = $queries['email'];
+                                    if (filter_var($email, FILTER_VALIDATE_EMAIL) !== false) {
+                                        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+                                        if (!empty(trim($email))) {
+                                            $password = $queries['password'];
+                                            if (filter_var($password, FILTER_SANITIZE_STRING) == $password) {
+                                                $password = filter_var($password, FILTER_SANITIZE_STRING);
+                                                if (!empty(trim($password)) && trim($password) === $password && strlen($password) >= 7 && strtolower($password) !== $password && strtoupper($password) !== $password && preg_match('/[0-9]/', $password)) {
+                                                    if (isset($queries['participant'])) {
+                                                        $participant = true;
+                                                    } else {
+                                                        $participant = false;
+                                                    }
+                                                    $account = new AccountModel();
+                                                    $account->first_name = $firstName;
+                                                    $account->last_name = $lastName;
+                                                    $account->username = $username;
+                                                    $account->email = $email;
+                                                    $account->password = password_hash($password, CRYPT_BLOWFISH, ['cost' => 12]);
+                                                    $account->participant = $participant;
+                                                    $account->save();
+                                                    Authentication::loadProfile($account);
+                                                    $view = new RedirectionView($indexPath, 'Création du compte réussie avec succès !', 'Votre compte a bien été créé, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                                                } else {
+                                                    $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Le mot de passe saisi n\'est pas de la bonne forme, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                                                }
+                                            } else {
+                                                $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Le mot de passe saisi est incorrect, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                                            }
+                                        } else {
+                                            $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'L\'adresse email saisie ne peut être vide, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                                        }
+                                    } else {
+                                        $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'L\'adresse email saisie est incorrect, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                                    }
+                                } else {
+                                    $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Ce nom d\'utilisateur est déjà pris, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                                }
+                            } else {
+                                $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Le nom d\'utilisateur saisi n\'est pas de la bonne forme, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                            }
+                        } else {
+                            $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Le nom d\'utilisateur saisi est incorrect, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                        }
+                    } else {
+                        $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Le prénom et nom de famille saisi ne doit pas être vide, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                    }
+                } else {
+                    $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Le prénom ou nom de famille saisi est incorrect, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                }
+            } else {
+                $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Une erreur est survenue lors de la création du compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+            }
+        } else {
+            $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Vous possédez déjà un compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
         }
         $view = new NavBarView($view);
         $view = new BasicView($view);

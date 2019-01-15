@@ -37,7 +37,7 @@ $(document).ready(function () {
     });
     let hotlink = $('.uploadField .imageHotlink');
     hotlink.change(function () {
-        if($(this).val() && $(this).val() !== "") {
+        if ($(this).val() && $(this).val() !== "") {
             let url = $(this).val();
             let uploadField = $(this).closest('.uploadField');
             let $this = $(this);

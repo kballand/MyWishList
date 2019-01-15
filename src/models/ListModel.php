@@ -19,4 +19,9 @@ class ListModel extends Model
     {
         return $this->hasMany('\MyWishList\models\CommentModel', 'list_id');
     }
+
+    public function owner()
+    {
+        return $this->belongsTo('\MyWishList\models\AccountModel', 'owner_name');
+    }
 }

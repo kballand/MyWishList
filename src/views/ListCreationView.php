@@ -23,7 +23,7 @@ class ListCreationView implements IView
             </span>
         </div>
         <label for="listDescription">Description</label>
-        <textarea name="description" id="listDescription" rows="10" cols="60" placeholder="Entrez ici la description de votre liste... (500 caractères maximum)" maxlength="500"></textarea>
+        <textarea name="description" id="listDescription" rows="10" cols="60" placeholder="Entrez ici la description de votre liste..."></textarea>
         <label for="listExpiration">Date d'expiration</label>
         <div class="dateField errorDisplayedField">
             <input type="date" name="expirationDate" id="listExpirationDate" min="{$date->format('Y-m-d')}" class="notEmptyField ulteriorDate" aria-invalid="true">

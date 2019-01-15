@@ -23,7 +23,7 @@ class ItemCreationView implements IView
             </span>
         </div>
         <label for="itemDescription">Description</label>
-        <textarea name="description" id="itemDescription" rows="10" cols="60" placeholder="Entrez ici la description de votre item... (500 caractères maximum)" maxlength="500"></textarea>
+        <textarea name="description" id="itemDescription" rows="10" cols="60" placeholder="Entrez ici la description de votre item..."></textarea>
         <label for="itemPrice">Prix</label>
         <div class="errorDisplayedField">
             <input type="number" min="0.01" max="999.99" step="0.01" name="price" id="itemPrice" class="limitedPrice" aria-invalid="true">
