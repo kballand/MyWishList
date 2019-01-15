@@ -12,9 +12,9 @@ class LoginView implements IView
 <section class="basicForm">
     <form id="loginForm" method="post" novalidate>
         <label for="loginUsername">Nom d'utilisateur</label>
-        <input type="text" id="loginUsername">
+        <input type="text" name="username" id="loginUsername">
         <label for="loginPassword">Mot de passe</label>
-        <input type="password" id="loginPassword">
+        <input type="password" name="password" id="loginPassword">
         <p class="errorMessage" id="badLoginMessage">Nom d'utilisateur ou mot de passe incorrect</p>
         <input type="submit" id="loginValidate" class="validateButton" value="Connection">
     </form>

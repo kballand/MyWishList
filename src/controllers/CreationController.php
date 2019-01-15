@@ -2,6 +2,8 @@
 
 namespace MyWishList\controllers;
 
+use Illuminate\Support\Facades\Auth;
+use MyWishList\exceptions\AuthException;
 use MyWishList\models\AccountModel;
 use MyWishList\models\CommentModel;
 use MyWishList\models\ImageModel;
@@ -360,10 +362,32 @@ class CreationController
         return $view->render();
     }
 
-    public function makeConnection() {
+    public function makeConnection(Request $request) {
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
         $indexPath = $router->pathFor('index');
         if(!Authentication::hasProfile()) {
+            $queries = $request->getParsedBody();
+            if(isset($queries['username']) && isset($queries['password'])) {
+                if(filter_var($queries['username'], FILTER_SANITIZE_STRING) === $queries['username']) {
+                    $username = filter_var($queries['username'], FILTER_SANITIZE_STRING);
+                    if(filter_var($queries['password'], FILTER_SANITIZE_STRING) === $queries['password']) {
+                        $password = filter_var($queries['password'], FILTER_SANITIZE_STRING);
+                        try {
+                            $account = Authentication::authenticate($username, $password);
+                            Authentication::loadProfile($account);
+                            $view = new RedirectionView($indexPath, 'Connection au compte réussie avec succès', 'Vous vous êtes bien connecté à votre compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                        } catch (AuthException $ex) {
+                            $view = new RedirectionView($indexPath, 'Echec de la connection au compte !', 'Compte inexistant, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                        }
+                    } else {
+                        $view = new RedirectionView($indexPath, 'Echec de la connection au compte !', 'Mot de passe invalide, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                    }
+                } else {
+                    $view = new RedirectionView($indexPath, 'Echec de la connection au compte !', 'Nom d\'utilisateur invalide, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                }
+            } else {
+                $view = new RedirectionView($indexPath, 'Echec de la connection au compte !', 'Une erreur est survenue lors de la tentative de connection au compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+            }
 
         } else {
             $view = new RedirectionView($indexPath, 'Echec de la connection au compte !', 'Vous êtes déjà connecté à un compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
