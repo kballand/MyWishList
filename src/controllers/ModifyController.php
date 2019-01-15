@@ -3,9 +3,11 @@
 namespace MyWishList\controllers;
 
 
+use MyWishList\models\AccountModel;
 use MyWishList\models\ImageModel;
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
+use MyWishList\utils\Authentication;
 use MyWishList\utils\CommonUtils;
 use MyWishList\utils\SlimSingleton;
 use MyWishList\views\BasicView;
@@ -225,6 +227,38 @@ class ModifyController
             $view = new RedirectionView($listPath, 'Suppression de l\'item réussi avec succès !', 'Votre item a bien été supprimé, vous allez être redirigé vers votre liste dans 5 secondes.');
         } else {
             $view = $canModify;
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function deleteAccount() {
+        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $indexPath = $router->pathFor('index');
+        if(Authentication::hasProfile()) {
+            $account = AccountModel::where('username', '=', Authentication::getProfile()['username'])->first();
+            $comments = $account->comments;
+            foreach ($comments as $comment) {
+                $comment->delete();
+            }
+            $reservations = $account->reservations;
+            foreach($reservations as $reservation) {
+                if(!CommonUtils::hasExpired($reservation->item->list)) {
+                    $reservation->delete();
+                }
+            }
+            $lists = $account->lists;
+            foreach ($lists as $list) {
+                if(!CommonUtils::hasExpired($list)) {
+                    CommonUtils::deleteList($list);
+                }
+            }
+            $account->delete();
+            Authentication::deleteProfile();
+            $view = new RedirectionView($indexPath, 'Suppression du compte réussie avec succès !', 'Votre compte a bien été supprimé, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+        } else {
+            $view = new RedirectionView($indexPath, 'Echec de la suppression du compte !', 'Vous devez être connecté pour pouvoir supprimer votre compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
         }
         $view = new NavBarView($view);
         $view = new BasicView($view);

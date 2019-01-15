@@ -214,4 +214,9 @@ $app->get('/account/modify', function (Request $request, Response $response) {
    $response->write($controller->displayAccountModification());
 })->setName('modifyAccount');
 
+$app->get('/account/delete', function (Request $request, Response $response) {
+    $controller = ModifyController::getInstance();
+    $response->write($controller->deleteAccount());
+})->setName('deleteAccount');
+
 $app->run();

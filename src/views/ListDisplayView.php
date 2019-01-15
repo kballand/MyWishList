@@ -84,7 +84,7 @@ END;
 END;
             }
             $comments = "";
-            foreach ($this->lists->comments as $comment) {
+            foreach ($this->lists->comments->reverse() as $comment) {
                 $comments .=
                     <<< END
 <p class="listComment">$comment->comment</p>

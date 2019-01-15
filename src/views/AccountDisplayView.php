@@ -18,6 +18,7 @@ class AccountDisplayView implements IView
     public function render()
     {
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $deleteAccountPath = $router->pathFor('deleteAccount');
         $modifyAccountPath = $router->pathFor('modifyAccount');
         return
             <<< END
@@ -28,6 +29,7 @@ class AccountDisplayView implements IView
     <p><strong>Nom</strong> : {$this->account->last_name}</p>
     <p><strong>E-mail</strong> : {$this->account->email}</p>
     <div class="actionButtons">
+        <a id="deleteAccountButton"  href="$deleteAccountPath">Supprimer mon compte</a>
         <a id="modifyAccountButton"  href="$modifyAccountPath">Modifier mes informations</a>
     </div>
 </div>
