@@ -106,15 +106,12 @@
     background-color: #ff3300;
     border-radius: 5px;
     color: white;
-    font-weight: normal;
     font-size: 0.9em;
 }
 
 .errorMessage {
-    position: relative;
-    margin-bottom : 20px;
     display: inline-block;
-    padding: 12px;
+    padding: 10px;
     font-weight: bold;
 }
 

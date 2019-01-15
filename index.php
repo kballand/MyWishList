@@ -7,14 +7,12 @@ use MyWishList\controllers\CreationController;
 use MyWishList\controllers\DisplayController;
 use MyWishList\controllers\ModifyController;
 use MyWishList\controllers\ShareController;
+use MyWishList\exceptions\AuthException;
 use MyWishList\models\AccountModel;
-use MyWishList\views\BasicView;
-use MyWishList\views\NavBarView;
-use MyWishList\views\NotFoundView;
-use MyWishList\views\RedirectionView;
-use \Slim\Http\Response;
-use \Slim\Http\Request;
+use MyWishList\utils\Authentication;
 use MyWishList\utils\SlimSingleton;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 session_start();
 
@@ -156,8 +154,29 @@ $app->get('/account', function(Request $request, Response $response) {
 })->setName('displayAccount');
 
 $app->get('/login', function(Request $request, Response $response) {
-
+    $controller = DisplayController::getInstance();
+    $response->write($controller->displayLogin());
 })->setName('login');
+
+$app->post('/login', function(Request $request, Response $response) {
+    $controller = CreationController::getInstance();
+    $response->write($controller->makeConnection($request));
+});
+
+$app->post('/login/check_login', function (Request $request, Response $response) {
+    $queries = $request->getParsedBody();
+    if(isset($queries['username']) && isset($queries['password'])) {
+        $username = filter_var($queries['username'], FILTER_SANITIZE_STRING);
+        $password = filter_var($queries['password'], FILTER_SANITIZE_STRING);
+        try {
+            Authentication::authenticate($username, $password);
+            $response = new Response(200);
+            return $response;
+        } catch (AuthException $ex) {}
+    }
+    $response = new Response(401);
+    return $response;
+});
 
 $app->get('/reservations', function(Request $request, Response $response) {
     $controller = DisplayController::getInstance();

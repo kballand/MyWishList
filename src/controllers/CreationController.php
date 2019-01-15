@@ -359,4 +359,17 @@ class CreationController
         $view = new BasicView($view);
         return $view->render();
     }
+
+    public function makeConnection() {
+        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $indexPath = $router->pathFor('index');
+        if(!Authentication::hasProfile()) {
+
+        } else {
+            $view = new RedirectionView($indexPath, 'Echec de la connection au compte !', 'Vous êtes déjà connecté à un compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
 }

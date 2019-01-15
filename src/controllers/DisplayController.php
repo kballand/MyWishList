@@ -17,6 +17,7 @@ use MyWishList\views\ItemReservationView;
 use MyWishList\views\ListCreationView;
 use MyWishList\views\ListDisplayView;
 use MyWishList\views\ListModificationView;
+use MyWishList\views\LoginView;
 use MyWishList\views\NavBarView;
 use MyWishList\views\NotFoundView;
 use MyWishList\views\RedirectionView;
@@ -114,7 +115,13 @@ class DisplayController
 
     public function displayRegistration()
     {
-        $view = new RegisterView();
+        if (!Authentication::hasProfile()) {
+            $view = new RegisterView();
+        } else {
+            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $indexPath = $router->pathFor('index');
+            $view = new RedirectionView($indexPath, 'Echec de l\'accès à l\'enregistrement !', 'Vous êtes déjà connecter à votre compte, vous aller être redirigé vers l\'accueil dans 5 secondes !');
+        }
         $view = new NavBarView($view);
         $view = new BasicView($view);
         return $view->render();
@@ -227,6 +234,20 @@ class DisplayController
             $view = new RedirectionView($indexPath, 'Déconnection réussie avec succès', 'Vous vous êtes bien déconnecté, vous allez être rédirigé vers l\'accueil dans 5 secondes.');
         } else {
             $view = new RedirectionView($indexPath, 'Echec de la déconnection !', 'Vous devez être connecté pour pouvoir vous déconnecter, vous allez être rédirigé vers l\'accueil dans 5 secondes.');
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function displayLogin()
+    {
+        if (!Authentication::hasProfile()) {
+            $view = new LoginView();
+        } else {
+            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $indexPath = $router->pathFor('index');
+            $view = new RedirectionView($indexPath, 'Echec de l\'accès à la page de connection !', 'Vous êtes déjà connecter à votre compte, vous aller être redirigé vers l\'accueil dans 5 secondes !');
         }
         $view = new NavBarView($view);
         $view = new BasicView($view);

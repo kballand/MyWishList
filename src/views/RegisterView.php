@@ -46,6 +46,8 @@ class RegisterView implements IView
         <div class="registerPart">
             <label for="registerPassword">Mot de passe</label>
             <div class="errorDisplayedField">
+                <input type="text" style="display:none;">
+                <input type="password" style="display:none;">
                 <input type="password" name="password" id="registerPassword" placeholder="Votre mot de passe" class="passwordField" aria-invalid="true">
                 <span class="displayedError passwordInvalidError" id="registerPasswordInvalidError">
                     <p class="displayedMessage" id="registerPasswordInvalidMessage">Mot de passe invalide !</p>

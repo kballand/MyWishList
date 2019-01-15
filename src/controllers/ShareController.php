@@ -51,14 +51,15 @@ class ShareController
         return $view->render();
     }
 
-    public function publicizeList(Request $request, $no) {
+    public function publicizeList(Request $request, $no)
+    {
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la publication de la liste !', true);
         if ($canModify instanceof ListModel) {
             $list = $canModify;
             $router = SlimSingleton::getInstance()->getContainer()->get('router');
             $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
-            if(isset($list->access_token)) {
-                if(!$list->public) {
+            if (isset($list->access_token)) {
+                if (!$list->public) {
                     $list->public = true;
                     $list->save();
                     $view = new RedirectionView($listPath, 'Publication de la liste réussie avec succès', 'La liste est bien devenue public, vous allez être redirigé vers celle-ci dans 5 secondes !');
@@ -76,14 +77,15 @@ class ShareController
         return $view->render();
     }
 
-    public function privatizeList(Request $request, $no) {
+    public function privatizeList(Request $request, $no)
+    {
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la privatisation de la liste !', true);
         if ($canModify instanceof ListModel) {
             $list = $canModify;
             $router = SlimSingleton::getInstance()->getContainer()->get('router');
             $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
-            if(isset($list->access_token)) {
-                if($list->public) {
+            if (isset($list->access_token)) {
+                if ($list->public) {
                     $list->public = false;
                     $list->save();
                     $view = new RedirectionView($listPath, 'Privationsation de la liste réussie avec succès', 'La liste est bien redevenue privée, vous allez être redirigé vers celle-ci dans 5 secondes !');
