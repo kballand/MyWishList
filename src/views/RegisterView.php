@@ -64,8 +64,8 @@ class RegisterView implements IView
             <input type="checkbox" name="participant" id="registerParticipantCheckbox">
         </div>
         <div id="registerButtons">
-            <button type="button" id="registerPreviousStep">Previous</button>
-            <button type="button" id="registerNextStep">Next</button>
+            <button type="button" id="registerPreviousStep">Précédent</button>
+            <button type="button" id="registerNextStep">Suivant</button>
         </div>
         <div id="registerSteps">
             <span class="registerStep"></span>

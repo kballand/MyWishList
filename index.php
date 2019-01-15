@@ -150,7 +150,8 @@ $app->post('/register', function(Request $request, Response $response) {
 });
 
 $app->get('/account', function(Request $request, Response $response) {
-
+    $controller = DisplayController::getInstance();
+    $response->write($controller->displayAccount());
 })->setName('displayAccount');
 
 $app->get('/login', function(Request $request, Response $response) {
@@ -207,5 +208,10 @@ $app->get('/public', function (Request $request, Response $response) {
     $controller = DisplayController::getInstance();
     $response->write($controller->displayPublicLists());
 })->setName('publicLists');
+
+$app->get('/account/modify', function (Request $request, Response $response) {
+   $controller = DisplayController::getInstance();
+   $response->write($controller->displayAccountModification());
+});
 
 $app->run();

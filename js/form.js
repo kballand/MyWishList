@@ -267,7 +267,7 @@ $(document).ready(function () {
                 parts.eq(currentPart).hide();
                 ++currentPart;
                 if (currentPart === parts.length - 1) {
-                    next.text('Submit');
+                    next.text('Créer mon compte');
                 }
                 parts.eq(currentPart).show();
                 steps.eq(currentPart).addClass('stepActive');

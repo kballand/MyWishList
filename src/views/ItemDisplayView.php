@@ -93,16 +93,6 @@ END;
 END;
         } else {
             $itemsContent = "";
-            $itemActions = "";
-            if ($this->forModification) {
-                $itemActions =
-                    <<< END
-<div class="itemActions">
-    <a class="itemAction itemModify">&#9998</a>
-    <a class="itemAction itemDelete">&#10006</a>
-</div>
-END;
-            }
             foreach ($this->items as $item) {
                 $img = "";
                 if (isset($item->image)) {
@@ -132,7 +122,6 @@ END;
             <p class="itemState"><strong>Etat de réservation</strong> : $reservationState</p>
         </div>
     </a>
-    $itemActions
 </div>
 END;
             }

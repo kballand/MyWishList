@@ -8,6 +8,7 @@ use MyWishList\models\ListModel;
 use MyWishList\utils\Authentication;
 use MyWishList\utils\CommonUtils;
 use MyWishList\utils\SlimSingleton;
+use MyWishList\views\AccountDisplayView;
 use MyWishList\views\BasicView;
 use MyWishList\views\IndexView;
 use MyWishList\views\ItemCreationView;
@@ -248,6 +249,34 @@ class DisplayController
             $router = SlimSingleton::getInstance()->getContainer()->get('router');
             $indexPath = $router->pathFor('index');
             $view = new RedirectionView($indexPath, 'Echec de l\'accès à la page de connection !', 'Vous êtes déjà connecter à votre compte, vous aller être redirigé vers l\'accueil dans 5 secondes !');
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function displayAccount()
+    {
+        if (Authentication::hasProfile()) {
+            $view = new AccountDisplayView(AccountModel::where('username', '=', Authentication::getProfile()['username'])->first());
+        } else {
+            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $indexPath = $router->pathFor('index');
+            $view = new RedirectionView($indexPath, 'Echec de l\'accès au compte !', 'Vous devez être connecté pour accéder à votre compte, vous aller être redirigé vers l\'accueil dans 5 secondes !');
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function displayAccountModification()
+    {
+        if (Authentication::hasProfile()) {
+            $view = new AccountModificationView(AccountModel::where('username', '=', Authentication::getProfile()['username'])->first());
+        } else {
+            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $indexPath = $router->pathFor('index');
+            $view = new RedirectionView($indexPath, 'Echec de l\'accès à la modification du compte !', 'Vous devez être connecté pour accéder à la modification de votre compte, vous aller être redirigé vers l\'accueil dans 5 secondes !');
         }
         $view = new NavBarView($view);
         $view = new BasicView($view);

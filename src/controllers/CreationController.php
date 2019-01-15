@@ -2,7 +2,6 @@
 
 namespace MyWishList\controllers;
 
-use Illuminate\Support\Facades\Auth;
 use MyWishList\exceptions\AuthException;
 use MyWishList\models\AccountModel;
 use MyWishList\models\CommentModel;
@@ -362,15 +361,16 @@ class CreationController
         return $view->render();
     }
 
-    public function makeConnection(Request $request) {
+    public function makeConnection(Request $request)
+    {
         $router = SlimSingleton::getInstance()->getContainer()->get('router');
         $indexPath = $router->pathFor('index');
-        if(!Authentication::hasProfile()) {
+        if (!Authentication::hasProfile()) {
             $queries = $request->getParsedBody();
-            if(isset($queries['username']) && isset($queries['password'])) {
-                if(filter_var($queries['username'], FILTER_SANITIZE_STRING) === $queries['username']) {
+            if (isset($queries['username']) && isset($queries['password'])) {
+                if (filter_var($queries['username'], FILTER_SANITIZE_STRING) === $queries['username']) {
                     $username = filter_var($queries['username'], FILTER_SANITIZE_STRING);
-                    if(filter_var($queries['password'], FILTER_SANITIZE_STRING) === $queries['password']) {
+                    if (filter_var($queries['password'], FILTER_SANITIZE_STRING) === $queries['password']) {
                         $password = filter_var($queries['password'], FILTER_SANITIZE_STRING);
                         try {
                             $account = Authentication::authenticate($username, $password);
