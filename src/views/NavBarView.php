@@ -75,9 +75,7 @@ END;
         }
         return
             <<< END
-<header>
-    <h1>Mon header</h1>
-</header>
+
 <nav>
 	<ul id="menus">
 		<li class="menu">

@@ -17,6 +17,10 @@ use MyWishList\views\NavBarView;
 use MyWishList\views\RedirectionView;
 use Slim\Http\Request;
 
+/**
+ * Class CreationController
+ * @package MyWishList\controllers
+ */
 class CreationController
 {
     private static $instance;
@@ -33,6 +37,13 @@ class CreationController
         return self::$instance;
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     * @throws \Exception
+     *
+     *  Methode permettant de creer une liste
+     */
     public function createList(Request $request)
     {
         $router = SlimSingleton::getInstance()->getRouter();
@@ -76,6 +87,14 @@ class CreationController
         return $view->render();
     }
 
+
+    /**
+     * @param Request $request
+     * @param $no
+     * @return string
+     *
+     *  Methode permettant de creer un item
+     */
     public function createItem(Request $request, $no)
     {
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la création de l\'item !', true);
@@ -196,6 +215,14 @@ class CreationController
         return $view->render();
     }
 
+    /**
+     * @param Request $request
+     * @param $no
+     * @param $id
+     * @return string
+     *
+     * Methode permettant de reserver un item
+     */
     public function reserveItem(Request $request, $no, $id)
     {
         $canReserve = CommonUtils::canReserveItem($request, $no, $id, 'Echec de la réservation de l\'item !');
@@ -234,6 +261,13 @@ class CreationController
         return $view->render();
     }
 
+    /**
+     * @param Request $request
+     * @param $no
+     * @return string
+     *
+     * Methode permettant d ajouter un commentaire a une liste
+     */
     public function commentList(Request $request, $no)
     {
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de l\'ajout du commentaire à la liste !', false, $modificationGranted);
@@ -281,6 +315,12 @@ class CreationController
         return $view->render();
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     *
+     * Methode permettant de creer un compte
+     */
     public function createAccount(Request $request)
     {
         $router = SlimSingleton::getInstance()->getRouter();
@@ -361,6 +401,12 @@ class CreationController
         return $view->render();
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     *
+     * Methode permettant de se connecter
+     */
     public function makeConnection(Request $request)
     {
         $router = SlimSingleton::getInstance()->getRouter();
