@@ -6,10 +6,22 @@ namespace MyWishList\views;
 use MyWishList\models\AccountModel;
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à l'affichage de la modification de son comtpe
+ *
+ * @package MyWishList\views
+ */
 class AccountModificationView implements IView
 {
+    /**
+     * @var AccountModel Compte de l'utilsateur
+     */
     private $account;
 
+    /**
+     * Constructeur de la vue
+     * @param AccountModel $account Compte de l'utilisateur
+     */
     public function __construct(AccountModel $account)
     {
         $this->account = $account;
@@ -55,7 +67,6 @@ class AccountModificationView implements IView
     </form>
 </section>
 END;
-        END;
     }
 
     public function getRequiredCSS()

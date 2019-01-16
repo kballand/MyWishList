@@ -7,10 +7,23 @@ use MyWishList\models\ItemModel;
 use MyWishList\utils\Authentication;
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à la page de réservation d'un item
+ *
+ * @package MyWishList\views
+ */
 class ItemReservationView implements IView
 {
+    /**
+     * @var ItemModel Item pour la réservation
+     */
     private $item;
 
+    /**
+     * Constructeur de la vue
+     *
+     * @param ItemModel $item Item pour la réservation
+     */
     public function __construct(ItemModel $item)
     {
         $this->item = $item;

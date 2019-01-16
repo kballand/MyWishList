@@ -15,14 +15,27 @@ use MyWishList\views\NavBarView;
 use MyWishList\views\RedirectionView;
 use Slim\Http\Request;
 
+/**
+ * Classe controleur permettant de gérer les modifications
+ *
+ * @package MyWishList\controllers
+ */
 class ModifyController
 {
+    /**
+     * @var ModifyController Instance unique de la classe
+     */
     private static $instance;
 
     private function __construct()
     {
     }
 
+    /**
+     * Méthode d'accès à l'instance de la classe
+     *
+     * @return ModifyController L'instance de la classe
+     */
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
@@ -31,6 +44,13 @@ class ModifyController
         return self::$instance;
     }
 
+    /**
+     * Méthode permettant de modifier une liste
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste à modifier
+     * @return string Le rendu de la vue
+     */
     public function modifyList(Request $request, $no)
     {
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la modification de la liste !', true);
@@ -70,6 +90,14 @@ class ModifyController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant de modifier un item
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste de l'item à modifier
+     * @param $id int ID de l'item à modifier
+     * @return string Rendu de la vue
+     */
     public function modifyItem(Request $request, $no, $id)
     {
         $canModify = CommonUtils::canAccessItem($request, $no, $id, 'Echec de la modification de l\'item !', true);
@@ -197,6 +225,13 @@ class ModifyController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant de supprimer une liste
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste à supprimer
+     * @return string Rendu de la vue
+     */
     public function deleteList(Request $request, $no)
     {
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la suppression de la liste !', true);
@@ -216,6 +251,14 @@ class ModifyController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant de supprimer un item
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste à laquelle appartient l'item
+     * @param $id int ID de l'item à supprimer
+     * @return string Le rendu de la vue
+     */
     public function deleteItem(Request $request, $no, $id)
     {
         $canModify = CommonUtils::canAccessItem($request, $no, $id, 'Echec de la suppression de l\'item !', true);
@@ -233,6 +276,11 @@ class ModifyController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant de supprimer son compte
+     *
+     * @return string Le rendu de la vue
+     */
     public function deleteAccount()
     {
         $router = SlimSingleton::getInstance()->getRouter();
@@ -266,6 +314,12 @@ class ModifyController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant d'associer une liste à son compte
+     *
+     * @param Request $request Requête envoyée par le client
+     * @return string Rendu de la vue
+     */
     public function associateList(Request $request)
     {
         $router = SlimSingleton::getInstance()->getRouter();
@@ -311,6 +365,12 @@ class ModifyController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant de modifier les informations de son compte
+     *
+     * @param Request $request Requête envoyée par le client
+     * @return string Rendu de la vue
+     */
     public function modifyAccount(Request $request)
     {
         $router = SlimSingleton::getInstance()->getRouter();
@@ -338,7 +398,7 @@ class ModifyController
                                         $account->first_name = $firstName;
                                         $account->last_name = $lastName;
                                         $account->email = $email;
-                                        if(!password_verify($password, $account->password)) {
+                                        if (!password_verify($password, $account->password)) {
                                             Authentication::deleteProfile();
                                             $account->password = password_hash($password, CRYPT_BLOWFISH, ['cost' => 12]);
                                         }

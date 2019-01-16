@@ -5,6 +5,11 @@ namespace MyWishList\models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Classe représentant une réservation
+ *
+ * @package MyWishList\models
+ */
 class ReservationModel extends Model
 {
     protected $table = "reservation";

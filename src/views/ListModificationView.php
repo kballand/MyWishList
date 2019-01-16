@@ -7,10 +7,23 @@ use DateTime;
 use MyWishList\models\ListModel;
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à l'affichage de la modification d'une liste
+ *
+ * @package MyWishList\views
+ */
 class ListModificationView implements IView
 {
+    /**
+     * @var ListModel Liste en modification
+     */
     private $list;
 
+    /**
+     * Constructeur de la vue
+     *
+     * @param ListModel $list Liste en modification
+     */
     public function __construct(ListModel $list)
     {
         $this->list = $list;

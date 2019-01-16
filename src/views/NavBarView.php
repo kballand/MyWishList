@@ -5,10 +5,21 @@ namespace MyWishList\views;
 use MyWishList\utils\Authentication;
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à la barre de navigation
+ * @package MyWishList\views
+ */
 class NavBarView implements IView
 {
+    /**
+     * @var IView Vue de contenu du site
+     */
     private $contentView;
 
+    /**
+     * Constructeur de la vue
+     * @param IView $contentView Vue de contenu du site
+     */
     public function __construct(IView $contentView)
     {
         $this->contentView = $contentView;

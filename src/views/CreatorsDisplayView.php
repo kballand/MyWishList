@@ -5,10 +5,23 @@ namespace MyWishList\views;
 
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à l'affichage des créateurs de listes publiques
+ *
+ * @package MyWishList\views
+ */
 class CreatorsDisplayView implements IView
 {
+    /**
+     * @var array Liste des créateurs de listes publiques
+     */
     private $creators;
 
+    /**
+     * Constructeur de la vue
+     *
+     * @param $creators array Liste des créateurs de listes publiques
+     */
     public function __construct($creators)
     {
         $this->creators = $creators;
@@ -31,7 +44,6 @@ END;
     $sectionContent
 </section>
 END;
-
     }
 
     function getRequiredCSS()

@@ -5,6 +5,11 @@ namespace MyWishList\models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Classe représentant un compte
+ *
+ * @package MyWishList\models
+ */
 class AccountModel extends Model
 {
     protected $table = "account";

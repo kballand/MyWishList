@@ -4,6 +4,11 @@ namespace MyWishList\models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Classe représentant une liste
+ *
+ * @package MyWishList\models
+ */
 class ListModel extends Model
 {
     protected $table = "list";

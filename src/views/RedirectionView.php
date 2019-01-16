@@ -5,11 +5,24 @@ namespace MyWishList\views;
 
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à l'affichage d'une page de redirection
+ * @package MyWishList\views
+ */
 class RedirectionView implements IView
 {
-
+    /**
+     * @var string URL de redirection, titre de la page et description de l'erreur
+     */
     private $redirectionUrl, $title, $description;
 
+    /**
+     * Constructeur de la vue
+     *
+     * @param $redirectionUrl string URL de redirection
+     * @param $title string Titre de la page
+     * @param $description string Description de l'erreur
+     */
     public function __construct($redirectionUrl, $title, $description)
     {
         $this->redirectionUrl = $redirectionUrl;

@@ -7,12 +7,28 @@ use MyWishList\models\ItemModel;
 use MyWishList\utils\CommonUtils;
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue représentant l'affichage d'items
+ *
+ * @package MyWishList\views
+ */
 class ItemDisplayView implements IView
 {
-
+    /**
+     * @var mixed Les items à afficher
+     */
     private $items;
+    /**
+     * @var bool Dans le cadre de modifications ou non
+     */
     private $forModification;
 
+    /**
+     * Constructeur de la vue
+     *
+     * @param $items mixed Items à afficher
+     * @param $forModification bool Dans le cadre de modifications ou non
+     */
     public function __construct($items, $forModification)
     {
         $this->items = $items;

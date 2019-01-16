@@ -6,10 +6,23 @@ namespace MyWishList\views;
 use MyWishList\models\ItemModel;
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue représentant la page de modification d'un item
+ *
+ * @package MyWishList\views
+ */
 class ItemModificationView implements IView
 {
+    /**
+     * @var ItemModel L'item à modifié
+     */
     private $item;
 
+    /**
+     * Constructeur de la vue
+     *
+     * @param ItemModel $item Item à modifié
+     */
     public function __construct(ItemModel $item)
     {
         $this->item = $item;

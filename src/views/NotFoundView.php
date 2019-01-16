@@ -5,10 +5,22 @@ namespace MyWishList\views;
 
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à l'affichage d'une page non trouvée
+ * @package MyWishList\views
+ */
 class NotFoundView implements IView
 {
+    /**
+     * @var string URL demandé par l'utilisateur
+     */
     private $urlRequested;
 
+    /**
+     * Constructeur de la vue
+     *
+     * @param $urlRequested string URL demandé pae l'utilisateur
+     */
     public function __construct($urlRequested)
     {
         $this->urlRequested = $urlRequested;

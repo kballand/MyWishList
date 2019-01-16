@@ -5,6 +5,11 @@ namespace MyWishList\views;
 
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue représentant l'accueil du site
+ *
+ * @package MyWishList\views
+ */
 class IndexView implements IView
 {
 
@@ -24,9 +29,10 @@ class IndexView implements IView
         return '';
     }
 }
+
 ?>
 <img
-    src="../../img/Accueil.jpg"
-    height="100%"
-    width="100%"
+        src="../../img/Accueil.jpg"
+        height="100%"
+        width="100%"
 />

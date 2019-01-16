@@ -5,6 +5,11 @@ namespace MyWishList\views;
 
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à l'affichage de l'association d'une liste à un comtpe
+ *
+ * @package MyWishList\views
+ */
 class ListAssociationView implements IView
 {
     public function render()
@@ -41,6 +46,7 @@ END;
 
     public function getRequiredScripts()
     {
+        $basePath = SlimSingleton::getInstance()->getBasePath();
         return [$basePath . 'js/form.js'];
     }
 }

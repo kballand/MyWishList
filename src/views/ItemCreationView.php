@@ -4,13 +4,13 @@ namespace MyWishList\views;
 
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue représentant la page de création d'une item
+ *
+ * @package MyWishList\views
+ */
 class ItemCreationView implements IView
 {
-
-    public function __construct()
-    {
-    }
-
     public function render()
     {
         return

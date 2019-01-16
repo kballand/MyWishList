@@ -5,11 +5,27 @@ namespace MyWishList\views;
 use MyWishList\utils\CommonUtils;
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Classe présentant la vue basique du site qui possède le contenu d'une autre vue
+ *
+ * @package MyWishList\views
+ */
 class BasicView implements IView
 {
+    /**
+     * @var IView Vue interne à afficher
+     */
     private $bodyView;
+    /**
+     * @var string Titre de la page
+     */
     private $title;
 
+    /**
+     * Contructeur de la vue
+     * @param IView $bodyView Vue interne à afficher
+     * @param string $title Titre de la page
+     */
     public function __construct(IView $bodyView, $title = 'MyWishList')
     {
         $this->bodyView = $bodyView;

@@ -5,6 +5,11 @@ namespace MyWishList\views;
 
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à l'affichage de la page de connection
+ *
+ * @package MyWishList\views
+ */
 class LoginView implements IView
 {
     public function render()

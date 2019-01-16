@@ -18,17 +18,25 @@ use MyWishList\views\RedirectionView;
 use Slim\Http\Request;
 
 /**
- * Class CreationController
+ * Classe permettant de gérer les créations (items, listes...)
+ *
  * @package MyWishList\controllers
  */
 class CreationController
 {
+    /**
+     * @var CreationController Instance unique de la classe
+     */
     private static $instance;
 
     private function __construct()
     {
     }
 
+    /**
+     * Methode d'accès à l'instance de la classe
+     * @return CreationController L'instance de la classe
+     */
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
@@ -38,11 +46,11 @@ class CreationController
     }
 
     /**
-     * @param Request $request
-     * @return string
-     * @throws \Exception
+     * Methode permettant de creer une liste
      *
-     *  Methode permettant de creer une liste
+     * @param Request $request Requête envoyée par le client
+     * @return string La rendu de la vue
+     * @throws \Exception
      */
     public function createList(Request $request)
     {
@@ -89,11 +97,11 @@ class CreationController
 
 
     /**
-     * @param Request $request
-     * @param $no
-     * @return string
+     * Methode permettant de creer un item
      *
-     *  Methode permettant de creer un item
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste sur laquelle ajouter l'item
+     * @return string Le rendu de la vue
      */
     public function createItem(Request $request, $no)
     {
@@ -216,12 +224,12 @@ class CreationController
     }
 
     /**
-     * @param Request $request
-     * @param $no
-     * @param $id
-     * @return string
-     *
      * Methode permettant de reserver un item
+     *
+     * @param Request $request Requête envoyé par le client
+     * @param $no int N° de la liste dans laquelle se trouve l'item
+     * @param $id int ID de l'item a réserver
+     * @return string Le rendu de la vue
      */
     public function reserveItem(Request $request, $no, $id)
     {
@@ -262,11 +270,11 @@ class CreationController
     }
 
     /**
-     * @param Request $request
-     * @param $no
-     * @return string
-     *
      * Methode permettant d ajouter un commentaire a une liste
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste sur laquelle ajouter le commentaire
+     * @return string Le rendu de la vue
      */
     public function commentList(Request $request, $no)
     {
@@ -316,10 +324,10 @@ class CreationController
     }
 
     /**
-     * @param Request $request
-     * @return string
-     *
      * Methode permettant de creer un compte
+     *
+     * @param Request $request Requête envoyée par le client
+     * @return string Le rendu de la vue
      */
     public function createAccount(Request $request)
     {
@@ -402,10 +410,10 @@ class CreationController
     }
 
     /**
-     * @param Request $request
-     * @return string
-     *
      * Methode permettant de se connecter
+     *
+     * @param Request $request Requête envoyée par le client
+     * @return string Le rendu de la vue
      */
     public function makeConnection(Request $request)
     {

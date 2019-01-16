@@ -3,6 +3,7 @@
 namespace MyWishList\utils;
 
 
+use MyWishList\models\ImageModel;
 use MyWishList\models\ItemModel;
 use MyWishList\models\ListModel;
 use MyWishList\views\RedirectionView;
@@ -10,7 +11,12 @@ use Slim\Http\Request;
 
 class CommonUtils
 {
-
+    /**
+     * Méthoder permettant de générer le code html d'import de javascript
+     *
+     * @param $scripts mixed Ensemble des scripts
+     * @return string Le code html d'import du javascript
+     */
     public static function importScripts($scripts)
     {
         $scriptImport = '';
@@ -32,7 +38,12 @@ END;
         return $scriptImport;
     }
 
-
+    /**
+     * Méthode permettant de générer le code html d'import de css
+     *
+     * @param $cssFiles mixed Ensemble des fichiers css
+     * @return string Le code html d'import du css
+     */
     public static function importCSS($cssFiles)
     {
         $cssImport = '';
@@ -54,6 +65,16 @@ END;
         return $cssImport;
     }
 
+    /**
+     * Méthode permettant de savoir si la liste est accessible ou non à la personne
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste
+     * @param $errorTitle string Texte à afficher en cas d'erreur
+     * @param $forModificationOnly bool Accès réservé pour ceux qui peuvent modifier uniquement ou non
+     * @param bool $modificationGranted Le fait que la modification soit autorisée ou non
+     * @return mixed La liste ou alors une vue d'erreur
+     */
     public static function canAccessList(Request $request, $no, $errorTitle, $forModificationOnly, &$modificationGranted = false)
     {
         $router = SlimSingleton::getInstance()->getRouter();
@@ -107,6 +128,17 @@ END;
         return $view;
     }
 
+    /**
+     * Méthode permettant de savoir si l'accès à un item est possible ou non
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste auquel appartient l'item
+     * @param $id int ID de l'item
+     * @param $errorTitle string Texte à afficher en cas d'erreur
+     * @param $forModificationOnly bool Accès réservé pour ceux qui peuvent modifier uniquement ou non
+     * @param bool $modificationGranted Le fait que la modification soit autorisée ou non
+     * @return mixed L'item ou une vue d'erreur
+     */
     public static function canAccessItem(Request $request, $no, $id, $errorTitle, $forModificationOnly, &$modificationGranted = false)
     {
         $canAccess = self::canAccessList($request, $no, $errorTitle, $forModificationOnly, $modificationGranted);
@@ -143,12 +175,25 @@ END;
         return $view;
     }
 
+    /**
+     * Méthode permettant de savoir si une chaîne de caractère commence par un autre
+     *
+     * @param $haystack string Chaîne à tester
+     * @param $needle string Chaîne de commencement
+     * @return bool Vrai si la chaîne testée commence par la chaîne donnée, faux sinon
+     */
     public static function startsWith($haystack, $needle)
     {
         $length = strlen($needle);
         return substr($haystack, 0, $length) === $needle;
     }
 
+    /**
+     * Méthode permettant de savoir si l'utilisateur possède une liste donnée
+     *
+     * @param ListModel $list La liste que l'utilsateur peut posséder
+     * @return bool Vrai si l'utilisateur possède la liste, faux sinon
+     */
     public static function ownList(ListModel $list)
     {
         if (!self::hasExpired($list)) {
@@ -166,6 +211,15 @@ END;
         return false;
     }
 
+    /**
+     * Méthode permettant de savoir si la réservation d'un item est possible
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste de l'item
+     * @param $id int ID de l'item
+     * @param $errorTitle string Texte à afficher en cas d'erreur
+     * @return mixed
+     */
     public static function canReserveItem(Request $request, $no, $id, $errorTitle)
     {
         $canAccess = CommonUtils::canAccessItem($request, $no, $id, $errorTitle, false, $modificationGranted);
@@ -198,11 +252,23 @@ END;
         return $view;
     }
 
+    /**
+     * Méthode permettant de savoir si une liste a expiré ou non
+     *
+     * @param ListModel $list La liste à tester
+     * @return bool Vrai si la liste a expiré, faux sinon
+     */
     public static function hasExpired(ListModel $list)
     {
         return strtotime($list->expiration) <= strtotime('now');
     }
 
+    /**
+     * Méthode permettant de supprimer une liste et ses items dans la base de données
+     *
+     * @param ListModel $list La liste à supprimer de la base de données
+     * @throws \Exception
+     */
     public static function deleteList(ListModel $list)
     {
         foreach ($list->items as $item) {
@@ -211,6 +277,12 @@ END;
         $list->delete();
     }
 
+    /**
+     * Méthode permettant de supprimer un item et ses images inutilisées de la base de données
+     *
+     * @param ItemModel $item L'item à supprimé de la base de données
+     * @throws \Exception
+     */
     public static function deleteItem(ItemModel $item)
     {
         $image = $item->image;
@@ -218,6 +290,12 @@ END;
         self::deleteUnusedImage($image);
     }
 
+    /**
+     * Méthode permettant de supprimer une image si elle est inutilisée
+     *
+     * @param $image ImageModel Image a supprimer si elle est inutilisée
+     * @throws \Exception
+     */
     public static function deleteUnusedImage($image)
     {
         if (isset($image) && !is_null($image)) {

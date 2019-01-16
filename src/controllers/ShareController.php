@@ -11,14 +11,27 @@ use MyWishList\views\NavBarView;
 use MyWishList\views\RedirectionView;
 use Slim\Http\Request;
 
+/**
+ * Classe permettant de gérer le partage de liste
+ *
+ * @package MyWishList\controllers
+ */
 class ShareController
 {
+    /**
+     * @var ShareController Instance unique de la classe
+     */
     private static $instance;
 
     private function __construct()
     {
     }
 
+    /**
+     * Methode d'accès à l'instance de la classe
+     *
+     * @return ShareController L'instance de la classe
+     */
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
@@ -27,6 +40,14 @@ class ShareController
         return self::$instance;
     }
 
+    /**
+     * Méthode permettant de partager une liste
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste à partager
+     * @return string Rendu de la vue
+     * @throws \Exception
+     */
     public function shareList(Request $request, $no)
     {
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec du partage de la liste !', true);
@@ -51,6 +72,13 @@ class ShareController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant de rendre une liste publique
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste à publier
+     * @return string Rendu de la vue
+     */
     public function publicizeList(Request $request, $no)
     {
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la publication de la liste !', true);
@@ -77,6 +105,13 @@ class ShareController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant de rendre privée une liste publique
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste à rendre privée
+     * @return string Rendu de la vue
+     */
     public function privatizeList(Request $request, $no)
     {
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la privatisation de la liste !', true);

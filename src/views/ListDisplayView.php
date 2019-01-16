@@ -7,11 +7,28 @@ use MyWishList\models\ListModel;
 use MyWishList\utils\CommonUtils;
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à l'affichage de listes
+ *
+ * @package MyWishList\views
+ */
 class ListDisplayView implements IView
 {
+    /**
+     * @var mixed Listes à afficher
+     */
     private $lists;
+    /**
+     * @var bool Dans le cadre de modifications ou  non
+     */
     private $forModification;
 
+    /**
+     * Constructeur de la vue
+     *
+     * @param $lists mixed Listes à afficher
+     * @param $forModification bool Dans le cadre de modifications ou non
+     */
     public function __construct($lists, $forModification)
     {
         $this->lists = $lists;

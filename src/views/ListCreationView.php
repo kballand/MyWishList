@@ -6,6 +6,11 @@ namespace MyWishList\views;
 use DateTime;
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à l'affichage de la création d'une liste
+ *
+ * @package MyWishList\views
+ */
 class ListCreationView implements IView
 {
 

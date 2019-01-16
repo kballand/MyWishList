@@ -6,10 +6,23 @@ namespace MyWishList\views;
 use MyWishList\models\AccountModel;
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue affichant les détails du compte de l'utilsateur
+ *
+ * @package MyWishList\views
+ */
 class AccountDisplayView implements IView
 {
+    /**
+     * @var AccountModel Le compte de l'utilsateur
+     */
     private $account;
 
+    /**
+     * Constructeur de la vue
+     *
+     * @param AccountModel $account Le compte de l'utilsateur
+     */
     public function __construct(AccountModel $account)
     {
         $this->account = $account;
@@ -34,7 +47,6 @@ class AccountDisplayView implements IView
     </div>
 </div>
 END;
-
     }
 
     public function getRequiredCSS()

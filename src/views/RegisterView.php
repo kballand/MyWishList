@@ -5,6 +5,11 @@ namespace MyWishList\views;
 
 use MyWishList\utils\SlimSingleton;
 
+/**
+ * Vue correspondant à l'affichage de la page d'enregistrement
+ *
+ * @package MyWishList\views
+ */
 class RegisterView implements IView
 {
     public function render()

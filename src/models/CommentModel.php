@@ -5,6 +5,11 @@ namespace MyWishList\models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Classe représentant un commentaire
+ *
+ * @package MyWishList\models
+ */
 class CommentModel extends Model
 {
     protected $table = "comment";

@@ -28,14 +28,27 @@ use MyWishList\views\RedirectionView;
 use MyWishList\views\RegisterView;
 use Slim\Http\Request;
 
+/**
+ * Classe controleur permettant de gérer les affichaqes de vues
+ *
+ * @package MyWishList\controllers
+ */
 class DisplayController
 {
+    /**
+     * @var DisplayController Instance unique de la classe
+     */
     private static $instance;
 
     private function __construct()
     {
     }
 
+    /**
+     * Methode d'accès à l'instance de la classe
+     *
+     * @return DisplayController L'instance de la classe
+     */
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
@@ -45,9 +58,9 @@ class DisplayController
     }
 
     /**
-     * @return string
+     * Methode pour afficher ses listes
      *
-     * Methode pour afficher les listes
+     * @return string Le rendu de la vue
      */
     public function displayLists()
     {
@@ -67,10 +80,12 @@ class DisplayController
         return $view->render();
     }
 
+
     /**
-     * @return string
-     *
      * Methode pour afficher les listes publiques
+     *
+     * @return string Rendu de la vue
+     * @throws \Exception
      */
     public function displayPublicLists()
     {
@@ -84,11 +99,11 @@ class DisplayController
     }
 
     /**
-     * @param Request $request
-     * @param $no
-     * @return string
-     *
      * Methode pour afficher une liste
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste à afficher
+     * @return string Le rendu de la vue
      */
     public function displayList(Request $request, $no)
     {
@@ -109,12 +124,12 @@ class DisplayController
     }
 
     /**
-     * @param Request $request
-     * @param $no
-     * @param $id
-     * @return string
+     * Methode pour afficher un item d'une liste
      *
-     * Methode pour afficher un item
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste auquel appartient l'item
+     * @param $id int ID de l'item à afficher
+     * @return string Le rendu de la vue
      */
     public function displayItem(Request $request, $no, $id)
     {
@@ -135,9 +150,9 @@ class DisplayController
     }
 
     /**
-     * @return string
-     *
      * Methode pour afficher l'index
+     *
+     * @return string Le rendu de la vue
      */
     public function displayIndex()
     {
@@ -149,9 +164,9 @@ class DisplayController
 
 
     /**
-     * @return string
+     * Methode permettant d'afficher la connexion
      *
-     * Methode permettant d afficher la connexion
+     * @return string Le rendu de la vue
      */
     public function displayRegistration()
     {
@@ -175,9 +190,9 @@ class DisplayController
     }
 
     /**
-     * @return string
+     * Methode permettant d'afficher la creation de liste
      *
-     * Methode permettant d afficher la creation de la liste
+     * @return string Le rendu de la vue
      */
     public function displayListCreation()
     {
@@ -194,11 +209,11 @@ class DisplayController
     }
 
     /**
-     * @param Request $request
-     * @param $no
-     * @return string
-     *
      * Methode permettant d afficher la modification de la liste
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste à afficher en modification
+     * @return string Le rendu de la vue
      */
     public function displayListModification(Request $request, $no)
     {
@@ -214,6 +229,13 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * Methode permettant d'afficher la création d'item pour une liste
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste sur laquelle afficher la création d'items
+     * @return string Le rendu de la vue
+     */
     public function displayItemCreation(Request $request, $no)
     {
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de l\'ajout d\'un item à la liste !', true);
@@ -227,6 +249,14 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant d'afficher la modification d'un item d'une liste
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste à laquelle appartient l'item
+     * @param $id int ID de l'item dont on veut afficher la page de modification
+     * @return string Le rendu de la vue
+     */
     public function displayItemModification(Request $request, $no, $id)
     {
         $canModify = CommonUtils::canAccessItem($request, $no, $id, 'Echec de l\'accès à la modification de l\'item !', true);
@@ -241,6 +271,14 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant d'affiche la page de réservation d'un item d'une liste
+     *
+     * @param Request $request Requête envoyée par le client
+     * @param $no int N° de la liste à laquelle appartient l'item
+     * @param $id int ID de l'item à réserver
+     * @return string Le rendu de la vue
+     */
     public function displayItemReservation(Request $request, $no, $id)
     {
         $canReserve = CommonUtils::canReserveItem($request, $no, $id, 'Echec de l\'accès à la réservation de l\'item !');
@@ -255,6 +293,11 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * Methode permettant d'afficher les réservations faites
+     *
+     * @return string Le rendu de la vue
+     */
     public function displayReservations()
     {
         $router = SlimSingleton::getInstance()->getRouter();
@@ -277,6 +320,11 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * Methode permettant d'afficher la déconnection
+     *
+     * @return string Le rendu de la vue
+     */
     public function displayLogout()
     {
         $router = SlimSingleton::getInstance()->getRouter();
@@ -292,6 +340,11 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant d'affiche la page de connection
+     *
+     * @return string Le rendu de la vue
+     */
     public function displayLogin()
     {
         if (!Authentication::hasProfile()) {
@@ -306,6 +359,11 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant d'afficher les détails de son compte
+     *
+     * @return string Le rendu de la vue
+     */
     public function displayAccount()
     {
         if (Authentication::hasProfile()) {
@@ -320,6 +378,11 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * Methode permettant d'afficher la page de modification de son compte
+     *
+     * @return string Le rendu de la vue
+     */
     public function displayAccountModification()
     {
         if (Authentication::hasProfile()) {
@@ -334,6 +397,11 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant d'afficher la page d'association de liste à son compte
+     *
+     * @return string Le rendu de la vue
+     */
     public function displayListAssociation()
     {
         $router = SlimSingleton::getInstance()->getRouter();
@@ -348,6 +416,11 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * Méthode permettant d'afficher la liste des créateurs de liste publique
+     *
+     * @return string Le rendu de la vue
+     */
     public function displayCreators()
     {
         $publicLists = ListModel::where('public', '=', true)->get();
