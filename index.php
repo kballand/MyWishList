@@ -23,7 +23,7 @@ $db->addConnection(parse_ini_file("src/conf/conf.ini"));
 $db->setAsGlobal();
 $db->bootEloquent();
 
-$app = SlimSingleton::getInstance();
+$app = SlimSingleton::getInstance()->getSlim();
 
 $app->get('/list/display/{no}', function (Request $request, Response $response, $args) {
     $controller = DisplayController::getInstance();
@@ -218,5 +218,20 @@ $app->get('/account/delete', function (Request $request, Response $response) {
     $controller = ModifyController::getInstance();
     $response->write($controller->deleteAccount());
 })->setName('deleteAccount');
+
+$app->get('/list/associate', function(Request $request, Response $response) {
+   $controller = DisplayController::getInstance();
+   $response->write($controller->displayListAssociation());
+})->setName('associateList');
+
+$app->get('/creators', function(Request $request, Response $response) {
+    $controller = DisplayController::getInstance();
+    $response->write($controller->displayCreators());
+})->setName('creators');
+
+$app->post('/list/associate', function(Request $request, Response $response) {
+   $controller = ModifyController::getInstance();
+   $response->write($controller->associateList($request));
+});
 
 $app->run();

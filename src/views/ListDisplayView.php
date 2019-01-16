@@ -20,7 +20,7 @@ class ListDisplayView implements IView
 
     public function render()
     {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $router = SlimSingleton::getInstance()->getRouter();
         if ($this->lists instanceof ListModel) {
             $itemsContent = "";
             if (isset($this->lists->items) && count($this->lists->items) > 0) {
@@ -57,13 +57,13 @@ END;
                         $publicizeListPath = $router->pathFor('publicizeList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
                         $optionalButtons .=
                             <<< END
-<a id="publicizeListButton" href="$publicizeListPath">Rendre la liste publique</a>
+<a id="publicizeListButton" href="$publicizeListPath">Rendre publique</a>
 END;
                     } else {
                         $privatizeListPath = $router->pathFor('privatizeList', ['no' => $this->lists->no]) . "?token={$this->lists->modify_token}";
                         $optionalButtons .=
                             <<< END
-<a id="privatizeListButton" href="$privatizeListPath">Rendre la liste privée</a>
+<a id="privatizeListButton" href="$privatizeListPath">Rendre privée</a>
 END;
                     }
                 } else {
@@ -106,9 +106,9 @@ END;
         <label for="listCommentMessage">Commentaire</label>
         <div class="errorDisplayedField">
             <textarea name="comment" id="listCommentMessage" class="notEmptyField" rows="10" cols="60" placeholder="Entrez ici un commentaire à propos de cette liste de souhaits..." aria-invalid="true"></textarea>
-            <span class="displayedError fieldEmptyError" id="listCommentMessageEmptyError">
+            <div class="displayedError fieldEmptyError" id="listCommentMessageEmptyError">
                 <p class="displayedMessage" id="listCommentMessageEmptyMessage">Votre commentaire ne peut être vide !</p>
-            </span>
+            </div>
         </div>
         <input type="submit" value="Envoyer ce commentaire" id="commentListButton" class="validateButton">
     </form>

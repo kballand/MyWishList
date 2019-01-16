@@ -56,7 +56,7 @@ END;
 
     public static function canAccessList(Request $request, $no, $errorTitle, $forModificationOnly, &$modificationGranted = false)
     {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $router = SlimSingleton::getInstance()->getRouter();
         $indexPath = $router->pathFor('index');
         if ($forModificationOnly && Authentication::hasProfile() && Authentication::getProfile()['participant']) {
             $view = new RedirectionView($indexPath, $errorTitle, 'Vous ne pouvez pas modifier une liste avec un compte participant, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
@@ -112,7 +112,7 @@ END;
         $canAccess = self::canAccessList($request, $no, $errorTitle, $forModificationOnly, $modificationGranted);
         if ($canAccess instanceof ListModel) {
             $list = $canAccess;
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             if ($forModificationOnly || $modificationGranted) {
                 $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
             } else {
@@ -171,7 +171,7 @@ END;
         $canAccess = CommonUtils::canAccessItem($request, $no, $id, $errorTitle, false, $modificationGranted);
         if ($canAccess instanceof ItemModel) {
             $item = $canAccess;
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             $itemPath = $router->pathFor('displayItem', ['no' => $item->list->no, 'id' => $item->id]) . '?token=';
             if ($modificationGranted || self::ownList($item->list)) {
                 if ($modificationGranted) {

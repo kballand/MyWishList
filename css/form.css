@@ -23,6 +23,7 @@
 .basicForm textarea {
     width: 400px;
     resize: none;
+    max-width: 80%;
 }
 
 .basicForm label {

@@ -7,18 +7,31 @@ use Slim\App;
 class SlimSingleton
 {
     private static $instance;
+    private $slim;
+    private $router;
 
     private function __construct()
     {
-
+        $config = ['settings' => ['displayErrorDetails' => true]];
+        $this->slim = new App($config);
+        $this->router = $this->slim->getContainer()->get('router');
     }
 
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
-            $config = ['settings' => ['displayErrorDetails' => true]];
-            self::$instance = new App($config);
+            self::$instance = new SlimSingleton();
         }
         return self::$instance;
+    }
+
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
+    public function getSlim()
+    {
+        return $this->slim;
     }
 }

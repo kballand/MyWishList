@@ -13,7 +13,7 @@ nav {
     list-style-type: none;
     display: inline-flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: left;
     width: 250px;
 }
 
@@ -42,8 +42,11 @@ nav {
     margin-right: 5px;
     color: white;
     background-color : #1d8eb8;
-    display: inline-block;
     white-space: nowrap;
+}
+
+#signBar a:not(.iconTitle) {
+    display: inline-block;
 }
 
 #signBar a:first-child {
@@ -120,4 +123,19 @@ nav {
 
 .sticky + .content {
     padding-top: 45px;
+}
+
+.iconTitle {
+    display: none;
+}
+
+@media all and (max-width: 500px) {
+    .iconTitle, #signBar a {
+        display: inline-block;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .textTitle, #signBar a:not(.iconTitle) {
+        display: none;
+    }
 }

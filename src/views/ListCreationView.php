@@ -18,21 +18,21 @@ class ListCreationView implements IView
         <label for="listTitle">Titre</label>
         <div class="errorDisplayedField">
             <input type="text" name="title" id="listTitle" placeholder="Titre de la liste" class="notEmptyField" aria-invalid="true">
-            <span class="displayedError fieldEmptyError" id="listTitleEmptyError">
+            <div class="displayedError fieldEmptyError" id="listTitleEmptyError">
                 <p class="displayedMessage" id="titleEmptyMessage">Le titre de la liste ne peut pas être vide !</p>
-            </span>
+            </div>
         </div>
         <label for="listDescription">Description</label>
         <textarea name="description" id="listDescription" rows="10" cols="60" placeholder="Entrez ici la description de votre liste..."></textarea>
-        <label for="listExpiration">Date d'expiration</label>
+        <label for="listExpirationDate">Date d'expiration</label>
         <div class="dateField errorDisplayedField">
             <input type="date" name="expirationDate" id="listExpirationDate" min="{$date->format('Y-m-d')}" class="notEmptyField ulteriorDate" aria-invalid="true">
-            <span class="displayedError fieldEmptyError" id="listDateEmptyError">
+            <div class="displayedError fieldEmptyError" id="listDateEmptyError">
                 <p class="displayedMessage" id="dateEmptyMessage">La date d'expiration de la liste doit être complétée !</p>
-            </span>
-            <span class="displayedError incorrectDateError" id="incorrectListDateError">
+            </div>
+            <div class="displayedError incorrectDateError" id="incorrectListDateError">
                 <p class="displayedMessage" id="incorrectDateMessage">La date d'expiration de la liste doit être ultérieure à la date actuelle !</p>
-            </span>
+            </div>
         </div>
         <input type="submit" value="Créer la liste" id="createListButton" class="validateButton">
     </form>

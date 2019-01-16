@@ -35,7 +35,7 @@ class CreationController
 
     public function createList(Request $request)
     {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $router = SlimSingleton::getInstance()->getRouter();
         $indexPath = $router->pathFor('index');
         if (Authentication::hasProfile() && Authentication::getProfile()['participant']) {
             $view = new RedirectionView($indexPath, 'Echec de la création de la liste !', 'Vous ne pouvez pas créer de liste avec un compte participant, vous allez être ridirigé vers l\'accueil dans 5 secondes.');
@@ -81,7 +81,7 @@ class CreationController
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la création de l\'item !', true);
         if ($canModify instanceof ListModel) {
             $list = $canModify;
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
             $queries = $request->getParsedBody();
             if (isset($queries['name']) && isset($queries['description']) && isset($queries['price']) && isset($queries['website'])) {
@@ -201,7 +201,7 @@ class CreationController
         $canReserve = CommonUtils::canReserveItem($request, $no, $id, 'Echec de la réservation de l\'item !');
         if ($canReserve instanceof ItemModel) {
             $item = $canReserve;
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             $itemPath = $router->pathFor('displayItem', ['no' => $item->list->no, 'id' => $item->id]) . "?token={$item->list->access_token}";
             $queries = $request->getParsedBody();
             if ((isset($queries['name']) || Authentication::hasProfile()) && isset($queries['message'])) {
@@ -239,7 +239,7 @@ class CreationController
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de l\'ajout du commentaire à la liste !', false, $modificationGranted);
         if ($canModify instanceof ListModel) {
             $list = $canModify;
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             $listPath = $router->pathFor('displayList', ['no' => $list->no]) . '?token=';
             if ($modificationGranted || CommonUtils::ownList($list)) {
                 if ($modificationGranted) {
@@ -283,7 +283,7 @@ class CreationController
 
     public function createAccount(Request $request)
     {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $router = SlimSingleton::getInstance()->getRouter();
         $indexPath = $router->pathFor('index');
         if (!Authentication::hasProfile()) {
             $queries = $request->getParsedBody();
@@ -363,7 +363,7 @@ class CreationController
 
     public function makeConnection(Request $request)
     {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $router = SlimSingleton::getInstance()->getRouter();
         $indexPath = $router->pathFor('index');
         if (!Authentication::hasProfile()) {
             $queries = $request->getParsedBody();

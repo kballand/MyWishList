@@ -18,18 +18,18 @@ class ItemCreationView implements IView
         <label for="itemName">Nom</label>
         <div class="errorDisplayedField">
             <input type="text" name="name" id="itemName" placeholder="Nom de l'item" class="notEmptyField" aria-invalid="true">
-            <span class="displayedError fieldEmptyError" id="itemNameEmptyError">
+            <div class="displayedError fieldEmptyError" id="itemNameEmptyError">
                 <p class="displayedMessage" id="itemNameEmptyMessage">Le nom de l'item ne peut pas être vide !</p>
-            </span>
+            </div>
         </div>
         <label for="itemDescription">Description</label>
         <textarea name="description" id="itemDescription" rows="10" cols="60" placeholder="Entrez ici la description de votre item..."></textarea>
         <label for="itemPrice">Prix</label>
         <div class="errorDisplayedField">
             <input type="number" min="0.01" max="999.99" step="0.01" name="price" id="itemPrice" class="limitedPrice" aria-invalid="true">
-            <span class="displayedError incorrectPriceError" id="incorrectItemPriceError">
+            <div class="displayedError incorrectPriceError" id="incorrectItemPriceError">
                 <p class="displayedMessage" id="incorrectItemPriceMessage">Le prix de l'item doit être un nombre compris entre 0,01€ et 10000€ !</p>
-            </span>
+            </div>
         </div>
         <label for="itemImage">Image de l'item</label>
         <div class="uploadField" id="itemImage">

@@ -32,7 +32,7 @@ class ShareController
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec du partage de la liste !', true);
         if ($canModify instanceof ListModel) {
             $list = $canModify;
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
             if (!isset($list->access_token)) {
                 do {
@@ -56,7 +56,7 @@ class ShareController
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la publication de la liste !', true);
         if ($canModify instanceof ListModel) {
             $list = $canModify;
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
             if (isset($list->access_token)) {
                 if (!$list->public) {
@@ -82,7 +82,7 @@ class ShareController
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de la privatisation de la liste !', true);
         if ($canModify instanceof ListModel) {
             $list = $canModify;
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
             if (isset($list->access_token)) {
                 if ($list->public) {

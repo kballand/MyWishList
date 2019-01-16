@@ -15,32 +15,32 @@ class RegisterView implements IView
             <label for="registerFirstName">Prénom</label>
             <div class="errorDisplayedField">
                 <input type="text" name="firstName" id="registerFirstName" placeholder="Votre prénom" class="notEmptyField" aria-invalid="true">
-                <span class="displayedError fieldEmptyError" id="itemNameEmptyError">
+                <div class="displayedError fieldEmptyError" id="itemNameEmptyError">
                     <p class="displayedMessage" id="firstNameEmptyMessage">Votre prénom ne peut être laissé vide !</p>
-                </span>
+                </div>
             </div>
             <label for="registerLastName">Nom</label>
             <div class="errorDisplayedField">
                 <input type="text" name="lastName" id="registerLastName" placeholder="Votre nom" class="notEmptyField" aria-invalid="true">
-                <span class="displayedError fieldEmptyError" id="itemNameEmptyError">
+                <div class="displayedError fieldEmptyError" id="itemNameEmptyError">
                     <p class="displayedMessage" id="lastNameEmptyMessage">Votre nom ne peut être laissé vide !</p>
-                </span>
+                </div>
             </div>
         </div>
         <div class="registerPart">
             <label for="registerUsername">Nom d'utilisateur</label>
             <div class="errorDisplayedField">
                 <input type="text" name="username" id="registerUsername" placeholder="Votre nom d'utilisateur" class="usernameUniqueField" maxlength="20" aria-invalid="true">
-                <span class="displayedError usernameUniqueError" id="registerUsernameUniqueError">
+                <div class="displayedError usernameUniqueError" id="registerUsernameUniqueError">
                     <p class="displayedMessage" id="registerUsernameUniqueMessage"></p>
-                </span>
+                </div>
             </div>
             <label for="registerEmail">E-mail</label>
             <div class="errorDisplayedField">
                 <input type="email" name="email" id="registerEmail" placeholder="Votre email" class="emailField" aria-invalid="true">
-                <span class="displayedError emailInvalidError" id="registerEmailInvalidError">
+                <div class="displayedError emailInvalidError" id="registerEmailInvalidError">
                     <p class="displayedMessage" id="registerEmailInvalidMessage">Vous devez entrer un email valide !</p>
-                </span>
+                </div>
             </div>
         </div>
         <div class="registerPart">
@@ -49,16 +49,16 @@ class RegisterView implements IView
                 <input type="text" style="display:none;">
                 <input type="password" style="display:none;">
                 <input type="password" name="password" id="registerPassword" placeholder="Votre mot de passe" class="passwordField" aria-invalid="true">
-                <span class="displayedError passwordInvalidError" id="registerPasswordInvalidError">
+                <div class="displayedError passwordInvalidError" id="registerPasswordInvalidError">
                     <p class="displayedMessage" id="registerPasswordInvalidMessage">Mot de passe invalide !</p>
-                </span>
+                </div>
             </div>
             <label for="registerVerifyPassword">Même mot de passe</label>
             <div class="errorDisplayedField">
                 <input type="password" id="registerVerifyPassword" placeholder="Retapez votre mot de passe" class="passwordVerifyField" aria-invalid="true">
-                <span class="displayedError passwordVerifyInvalidError" id="registerPasswordVerifyInvalidError">
+                <div class="displayedError passwordVerifyInvalidError" id="registerPasswordVerifyInvalidError">
                     <p class="displayedMessage" id="registerPasswordVerifyInvalidMessage">Mot de passe différent !</p>
-                </span>
+                </div>
             </div>
             <label for="registerParticipantCheckbox">Compte de participation uniquement</label>
             <input type="checkbox" name="participant" id="registerParticipantCheckbox">

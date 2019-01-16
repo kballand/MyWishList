@@ -21,7 +21,7 @@ class ItemDisplayView implements IView
 
     public function render()
     {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $router = SlimSingleton::getInstance()->getRouter();
         if ($this->items instanceof ItemModel) {
             $img = "";
             if (isset($this->items->image)) {

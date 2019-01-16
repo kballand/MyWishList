@@ -2,7 +2,7 @@
 
 /* Section contenant l'ensemble des listes ou l'ensemble des items */
 
-#listsSection, #itemsSection {
+#listsSection, #itemsSection, #creatorsSection {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -10,18 +10,28 @@
     margin: 1%;
 }
 
+#itemsSection {
+    max-width: 80%;
+}
+
 /* Une liste parmi l'ensemble des listes ou un item */
 
-.listArticle, .itemContent {
+.listArticle, .itemContent, .creatorArticle {
     background: rgb(0, 77, 101);
     padding: 1%;
     margin: 1%;
     text-align: center;
+    color: white;
 }
 
 .listArticle {
     width: 400px;
     border-radius: 15px;
+}
+
+.creatorArticle {
+    border-radius: 20px;
+    width: 200px
 }
 
 .itemContent {
@@ -32,9 +42,10 @@
 
 /* Lors du survol d'une liste ou d'un item d'une liste */
 
-.listArticle:hover, .itemContent:hover {
+.listArticle:hover, .itemContent:hover, .creatorArticle:hover {
     box-shadow: 5px 5px 3px rgb(0, 50, 80);
     z-index: 0;
+    cursor: pointer;
 }
 
 #listContent, #itemContent, #accountContent {

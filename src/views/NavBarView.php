@@ -26,17 +26,20 @@ class NavBarView implements IView
 
     public function render()
     {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $router = SlimSingleton::getInstance()->getRouter();
         $indexPath = $router->pathFor('index');
         $publicListsPath = $router->pathFor('publicLists');
+        $creatorsPath = $router->pathFor('creators');
         $creationPath = $router->pathFor('createList');
         if (Authentication::hasProfile()) {
             $accountPath = $router->pathFor('displayAccount');
             $logoutPath = $router->pathFor('logout');
             $signPossibilities =
                 <<< END
-<a href="$accountPath" id="myAccountButton">Mon compte</a>
-<a href="$logoutPath" id="logoutButton">Se déconnecter</a>
+<a href="$accountPath" id="myAccountButton" class="textTitle">Mon compte</a>
+<a href="$accountPath" class="iconTitle"><i class="fas fa-user"></i></a>
+<a href="$logoutPath" id="logoutButton" class="textTitle">Se déconnecter</a>
+<a href="$logoutPath" class="iconTitle"><i class="fas fa-sign-out-alt"></i></a>
 END;
             $reservationsPath = $router->pathFor('displayReservations');
             $additionalPossibilities =
@@ -45,10 +48,12 @@ END;
 END;
             if (!Authentication::getProfile()['participant']) {
                 $listsPath = $router->pathFor('displayLists');
+                $associateListPath = $router->pathFor('associateList');
                 $additionalPossibilities .=
                     <<< END
 <a href="$creationPath" class="subMenuTitle">Créer une liste</a>
 <a href="$listsPath" class="subMenuTitle">Mes listes</a>
+<a href="$associateListPath" class="subMenuTitle">Associer une liste</a>
 END;
             }
         } else {
@@ -60,8 +65,10 @@ END;
 END;
             $signPossibilities =
                 <<< END
-<a href="$loginPath" id="loginButton">Se connecter</a>
-<a href="$registrationPath" id="registerButton">S'enregistrer</a>
+<a href="$loginPath" id="loginButton" class="textTitle">Se connecter</a>
+<a href="$loginPath" id="loginButton" class="iconTitle"><i class="fas fa-sign-in-alt"></i></a>
+<a href="$registrationPath" id="registerButton" class="textTitle">S'enregistrer</a>
+<a href="$registrationPath" id="registerButton" class="iconTitle"><i class="fas fa-user-plus"></i></a>
 END;
         }
         return
@@ -72,13 +79,16 @@ END;
 <nav>
 	<ul id="menus">
 		<li class="menu">
-			<a class="menuTitle" href="$indexPath">Accueil</a>
+			<a class="menuTitle textTitle" href="$indexPath">Accueil</a>
+			<a class="menuTitle iconTitle" href="$indexPath"><i class="fas fa-home"></i></a>
 		</li>
 		<li class="menu">
-			<a class="menuTitle" href="$creationPath">Listes</a>
+			<a class="menuTitle textTitle" href="$creationPath">Listes</a>
+			<a class="menuTitle iconTitle" href="$creationPath"><i class="fas fa-bars"></i></a>
 			<div class="subMenu">
 				$additionalPossibilities
 				<a href="$publicListsPath" class="subMenuTitle">Consulter les listes publiques</a>
+				<a href="$creatorsPath" class="subMenuTitle">Afficher la liste des créateurs</a>
 			</div>
 		</li>
 	</ul>

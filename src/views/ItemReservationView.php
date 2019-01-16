@@ -29,9 +29,9 @@ class ItemReservationView implements IView
 <label for="reservationName">Nom</label>
 <div class="errorDisplayedField">
     <input type="text" name="name" id="reservationName" placeholder="Nom de participation" class="notEmptyField" value="$reservationName" aria-invalid="true">
-    <span class="displayedError fieldEmptyError" id="reservationNameEmptyError">
+    <div class="displayedError fieldEmptyError" id="reservationNameEmptyError">
         <p class="displayedMessage" id="reservationNameEmptyMessage">Votre nom de participation ne peut pas être vide !</p>
-    </span>
+    </div>
 </div>
 END;
         }

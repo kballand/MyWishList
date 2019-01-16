@@ -11,6 +11,7 @@
 }
 
 .popupContent {
+    max-width: 80%;
     font-size: 25px;
     text-decoration: none;
     color: white;

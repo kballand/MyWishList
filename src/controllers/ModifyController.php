@@ -37,7 +37,7 @@ class ModifyController
         if ($canModify instanceof ListModel) {
             $list = $canModify;
             $queries = $request->getParsedBody();
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             $listPath = $router->pathFor('displayList', ['no' => $list->no]) . "?token=$list->modify_token";
             if (isset($queries['title']) && isset($queries['description']) && isset($queries['expirationDate'])) {
                 $title = filter_var($queries['title'], FILTER_SANITIZE_STRING);
@@ -76,7 +76,7 @@ class ModifyController
         if ($canModify instanceof ItemModel) {
             $item = $canModify;
             $queries = $request->getParsedBody();
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             $itemPath = $router->pathFor('displayItem', ['no' => $item->list->no, 'id' => $item->id]) . "?token={$item->list->modify_token}";
             if (isset($queries['name']) && isset($queries['description']) && isset($queries['website']) && isset($queries['price'])) {
                 $name = filter_var($queries['name'], FILTER_SANITIZE_STRING);
@@ -205,7 +205,7 @@ class ModifyController
             unset($_COOKIE['mywishlist' . $list->no]);
             setcookie('mywishlist-' . $list->no, null, -1, '/');
             CommonUtils::deleteList($list);
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             $indexPath = $router->pathFor('index');
             $view = new RedirectionView($indexPath, 'Suppression de la liste réussie avec succès !', 'Votre liste de souhaits a bien été supprimée, vous allez être redirigé vers l\'accueil dans 5 secondes.');
         } else {
@@ -221,7 +221,7 @@ class ModifyController
         $canModify = CommonUtils::canAccessItem($request, $no, $id, 'Echec de la suppression de l\'item !', true);
         if ($canModify instanceof ItemModel) {
             $item = $canModify;
-            $router = SlimSingleton::getInstance()->getContainer()->get('router');
+            $router = SlimSingleton::getInstance()->getRouter();
             $listPath = $router->pathFor('displayList', ['no' => $item->list->no]) . "?token={$item->list->modify_token}";
             CommonUtils::deleteItem($item);
             $view = new RedirectionView($listPath, 'Suppression de l\'item réussi avec succès !', 'Votre item a bien été supprimé, vous allez être redirigé vers votre liste dans 5 secondes.');
@@ -233,24 +233,25 @@ class ModifyController
         return $view->render();
     }
 
-    public function deleteAccount() {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+    public function deleteAccount()
+    {
+        $router = SlimSingleton::getInstance()->getRouter();
         $indexPath = $router->pathFor('index');
-        if(Authentication::hasProfile()) {
+        if (Authentication::hasProfile()) {
             $account = AccountModel::where('username', '=', Authentication::getProfile()['username'])->first();
             $comments = $account->comments;
             foreach ($comments as $comment) {
                 $comment->delete();
             }
             $reservations = $account->reservations;
-            foreach($reservations as $reservation) {
-                if(!CommonUtils::hasExpired($reservation->item->list)) {
+            foreach ($reservations as $reservation) {
+                if (!CommonUtils::hasExpired($reservation->item->list)) {
                     $reservation->delete();
                 }
             }
             $lists = $account->lists;
             foreach ($lists as $list) {
-                if(!CommonUtils::hasExpired($list)) {
+                if (!CommonUtils::hasExpired($list)) {
                     CommonUtils::deleteList($list);
                 }
             }
@@ -259,6 +260,51 @@ class ModifyController
             $view = new RedirectionView($indexPath, 'Suppression du compte réussie avec succès !', 'Votre compte a bien été supprimé, vous allez être redirigé vers l\'accueil dans 5 secondes.');
         } else {
             $view = new RedirectionView($indexPath, 'Echec de la suppression du compte !', 'Vous devez être connecté pour pouvoir supprimer votre compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
+
+    public function associateList(Request $request)
+    {
+        $router = SlimSingleton::getInstance()->getRouter();
+        $indexPath = $router->pathFor('index');
+        $queries = $request->getParsedBody();
+        if (Authentication::hasProfile()) {
+            if (isset($queries['no']) && isset($queries['token'])) {
+                if (filter_var($queries['no'], FILTER_VALIDATE_INT)) {
+                    $no = filter_var($queries['no'], FILTER_SANITIZE_NUMBER_INT);
+                    $list = ListModel::where('no', '=', $no)->first();
+                    if (isset($list)) {
+                        if (!isset($list->owner_name)) {
+                            if (filter_var($queries['token'], FILTER_SANITIZE_STRING) === $queries['token']) {
+                                $token = filter_var($queries['token'], FILTER_SANITIZE_STRING);
+                                if ($list->modify_token === $token) {
+                                    $list->owner_name = Authentication::getProfile()['username'];
+                                    $list->save();
+                                    setcookie('mywishlist-' . $list->no, password_hash($list->modify_token, CRYPT_BLOWFISH, ['cost' => 12]), strtotime($list->expiration), '/');
+                                    $view = new RedirectionView($indexPath, 'La liste a été associée au compte avec succès !', 'La liste a bien été associée à votre compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                                } else {
+                                    $view = new RedirectionView($indexPath, 'Echec de l\'association de la liste au compte !', 'Le token de modification fourni n\'est pas le bon, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                                }
+                            } else {
+                                $view = new RedirectionView($indexPath, 'Echec de l\'association de la liste au compte !', 'Le token fourni est invalide, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                            }
+                        } else {
+                            $view = new RedirectionView($indexPath, 'Echec de l\'association de la liste au compte !', 'Cette liste est déjà associée à un compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                        }
+                    } else {
+                        $view = new RedirectionView($indexPath, 'Echec de l\'association de la liste au compte !', 'Cette liste n\'existe pas, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                    }
+                } else {
+                    $view = new RedirectionView($indexPath, 'Echec de l\'association de la liste au compte !', 'Le n° de liste fourni est invalide, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                }
+            } else {
+                $view = new RedirectionView($indexPath, 'Echec de l\'association de la liste au compte !', 'Une erreur est subvenue lors de la tentative d\'association de la liste au compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+            }
+        } else {
+            $view = new RedirectionView($indexPath, 'Echec de l\'association de la liste au compte !', 'Vous devez être connecté pour associer une liste à votre compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
         }
         $view = new NavBarView($view);
         $view = new BasicView($view);

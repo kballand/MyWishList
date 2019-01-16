@@ -17,7 +17,7 @@ class AccountDisplayView implements IView
 
     public function render()
     {
-        $router = SlimSingleton::getInstance()->getContainer()->get('router');
+        $router = SlimSingleton::getInstance()->getRouter();
         $deleteAccountPath = $router->pathFor('deleteAccount');
         $modifyAccountPath = $router->pathFor('modifyAccount');
         return
