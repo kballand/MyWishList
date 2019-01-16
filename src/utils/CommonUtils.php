@@ -300,8 +300,8 @@ END;
     {
         if (isset($image) && !is_null($image)) {
             if ((!isset($image->items) || count($image->items) === 0) && !$image->local) {
-                if ($image->uploaded && file_exists('img/' . $image->basename)) {
-                    unlink('img/' . $image->basename);
+                if ($image->uploaded && file_exists(SlimSingleton::getInstance()->getBaseDir() . 'img/' . $image->basename)) {
+                    unlink(SlimSingleton::getInstance()->getBaseDir() . 'img/' . $image->basename);
                 }
                 $image->delete();
             }

@@ -25,6 +25,7 @@ $db->bootEloquent();
 
 $singleton = SlimSingleton::getInstance();
 $singleton->setBasePath(rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])),'/') . '/');
+$singleton->setBaseDir(rtrim(str_replace('\\', '/', __DIR__),'/') . '/');
 
 $app = $singleton->getSlim();
 

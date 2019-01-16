@@ -30,7 +30,7 @@ class ItemCreationView implements IView
         <div class="errorDisplayedField">
             <input type="number" min="0.01" max="999.99" step="0.01" name="price" id="itemPrice" class="limitedPrice" aria-invalid="true">
             <div class="displayedError incorrectPriceError" id="incorrectItemPriceError">
-                <p class="displayedMessage" id="incorrectItemPriceMessage">Le prix de l'item doit être un nombre compris entre 0,01€ et 10000€ !</p>
+                <p class="displayedMessage" id="incorrectItemPriceMessage">Le prix de l'item doit être un nombre compris entre 0,01€ et 999,99€ !</p>
             </div>
         </div>
         <label for="itemImage">Image de l'item</label>

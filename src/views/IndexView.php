@@ -29,10 +29,3 @@ class IndexView implements IView
         return '';
     }
 }
-
-?>
-<img
-        src="../../img/Accueil.jpg"
-        height="100%"
-        width="100%"
-/>

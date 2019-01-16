@@ -123,18 +123,18 @@ class ModifyController
                                 $tmpName = $file['tmp_name'];
                                 if (getimagesize($tmpName) !== false) {
                                     $name = basename($file['name']);
-                                    if ($name > 255 && file_exists('img/' . $name)) {
+                                    if ($name > 255 && file_exists(SlimSingleton::getInstance()->getBaseDir() . 'img/' . $name)) {
                                         $name = substr($name, 0, 251);
                                     } else if ($name > 255) {
                                         $name = substr($name, 0, 255);
                                     }
                                     $finalName = $name;
                                     $count = 1;
-                                    while (file_exists('img/' . $finalName) && !(md5_file('img/' . $finalName) === md5_file($tmpName))) {
+                                    while (file_exists(SlimSingleton::getInstance()->getBaseDir() . 'img/' . $finalName) && !(md5_file(SlimSingleton::getInstance()->getBaseDir() . 'img/' . $finalName) === md5_file($tmpName))) {
                                         $finalName = $name . ' (' . $count . ')';
                                         ++$count;
                                     }
-                                    if (file_exists('img/' . $finalName)) {
+                                    if (file_exists(SlimSingleton::getInstance()->getBaseDir() . 'img/' . $finalName)) {
                                         $image = ImageModel::where('basename', '=', $finalName)->first();
                                         if (!isset($image)) {
                                             $image = new ImageModel();
@@ -149,7 +149,7 @@ class ModifyController
                                         CommonUtils::deleteUnusedImage($lastImage);
                                         $view = new RedirectionView($itemPath, 'Modification de l\'item réussie avec succès !', 'Votre item a bien été modifié, vous allez être redirigé vers celui-ci dans 5 secondes.');
                                     } else {
-                                        if (move_uploaded_file($tmpName, 'img/' . $finalName)) {
+                                        if (move_uploaded_file($tmpName, SlimSingleton::getInstance()->getBaseDir() . 'img/' . $finalName)) {
                                             $image = new ImageModel();
                                             $image->basename = $finalName;
                                             $image->uploaded = true;
@@ -169,9 +169,9 @@ class ModifyController
                                 }
                             } else if (isset($_POST['imageHotlink']) && !empty($_POST['imageHotlink'])) {
                                 $imageHotlink = filter_var($_POST['imageHotlink'], FILTER_SANITIZE_URL);
-                                if (file_exists('img/' . $imageHotlink) || getimagesize($imageHotlink) !== false) {
+                                if (file_exists(SlimSingleton::getInstance()->getBaseDir() . 'img/' . $imageHotlink) || getimagesize($imageHotlink) !== false) {
                                     if (strlen($imageHotlink) <= 255) {
-                                        if (file_exists('img/' . $imageHotlink)) {
+                                        if (file_exists(SlimSingleton::getInstance()->getBaseDir() . 'img/' . $imageHotlink)) {
                                             $image = ImageModel::where('basename', '=', $imageHotlink)->first();
                                             if (!isset($image)) {
                                                 $image = new ImageModel();

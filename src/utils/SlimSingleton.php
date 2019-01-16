@@ -22,6 +22,10 @@ class SlimSingleton
      * @var string Chemin d'accès de base au site
      */
     private $basePath;
+    /**
+     * @var string Chemin d'accès au repertoire parent
+     */
+    private $baseDir;
 
     private function __construct()
     {
@@ -29,6 +33,7 @@ class SlimSingleton
         $this->slim = new App($config);
         $this->router = $this->slim->getContainer()->get('router');
         $this->basePath = '/';
+        $this->baseDir = '/';
     }
 
     /**
@@ -82,5 +87,25 @@ class SlimSingleton
     public function getBasePath()
     {
         return $this->basePath;
+    }
+
+    /**
+     * Setter du chemin de base du site
+     *
+     * @param $baseDir string Repertoire parent
+     */
+    public function setBaseDir($baseDir)
+    {
+        $this->baseDir = $baseDir;
+    }
+
+    /**
+     * Getter du chemin de base du site
+     *
+     * @return string Le chemin du repertoire du site
+     */
+    public function getBaseDir()
+    {
+        return $this->baseDir;
     }
 }

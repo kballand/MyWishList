@@ -48,7 +48,17 @@ $(document).ready(function () {
                 uploadField.find('.previewChanger').text('Modifier l\'image');
             };
             img.onerror = function () {
-                url = window.location.origin + '/img/' + url;
+                let pathNames = window.location.pathname.split('/');
+                let index = pathNames.findIndex(function (element) {
+                    return element === 'list';
+                });
+                let basePath = '';
+                if(index !== -1) {
+                    for(let i = 0; i < index; i++) {
+                        basePath += pathNames[i] + '/';
+                    }
+                }
+                url = window.location.origin + basePath + 'img/' + url;
                 img.onerror = function () {
                     $this.val('').keyup();
                 };

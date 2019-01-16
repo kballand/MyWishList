@@ -43,7 +43,7 @@ class ItemModificationView implements IView
             $buttonText = "Modifier l'image";
             $image = $this->item->image;
             if ($image->uploaded) {
-                $src = '/img/' . $image->basename;
+                $src = SlimSingleton::getInstance()->getBasePath() . 'img/' . $image->basename;
             } else {
                 $src = $image->basename;
             }

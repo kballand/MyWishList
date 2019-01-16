@@ -38,6 +38,8 @@ class BasicView implements IView
 
     public function render()
     {
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        $img = $basePath . 'img/Accueil.jpg';
         $css = CommonUtils::importCSS($this->getRequiredCSS());
         $scripts = CommonUtils::importScripts($this->getRequiredScripts());
         return
@@ -49,10 +51,13 @@ class BasicView implements IView
 		<title>$this->title</title>
 		$css
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 		$scripts
 	</head>
 	<body>
+	    <header>
+            <img src="$img" id="indexImg" alt="MyWishList"/>
+	    </header>
 	    {$this->bodyView->render()}
 	</body>
 </html>
