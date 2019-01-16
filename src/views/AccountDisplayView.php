@@ -39,7 +39,8 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/form.css', '/css/style.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/form.css', $basePath . 'css/style.css'];
     }
 
     public function getRequiredScripts()

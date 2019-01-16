@@ -3,12 +3,15 @@
 namespace MyWishList\views;
 
 
+use MyWishList\utils\SlimSingleton;
+
 class IndexView implements IView
 {
 
     public function getRequiredCSS()
     {
-        return ['/css/style.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/style.css'];
     }
 
     public function getRequiredScripts()

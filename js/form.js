@@ -137,8 +137,10 @@ $(document).ready(function () {
             $.ajax({
                 type: 'POST',
                 url: window.location.origin + window.location.pathname + '/check_username',
-                data: 'username=' + username,
-                success: function() {
+                data: {
+                    username: username
+                },
+                success: function () {
                     $this.attr('aria-invalid', 'false');
                     if (error.hasClass('displayed')) {
                         error.removeClass('displayed');
@@ -225,7 +227,7 @@ $(document).ready(function () {
         let passwordVerify = $(this).val();
         let passwordField = $(this).closest('.registerPart').find('.passwordField');
         let password = passwordField.val();
-        if(password && password !== passwordVerify) {
+        if (password && password !== passwordVerify) {
             $(this).attr('aria-invalid', 'true');
             if (!error.hasClass('displayed') && passwordField.attr('aria-invalid') === 'false') {
                 error.addClass('displayed');

@@ -23,7 +23,10 @@ $db->addConnection(parse_ini_file("src/conf/conf.ini"));
 $db->setAsGlobal();
 $db->bootEloquent();
 
-$app = SlimSingleton::getInstance()->getSlim();
+$singleton = SlimSingleton::getInstance();
+$singleton->setBasePath(rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])),'/') . '/');
+
+$app = $singleton->getSlim();
 
 $app->get('/list/display/{no}', function (Request $request, Response $response, $args) {
     $controller = DisplayController::getInstance();
@@ -213,6 +216,11 @@ $app->get('/account/modify', function (Request $request, Response $response) {
    $controller = DisplayController::getInstance();
    $response->write($controller->displayAccountModification());
 })->setName('modifyAccount');
+
+$app->post('/account/modify', function (Request $request, Response $response) {
+   $controller = ModifyController::getInstance();
+   $response->write($controller->modifyAccount($request));
+});
 
 $app->get('/account/delete', function (Request $request, Response $response) {
     $controller = ModifyController::getInstance();

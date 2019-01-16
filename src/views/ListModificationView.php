@@ -5,6 +5,7 @@ namespace MyWishList\views;
 
 use DateTime;
 use MyWishList\models\ListModel;
+use MyWishList\utils\SlimSingleton;
 
 class ListModificationView implements IView
 {
@@ -49,11 +50,13 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/form.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/form.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/upload.js', '/js/form.js'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'js/upload.js', $basePath . 'js/form.js'];
     }
 }

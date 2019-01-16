@@ -3,6 +3,8 @@
 namespace MyWishList\views;
 
 
+use MyWishList\utils\SlimSingleton;
+
 class RegisterView implements IView
 {
     public function render()
@@ -79,11 +81,13 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/form.css', '/css/registration.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/form.css', $basePath . 'css/registration.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/form.js'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'js/form.js'];
     }
 }

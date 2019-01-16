@@ -9,12 +9,14 @@ class SlimSingleton
     private static $instance;
     private $slim;
     private $router;
+    private $basePath;
 
     private function __construct()
     {
         $config = ['settings' => ['displayErrorDetails' => true]];
         $this->slim = new App($config);
         $this->router = $this->slim->getContainer()->get('router');
+        $this->basePath = '/';
     }
 
     public static function getInstance()
@@ -33,5 +35,15 @@ class SlimSingleton
     public function getSlim()
     {
         return $this->slim;
+    }
+
+    public function setBasePath($basePath)
+    {
+        $this->basePath = $basePath;
+    }
+
+    public function getBasePath()
+    {
+        return $this->basePath;
     }
 }

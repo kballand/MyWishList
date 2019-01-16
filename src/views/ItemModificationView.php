@@ -4,6 +4,7 @@ namespace MyWishList\views;
 
 
 use MyWishList\models\ItemModel;
+use MyWishList\utils\SlimSingleton;
 
 class ItemModificationView implements IView
 {
@@ -87,11 +88,13 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/form.css', '/css/popup.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/form.css', $basePath . 'css/popup.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/upload.js', '/js/form.js', '/js/popup.js'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'js/upload.js', $basePath . 'js/form.js', $basePath . 'js/popup.js'];
     }
 }

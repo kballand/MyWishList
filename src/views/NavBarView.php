@@ -16,12 +16,14 @@ class NavBarView implements IView
 
     public function getRequiredCSS()
     {
-        return array_unique(array_merge(['/css/navbar.css', '/css/style.css'], $this->contentView->getRequiredCSS()));
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return array_unique(array_merge([$basePath . 'css/navbar.css', $basePath . 'css/style.css'], $this->contentView->getRequiredCSS()));
     }
 
     public function getRequiredScripts()
     {
-        return array_unique(array_merge(['/js/navbar.js'], $this->contentView->getRequiredScripts()));
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return array_unique(array_merge([$basePath . 'js/navbar.js'], $this->contentView->getRequiredScripts()));
     }
 
     public function render()

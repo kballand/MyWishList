@@ -291,8 +291,8 @@ class CreationController
                 $firstName = $queries['firstName'];
                 $lastName = $queries['lastName'];
                 if (filter_var($queries['firstName'], FILTER_SANITIZE_STRING) === $firstName && filter_var($queries['lastName'], FILTER_SANITIZE_STRING) === $lastName) {
-                    $firstName = filter_var($queries['firstName'], FILTER_SANITIZE_URL);
-                    $lastName = filter_var($queries['firstName'], FILTER_SANITIZE_URL);
+                    $firstName = filter_var($firstName, FILTER_SANITIZE_URL);
+                    $lastName = filter_var($lastName, FILTER_SANITIZE_URL);
                     if (!empty(trim($firstName)) && !empty(trim($lastName))) {
                         $username = $queries['username'];
                         if (filter_var($queries['username'], FILTER_SANITIZE_STRING) === $username) {
@@ -301,7 +301,7 @@ class CreationController
                                 $possibleAccount = AccountModel::where('username', '=', $username)->first();
                                 if (!isset($possibleAccount)) {
                                     $email = $queries['email'];
-                                    if (filter_var($email, FILTER_VALIDATE_EMAIL) !== false) {
+                                    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                                         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
                                         if (!empty(trim($email))) {
                                             $password = $queries['password'];
@@ -345,7 +345,7 @@ class CreationController
                             $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Le nom d\'utilisateur saisi est incorrect, vous allez être redirigé vers l\'accueil dans 5 secondes.');
                         }
                     } else {
-                        $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Le prénom et nom de famille saisi ne doit pas être vide, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                        $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Le prénom et nom de famille saisi ne doivent pas être vide, vous allez être redirigé vers l\'accueil dans 5 secondes.');
                     }
                 } else {
                     $view = new RedirectionView($indexPath, 'Echec de la création d\'un compte !', 'Le prénom ou nom de famille saisi est incorrect, vous allez être redirigé vers l\'accueil dans 5 secondes.');

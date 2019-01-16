@@ -5,6 +5,7 @@ namespace MyWishList\views;
 
 use MyWishList\models\ItemModel;
 use MyWishList\utils\Authentication;
+use MyWishList\utils\SlimSingleton;
 
 class ItemReservationView implements IView
 {
@@ -51,11 +52,13 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/form.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/form.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/form.js'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'js/form.js'];
     }
 }

@@ -3,6 +3,8 @@
 namespace MyWishList\views;
 
 
+use MyWishList\utils\SlimSingleton;
+
 class RedirectionView implements IView
 {
 
@@ -17,7 +19,8 @@ class RedirectionView implements IView
 
     public function getRequiredCSS()
     {
-        return ['/css/redirection.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/redirection.css'];
     }
 
     public function getRequiredScripts()

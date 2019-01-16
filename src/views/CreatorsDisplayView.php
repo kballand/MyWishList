@@ -3,6 +3,8 @@
 namespace MyWishList\views;
 
 
+use MyWishList\utils\SlimSingleton;
+
 class CreatorsDisplayView implements IView
 {
     private $creators;
@@ -23,8 +25,8 @@ class CreatorsDisplayView implements IView
     </article>
 END;
         }
-            return
-                <<< END
+        return
+            <<< END
 <section id="creatorsSection">
     $sectionContent
 </section>
@@ -34,7 +36,8 @@ END;
 
     function getRequiredCSS()
     {
-        return ['/css/style.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/style.css'];
     }
 
     public

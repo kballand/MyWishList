@@ -3,7 +3,6 @@ RewriteEngine On
 # RewriteBase indispensable sur webetu :
 
 # RewriteBase /balland64u/www/MyWishList
-# RewriteRule ^
 
 #
 # Pour interdire l'accès aux répertoires contenant du code

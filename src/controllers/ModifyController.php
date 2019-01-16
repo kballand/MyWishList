@@ -310,4 +310,66 @@ class ModifyController
         $view = new BasicView($view);
         return $view->render();
     }
+
+    public function modifyAccount(Request $request)
+    {
+        $router = SlimSingleton::getInstance()->getRouter();
+        $indexPath = $router->pathFor('index');
+        if (Authentication::hasProfile()) {
+            $queries = $request->getParsedBody();
+            $accountPath = $router->pathFor('displayAccount');
+            if (isset($queries['firstName']) && isset($queries['lastName']) && isset($queries['email']) && isset($queries['password'])) {
+                $firstName = $queries['firstName'];
+                $lastName = $queries['lastName'];
+                if (filter_var($queries['firstName'], FILTER_SANITIZE_STRING) === $firstName && filter_var($queries['lastName'], FILTER_SANITIZE_STRING) === $lastName) {
+                    $firstName = filter_var($firstName, FILTER_SANITIZE_URL);
+                    $lastName = filter_var($lastName, FILTER_SANITIZE_URL);
+                    if (!empty(trim($firstName)) && !empty(trim($lastName))) {
+                        $email = $queries['email'];
+                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+                            if (!empty(trim($email))) {
+                                $password = $queries['password'];
+                                if (filter_var($password, FILTER_SANITIZE_STRING) === $password) {
+                                    $password = filter_var($password, FILTER_SANITIZE_STRING);
+                                    if (!empty(trim($password)) && trim($password) === $password && strlen($password) >= 7 && strtolower($password) !== $password && strtoupper($password) !== $password && preg_match('/[0-9]/', $password)) {
+
+                                        $account = AccountModel::where('username', '=', Authentication::getProfile()['username'])->first();
+                                        $account->first_name = $firstName;
+                                        $account->last_name = $lastName;
+                                        $account->email = $email;
+                                        if(!password_verify($password, $account->password)) {
+                                            Authentication::deleteProfile();
+                                            $account->password = password_hash($password, CRYPT_BLOWFISH, ['cost' => 12]);
+                                        }
+                                        $account->save();
+                                        $view = new RedirectionView($indexPath, 'Modification du compte réussie avec succès !', 'Votre compte a bien été modifié, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+                                    } else {
+                                        $view = new RedirectionView($accountPath, 'Echec de la modification du compte !', 'Le mot de passe saisi n\'est pas de la bonne forme, vous allez être redirigé vers votre compte dans 5 secondes.');
+                                    }
+                                } else {
+                                    $view = new RedirectionView($accountPath, 'Echec de la modification du compte !', 'Le mot de passe saisi est incorrect, vous allez être redirigé vers votre compte dans 5 secondes.');
+                                }
+                            } else {
+                                $view = new RedirectionView($accountPath, 'Echec de la modification du compte !', 'L\'adresse email saisie ne peut être vide, vous allez être redirigé vers votre compte dans 5 secondes.');
+                            }
+                        } else {
+                            $view = new RedirectionView($accountPath, 'Echec de la modification du compte !', 'L\'adresse email saisie est incorrect, vous allez être redirigé vers votre compte dans 5 secondes.');
+                        }
+                    } else {
+                        $view = new RedirectionView($accountPath, 'Echec de la modification du compte !', 'Le prénom et nom de famille saisi ne doivent pas être vide, vous allez être redirigé vers votre compte dans 5 secondes.');
+                    }
+                } else {
+                    $view = new RedirectionView($accountPath, 'Echec de la modification du compte !', 'Le prénom ou nom de famille saisi est incorrect, vous allez être redirigé vers votre compte dans 5 secondes.');
+                }
+            } else {
+                $view = new RedirectionView($accountPath, 'Echec de la modification du compte !', 'Une erreur est survenue lors de la modification du compte, vous allez être redirigé vers votre compte dans 5 secondes.');
+            }
+        } else {
+            $view = new RedirectionView($indexPath, 'Echec de la modification du compte !', 'Vous devez être connecté pour modifier votre compte, vous allez être redirigé vers l\'accueil dans 5 secondes.');
+        }
+        $view = new NavBarView($view);
+        $view = new BasicView($view);
+        return $view->render();
+    }
 }

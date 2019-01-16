@@ -3,6 +3,8 @@
 namespace MyWishList\views;
 
 
+use MyWishList\utils\SlimSingleton;
+
 class LoginView implements IView
 {
     public function render()
@@ -26,11 +28,13 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/form.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/form.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/login.js'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'js/login.js'];
     }
 }

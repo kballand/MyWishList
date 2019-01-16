@@ -4,6 +4,7 @@ namespace MyWishList\views;
 
 
 use MyWishList\models\AccountModel;
+use MyWishList\utils\SlimSingleton;
 
 class AccountModificationView implements IView
 {
@@ -22,21 +23,21 @@ class AccountModificationView implements IView
     <form id="accountModificationForm" method="post" novalidate>
         <label for="accountModificationFirstName">Prénom</label>
         <div class="errorDisplayedField">
-            <input type="text" name="firstName" id="accountModificationFirstName" placeholder="Votre prénom" class="notEmptyField" aria-invalid="true">
+            <input type="text" name="firstName" id="accountModificationFirstName" placeholder="Votre prénom" class="notEmptyField" value="{$this->account->first_name}" aria-invalid="true">
             <div class="displayedError fieldEmptyError" id="accountFirstNameEmptyError">
                 <p class="displayedMessage" id="firstNameEmptyMessage">Votre prénom ne peut être laissé vide !</p>
             </div>
         </div>
         <label for="accountModificationLastName">Nom</label>
         <div class="errorDisplayedField">
-            <input type="text" name="lastName" id="accountModificationLastName" placeholder="Votre nom" class="notEmptyField" aria-invalid="true">
+            <input type="text" name="lastName" id="accountModificationLastName" placeholder="Votre nom" class="notEmptyField" value="{$this->account->last_name}" aria-invalid="true">
             <div class="displayedError fieldEmptyError" id="accountModificationLastNameEmptyError">
                 <p class="displayedMessage" id="lastNameEmptyMessage">Votre nom ne peut être laissé vide !</p>
             </div>
         </div>
         <label for="accountModificationEmail">E-mail</label>
         <div class="errorDisplayedField">
-            <input type="email" name="email" id="accountModificationEmail" placeholder="Votre email" class="emailField" aria-invalid="true">
+            <input type="email" name="email" id="accountModificationEmail" placeholder="Votre email" class="emailField" value="{$this->account->email}" aria-invalid="true">
             <div class="displayedError emailInvalidError" id="accountModificationEmailInvalidError">
                 <p class="displayedMessage" id="accountModificationEmailInvalidMessage">Vous devez entrer un email valide !</p>
             </div>
@@ -59,11 +60,13 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/form.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/form.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/form.js'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'js/form.js'];
     }
 }

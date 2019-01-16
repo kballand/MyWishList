@@ -3,6 +3,7 @@
 namespace MyWishList\views;
 
 use MyWishList\utils\CommonUtils;
+use MyWishList\utils\SlimSingleton;
 
 class BasicView implements IView
 {
@@ -44,7 +45,8 @@ END;
 
     public function getRequiredCSS()
     {
-        return array_unique(array_merge(['/css/common.css'], $this->bodyView->getRequiredCSS()));
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return array_unique(array_merge([$basePath . 'css/common.css'], $this->bodyView->getRequiredCSS()));
     }
 
     public function getRequiredScripts()

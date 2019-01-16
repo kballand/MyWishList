@@ -154,11 +154,13 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/popup.css', '/css/form.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/popup.css', $basePath . 'css/form.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/popup.js', '/js/form.js'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'js/popup.js', $basePath . 'js/form.js'];
     }
 }

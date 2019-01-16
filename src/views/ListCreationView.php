@@ -4,6 +4,7 @@ namespace MyWishList\views;
 
 
 use DateTime;
+use MyWishList\utils\SlimSingleton;
 
 class ListCreationView implements IView
 {
@@ -42,11 +43,13 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/form.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/form.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/upload.js', '/js/form.js'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'js/upload.js', $basePath . 'js/form.js'];
     }
 }

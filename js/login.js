@@ -2,9 +2,9 @@ $(document).ready(function () {
     let loginForm = $('#loginForm');
     loginForm.submit(function (e) {
         e.preventDefault();
-       let username = $(this).find('#loginUsername').val();
-       let password = $(this).find('#loginPassword').val();
-       let form = this;
+        let username = $(this).find('#loginUsername').val();
+        let password = $(this).find('#loginPassword').val();
+        let form = this;
         $.ajax({
             type: 'POST',
             url: window.location.origin + window.location.pathname + '/check_login',
@@ -12,7 +12,7 @@ $(document).ready(function () {
                 username: username,
                 password: password
             },
-            success: function() {
+            success: function () {
                 form.submit();
             },
             error: function () {

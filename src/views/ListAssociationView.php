@@ -3,6 +3,8 @@
 namespace MyWishList\views;
 
 
+use MyWishList\utils\SlimSingleton;
+
 class ListAssociationView implements IView
 {
     public function render()
@@ -33,11 +35,12 @@ END;
 
     public function getRequiredCSS()
     {
-        return ['/css/form.css'];
+        $basePath = SlimSingleton::getInstance()->getBasePath();
+        return [$basePath . 'css/form.css'];
     }
 
     public function getRequiredScripts()
     {
-        return ['/js/form.js'];
+        return [$basePath . 'js/form.js'];
     }
 }

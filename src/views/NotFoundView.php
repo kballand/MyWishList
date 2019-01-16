@@ -3,6 +3,8 @@
 namespace MyWishList\views;
 
 
+use MyWishList\utils\SlimSingleton;
+
 class NotFoundView implements IView
 {
     private $urlRequested;
@@ -15,6 +17,7 @@ class NotFoundView implements IView
 
     public function render()
     {
+        $basePath = SlimSingleton::getInstance()->getBasePath();
         return
             <<< END
 <!DOCTYPE html>
@@ -22,7 +25,7 @@ class NotFoundView implements IView
 	<head>
 		<meta charset="UTF-8" />
 		<title>Error 404 (Not Found)</title>
-		<link rel="stylesheet" href="/css/style.css" />
+		<link rel="stylesheet" href="{$basePath}css/style.css" />
 	</head>
 	<body>
 		<div id="notFound">
