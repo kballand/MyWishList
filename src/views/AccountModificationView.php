@@ -34,13 +34,6 @@ class AccountModificationView implements IView
                 <p class="displayedMessage" id="lastNameEmptyMessage">Votre nom ne peut être laissé vide !</p>
             </div>
         </div>
-        <label for="accountModificationUsername">Nom d'utilisateur</label>
-        <div class="errorDisplayedField">
-            <input type="text" name="username" id="accountModificationUsername" placeholder="Votre nom d'utilisateur" class="usernameUniqueField" maxlength="20" aria-invalid="true">
-            <div class="displayedError usernameUniqueError" id="accountModificationUsernameUniqueError">
-                <p class="displayedMessage" id="accountModificationUsernameUniqueMessage"></p>
-            </div>
-        </div>
         <label for="accountModificationEmail">E-mail</label>
         <div class="errorDisplayedField">
             <input type="email" name="email" id="accountModificationEmail" placeholder="Votre email" class="emailField" aria-invalid="true">
@@ -48,6 +41,16 @@ class AccountModificationView implements IView
                 <p class="displayedMessage" id="accountModificationEmailInvalidMessage">Vous devez entrer un email valide !</p>
             </div>
         </div>
+        <label for="accountModificationPassword">Mot de passe</label>
+        <div class="errorDisplayedField">
+            <input type="text" style="display:none;">
+            <input type="password" style="display:none;">
+            <input type="password" name="password" id="accountModificationPassword" placeholder="Votre mot de passe" class="passwordField" aria-invalid="true">
+            <div class="displayedError passwordInvalidError" id="accountModificationPasswordInvalidError">
+                <p class="displayedMessage" id="passwordModificationPasswordInvalidMessage">Mot de passe invalide !</p>
+            </div>
+        </div>
+        <input type="submit" class="validateButton" value="Valider les modifications">
     </form>
 </section>
 END;
