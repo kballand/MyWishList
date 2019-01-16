@@ -44,6 +44,11 @@ class DisplayController
         return self::$instance;
     }
 
+    /**
+     * @return string
+     *
+     * Methode pour afficher les listes
+     */
     public function displayLists()
     {
         $router = SlimSingleton::getInstance()->getRouter();
@@ -62,6 +67,11 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * @return string
+     *
+     * Methode pour afficher les listes publiques
+     */
     public function displayPublicLists()
     {
         $dateToday = new \DateTime('now');
@@ -73,6 +83,13 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * @param Request $request
+     * @param $no
+     * @return string
+     *
+     * Methode pour afficher une liste
+     */
     public function displayList(Request $request, $no)
     {
         $canAccess = CommonUtils::canAccessList($request, $no, 'Echec de l\'accès à la liste !', false, $modificationGranted);
@@ -91,6 +108,14 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * @param Request $request
+     * @param $no
+     * @param $id
+     * @return string
+     *
+     * Methode pour afficher un item
+     */
     public function displayItem(Request $request, $no, $id)
     {
         $canAccess = CommonUtils::canAccessItem($request, $no, $id, 'Echec de l\'accès à l\'item !', false, $modificationGranted);
@@ -109,6 +134,11 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * @return string
+     *
+     * Methode pour afficher l'index
+     */
     public function displayIndex()
     {
         $view = new IndexView();
@@ -117,6 +147,12 @@ class DisplayController
         return $view->render();
     }
 
+
+    /**
+     * @return string
+     *
+     * Methode permettant d afficher la connexion
+     */
     public function displayRegistration()
     {
         if (!Authentication::hasProfile()) {
@@ -138,6 +174,11 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * @return string
+     *
+     * Methode permettant d afficher la creation de la liste
+     */
     public function displayListCreation()
     {
         if (Authentication::hasProfile() && Authentication::getProfile()['participant']) {
@@ -152,6 +193,13 @@ class DisplayController
         return $view->render();
     }
 
+    /**
+     * @param Request $request
+     * @param $no
+     * @return string
+     *
+     * Methode permettant d afficher la modification de la liste
+     */
     public function displayListModification(Request $request, $no)
     {
         $canModify = CommonUtils::canAccessList($request, $no, 'Echec de l\'accès à la modification de la liste !', true);
