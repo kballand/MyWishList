@@ -21,5 +21,3 @@ RewriteRule ^ index.php [QSA,L]
 # Pour l'upload d'images
 php_value upload_max_filesize 10M
 php_value post_max_size 12M
-allow_url_fopen
-safe_mod false
